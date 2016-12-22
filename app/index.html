@@ -1,27 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="assets/basic.css"> <!-- add integrity="" -->
-    <link rel="stylesheet" href="assets/theme/dark/style.css"> <!-- add integrity="" -->
+
+    <!-- basic css structure -->
+    <link rel="stylesheet" href="assets/basic.css">
+    
+    <!-- colorset -->
+    <link rel="stylesheet" href="assets/theme/dark/style.css">
+
+    <!-- js libs -->
     <script type="text/javascript">window.$ = window.jQuery = require('./lib/jquery-3.1.0.min.js');</script>
+
+    <!-- node libs -->
     <script type="text/javascript">const crypto = require('crypto');</script>
     <script type="text/javascript">const fs = require("fs");</script>
     <script type="text/javascript">const stream = require('stream');</script>
     <script type="text/javascript">const util = require('util');</script>
     <script type="text/javascript">const unzip = require('unzip2');</script>
     <script type="text/javascript">const lwip = require('lwip');</script>
-    <script type="text/javascript" src="js/env.js"></script>
-    <script type="text/javascript" src="js/imageLink.js"></script>
-    <script type="text/javascript" src="js/basic.js"></script>
-    <script type="text/javascript" src="js/menu.js"></script>
-    <script type="text/javascript" src="js/findFileEntry.js"></script>
-    <script type="text/javascript" src="js/drop.js"></script>
+
+    <!-- added modules -->
+    <script type="text/javascript" src="js/general/basic/env.js"></script>
+
+    <script type="text/javascript" src="js/general/controller/game.js"></script>
+    <script type="text/javascript" src="js/general/controller/image.js"></script>
+    <script type="text/javascript" src="js/general/controller/memory.js"></script>
+    <script type="text/javascript" src="js/general/controller/menu.js"></script>
+    <script type="text/javascript" src="js/general/controller/storage.js"></script>
+
+    <script type="text/javascript" src="js/general/basic/basic.js"></script>
+
+    <script type="text/javascript" src="js/general/struct/menu.js"></script>
+    <script type="text/javascript" src="js/general/struct/version.js"></script>
+
+    <script type="text/javascript" src="js/general/service/containerBeginExec.js"></script>
+    <script type="text/javascript" src="js/general/service/gameGrabber.js"></script>
+
+    <script type="text/javascript" src="js/general/events/drop.js"></script>
+
+    <!-- basic html structure -->
     <link rel="icon" href="assets/ccdirectlink.png">
     <title>SpericalViewer</title>
+
   </head>
   <body class="universe" ondrop="drop(event)" ondragover="allowDrop(event)">
+
     <div class="space">
       <div class="titlebar" id="headbar">SpericalViewer</div>
       <div class="content" id="servercontainer">
@@ -33,5 +59,6 @@
         </div>
       </div>
     </div>
+
   </body>
 </html>

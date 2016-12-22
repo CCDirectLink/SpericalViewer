@@ -1,4 +1,4 @@
-function filePoint(file, mode, callback)
+function containerBeginInExec(file, mode, callback)
 {
 
 	var byteCount = 0;

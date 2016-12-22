@@ -65,3 +65,13 @@ function rawDataBackCall(id)
 	currentMenuMode = 0;
 	menuMode(0);
 }
+
+
+$(function(){
+	gameData.registerCallback(function(data, entry, identifier, controller){
+		if ((data == null) && (!controller.hasGame()))
+		{
+			updateMenu();
+		}
+	}, null);
+})

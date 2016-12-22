@@ -1,4 +1,4 @@
-function imageLink()
+function imageController()
 {
 	var imageDatabase = Object();
 

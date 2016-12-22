@@ -1,62 +1,58 @@
 <script type="text/javascript">
 
-	$.getScript("js/gameStorage.js", function( data, textStatus, jqxhr ) {
+	$.getScript("js/status/list.js", function( data, textStatus, jqxhr ) {
 
-		$.getScript("js/statusList.js", function( data, textStatus, jqxhr ) {
+		$(function(){
 
-			$(function(){
+			if ((typeof moduleMemory['status'] == "undefined") || (typeof moduleMemory['status']['gameStorageController'] == "undefined"))
+			{
+				if (typeof moduleMemory['status'] == "undefined") moduleMemory['status'] = Object();
+				moduleMemory['status']['gameStorageController'] = new gameStorageController();
+			}
+			
+			if ((typeof moduleMemory['status'] == "undefined") || (typeof moduleMemory['status']['statusList'] == "undefined"))
+			{
+				if (typeof moduleMemory['status'] == "undefined") moduleMemory['status'] = Object();
+				moduleMemory['status']['statusList'] = new statusList();
+			}
+			//moduleMemory['status']['gameStorageController'].cacheData;
 
-				if ((typeof moduleMemory['status'] == "undefined") || (typeof moduleMemory['status']['gameStorageController'] == "undefined"))
+			// init programm data
+			$( "#version").html(envVersion);
+			$( "#build").html(envBuild);
+
+			// init table
+			$( "#loadedGame").html("<table>" + moduleMemory['status']['statusList'].getTable() + "</table>");
+
+			// register callback
+			if ((typeof moduleMemory['status'] == "undefined") || (typeof moduleMemory['status']['callbackRegistered'] == "undefined"))
+			{
+				if (typeof moduleMemory['status'] == "undefined") moduleMemory['status'] = Object();
+
+				gameData.registerCallback(function(data, entry)
 				{
-					if (typeof moduleMemory['status'] == "undefined") moduleMemory['status'] = Object();
-					moduleMemory['status']['gameStorageController'] = new gameStorageController();
-				}
-				
-				if ((typeof moduleMemory['status'] == "undefined") || (typeof moduleMemory['status']['statusList'] == "undefined"))
-				{
-					if (typeof moduleMemory['status'] == "undefined") moduleMemory['status'] = Object();
-					moduleMemory['status']['statusList'] = new statusList();
-				}
-				//moduleMemory['status']['gameStorageController'].cacheData;
-
-				// init programm data
-				$( "#version").html(envVersion);
-				$( "#build").html(envBuild);
-
-				// init table
-				$( "#loadedGame").html("<table>" + moduleMemory['status']['statusList'].getTable() + "</table>");
-
-				// register callback
-				if ((typeof moduleMemory['status'] == "undefined") || (typeof moduleMemory['status']['callbackRegistered'] == "undefined"))
-				{
-					if (typeof moduleMemory['status'] == "undefined") moduleMemory['status'] = Object();
-
-					gameData.registerCallback(function(data, entry)
+					if (data == null)
 					{
-						if (data == null)
-						{
-							for (var statusIndex in moduleMemory['status']['statusList'].statusArray)
-		      				{
-		      					if (moduleMemory['status']['statusList'].statusArray[statusIndex].id == entry)
-		      					{
-		      						moduleMemory['status']['statusList'].statusArray.splice(statusIndex, 1);
-		      					}
-							}
+						for (var statusIndex in moduleMemory['status']['statusList'].statusArray)
+	      				{
+	      					if (moduleMemory['status']['statusList'].statusArray[statusIndex].id == entry)
+	      					{
+	      						moduleMemory['status']['statusList'].statusArray.splice(statusIndex, 1);
+	      					}
 						}
-						else
-						{
-							moduleMemory['status']['statusList'].statusArray.push({id: data.shortId, version: data.version.string, size: "0 kiB"});
-						}
+					}
+					else
+					{
+						moduleMemory['status']['statusList'].statusArray.push({id: data.shortId, version: data.version.string, size: "0 kiB"});
+					}
 
-						$( "#loadedGame").html("<table>" + moduleMemory['status']['statusList'].getTable() + "</table>");
+					$( "#loadedGame").html("<table>" + moduleMemory['status']['statusList'].getTable() + "</table>");
 
-					}, {identifier: [{param: "version"}, {param: "shortId"}]});
+				}, {identifier: [{param: "version"}, {param: "shortId"}]});
 
-					moduleMemory['status']['callbackRegistered'] = true;
+				moduleMemory['status']['callbackRegistered'] = true;
 
-				}
-
-			});
+			}
 
 		});
 
@@ -66,14 +62,14 @@
 <center>
 	<h1>SpericalViewer</h1>
 	<span id="version"></span> - build <span id="build"></span><br/>
-	(c) 2016 CCDirectLink<br/>
+	&#169; 2016 CCDirectLink<br/>
 	Released under MIT License
-</center>
+</center><br/>
 Loaded games:
 <div class="elementcontainer" id="loadedGame">
 (no games)
 </div><br />
-Cached games:
-<div class="elementcontainer" id="cachedGame">
+Stored game data:
+<div class="elementcontainer" id="storedGame">
 (no games)
 </div>
