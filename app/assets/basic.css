@@ -79,6 +79,16 @@ div {
   overflow-y: auto;
 }
 
+/* Covers all icons used in the item viewer */
+img.item-entry-icon {
+    vertical-align: middle;
+    margin: 1.5px 0px;
+}
+
+span.item-entry-text {
+    vertical-align: middle;
+}
+
 table {
   border: 1px solid;
   border-collapse: collapse;
