@@ -2,7 +2,7 @@
   "name": "sperical-viewer",
   "version": "0.2.0",
   "description": "Viewer for CrossCode content",
-  "main": "svControl/main.js",
+  "main": "app/main.js",
   "author": "CCDirectLink",
   "license": "MIT",
   "postinstall": "install-app-deps",
