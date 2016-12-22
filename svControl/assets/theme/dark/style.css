@@ -1,0 +1,75 @@
+#headbar {
+  background-color: #2c3133;
+  color: #ffffff;
+  border-color: #1f2224;
+}
+
+.universe {
+  background-color: #3d4447;
+  color: #ffffff;
+}
+
+.menu {
+  background-color: #303638;
+  color: white;
+  border-color: #1f2224;
+}
+
+.selmenuentry {
+  background-color: #303638;
+  color: white;
+}
+
+.menuentry a {
+  background-color: #303638;
+  color: white;
+}
+
+.menuentryDisabled {
+    background-color: #303638;
+    color: gray;
+}
+
+.menuentry a:hover {
+    background-color: #3d4447;
+    color: white;
+}
+
+.menuentrySelected {
+    background-color: #3d4447;
+    color: lightgreen;
+}
+
+::-webkit-scrollbar {
+        background-color: #3d4447;
+}
+
+::-webkit-scrollbar-thumb:window-inactive,
+::-webkit-scrollbar-thumb {
+        background:  lightgray;
+}
+
+.entrycontainer {
+  border-color: #1f2224;  
+}
+
+table {
+  border-color: #1f2224;
+}
+
+table th {
+  background-color: #303638;
+  border-color: #1f2224;
+}
+
+table td {
+  border-color: #1f2224;
+}
+
+table tr:nth-child(odd){ 
+  background-color: #3d4447;
+}
+
+table tr:nth-child(even){ 
+  background-color: #353b3e;
+}

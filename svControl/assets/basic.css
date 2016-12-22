@@ -1,0 +1,108 @@
+html {
+  height: 100%;
+}
+
+.titlebar {
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+}
+
+.universe {
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+  font-family: "Helvetica Neue",
+  "Helvetica",
+  "Segoe UI",
+  "Open Sans",
+  "Liberation Sans",
+  "Arial",
+  "sans-serif";
+}
+
+div {
+  border: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.space {
+  height: 100%;
+}
+
+#headbar {
+  height: 20px;
+  padding-top: 5px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid;
+  text-align: center;
+}
+
+.content {
+  height: calc(100% - 29px);
+  overflow: hidden !important;
+}
+
+.menu {
+  height: 100%;
+  width: 150px;
+  float:left;
+  border-right: 1px solid;
+}
+
+#menulist {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menuentry a, .menuentrySelected a, .menuentryDisabled a {
+    display: block;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+.entrycontainer {
+  height: calc(100% - 10px);
+  margin-left: 155px;
+  padding: 5px;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  border-left: 1px solid;
+}
+
+.elementcontainer {
+  padding-top: 5px;
+}
+
+.entrycontainer:hover {
+  overflow-y: auto;
+}
+
+table {
+  border: 1px solid;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+table th {
+  border: 1px solid;
+  padding: 5px;
+}
+
+table td {
+  border: 1px solid;
+  padding: 5px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+}

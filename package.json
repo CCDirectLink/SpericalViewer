@@ -1,0 +1,46 @@
+{
+  "name": "sperical-viewer",
+  "version": "0.2.0",
+  "description": "Viewer for CrossCode content",
+  "main": "svControl/main.js",
+  "author": "CCDirectLink",
+  "license": "MIT",
+  "postinstall": "install-app-deps",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "rebuild": "npm rebuild --runtime=electron --target=1.4.12 --disturl=https://atom.io/download/atom-shell --abi=51",
+    "pack": "build --dir",
+    "pack:all": "build --dir --mac --win --linux",
+    "pack:mac": "build --dir --mac",
+    "pack:win": "build --dir --win",
+    "pack:linux": "build --dir --linux",
+    "dist": "build",
+    "dist:all": "build --mac --win --linux"
+  },
+  "build": {
+    "appId": "ccdirectlink.sperical-viewer",
+    "mac": {
+      "category": "service"
+    },
+    "dmg": {
+      "title": "SpericalViewer"
+    },
+    "win": {
+      "title": "SpericalViewer",
+      "version": "0.2.0",
+      "noMsi": true,
+      "authors": "CCDirectLink"
+    }
+  },
+  "devDependencies": {
+    "electron-builder": "^10.8.1",
+    "electron-packager": "^4.2.0",
+    "electron-prebuilt": "^1.4.12",
+    "electron-rebuild": "^1.4.0"
+  },
+  "dependencies": {
+    "lwip": "0.0.9",
+    "unzip2": "^0.2.5"
+  }
+}

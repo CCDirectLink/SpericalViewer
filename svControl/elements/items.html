@@ -1,0 +1,58 @@
+<script type="text/javascript">
+	$.getScript("js/itemViewer.js", function( data, textStatus, jqxhr ) {
+
+		$.getScript("js/versioner.js", function( data, textStatus, jqxhr ) {
+
+			$(function(){
+
+				if ((typeof moduleMemory['items'] == "undefined") || (typeof moduleMemory['items']['itemViewer'] == "undefined"))
+				{
+					if (typeof moduleMemory['items'] == "undefined") moduleMemory['items'] = Object();
+					moduleMemory['items']['itemViewer'] = new itemViewer();
+				}
+
+				if ((typeof moduleMemory['items'] == "undefined") || (typeof moduleMemory['items']['selectedVersion'] == "undefined"))
+				{
+					if (typeof moduleMemory['items'] == "undefined") moduleMemory['items'] = Object();
+					moduleMemory['items']['selectedVersion'] = gameData.idArray[0];
+				}
+
+				if ((typeof moduleMemory['items'] == "undefined") || (typeof moduleMemory['items']['versioner'] == "undefined"))
+				{
+					if (typeof moduleMemory['items'] == "undefined") moduleMemory['items'] = Object();
+					moduleMemory['items']['versioner'] = new versioner();
+				}
+
+				if ((typeof moduleMemory['items'] == "undefined") || (typeof moduleMemory['items']['versionTrigger'] == "undefined"))
+				{
+					if (typeof moduleMemory['items'] == "undefined") moduleMemory['items'] = Object();
+					moduleMemory['items']['versionTrigger'] = function()
+					{
+						moduleMemory['items']['selectedVersion'] = $( "#versionList" )[0].options[$( "#versionList" )[0].selectedIndex].value;
+						$( "#itemData").html("<table>" + moduleMemory['items']['itemViewer'].getTable(moduleMemory['items']['selectedVersion']) + "</table>");
+					}
+				}
+
+				if (!gameData.hasGame(moduleMemory['items']['selectedVersion']))
+				{
+					moduleMemory['items']['selectedVersion'] = gameData.idArray[0];
+				}
+
+				// init versions
+				$( "#versionList").html(moduleMemory['items']['versioner'].getList(moduleMemory['items']['selectedVersion']));
+
+				// init table
+				$( "#itemData").html("<table>" + moduleMemory['items']['itemViewer'].getTable(moduleMemory['items']['selectedVersion']) + "</table>");
+
+			});
+
+		});
+
+	});
+</script>
+<h1>Items</h1>
+Version:
+<select name="version" id="versionList" onchange="moduleMemory['items']['versionTrigger']()" size="1">
+</select>
+<div class="elementcontainer" id="itemData">
+</div>
