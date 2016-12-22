@@ -9,8 +9,8 @@ function itemViewer()
 		for (var itemIndex in gameData.gameArray[entry].items)
 		{
 			tableString += "<tr><td>" + itemIndex + "</td><td>";
-			tableString += "<img src='" + imageData.getImage("items", gameData.gameArray[entry].items[itemIndex].icon + gameData.gameArray[entry].items[itemIndex].rarity) + "'/> ";
-			tableString += gameData.gameArray[entry].items[itemIndex].name.en_US + "</td><td>";
+			tableString += "<img class='item-entry-icon' src='" + imageData.getImage("items", gameData.gameArray[entry].items[itemIndex].icon + gameData.gameArray[entry].items[itemIndex].rarity) + "'/> ";
+			tableString += "<span class='item-entry-text'>" + gameData.gameArray[entry].items[itemIndex].name.en_US + "</td><td>";
 			if (typeof gameData.gameArray[entry].items[itemIndex].params != "undefined")
 			{
 
@@ -18,26 +18,26 @@ function itemViewer()
 
 				if (typeof gameData.gameArray[entry].items[itemIndex].params.hp != "undefined")
 				{
-					tableString += "<img src='" + imageData.getImage("items", "hp") + "'/> " + gameData.gameArray[entry].items[itemIndex].params.hp;
+					tableString += "<img class='item-entry-icon' src='" + imageData.getImage("items", "hp") + "'/> <span class='item-entry-text'>" + gameData.gameArray[entry].items[itemIndex].params.hp + "</span>";
 					first = false;
 				}
 				if (typeof gameData.gameArray[entry].items[itemIndex].params.attack != "undefined")
 				{
 					if (!first) tableString += "<br />";
 					first = false;
-					tableString += "<img src='" + imageData.getImage("items", "attack") + "'/> " + gameData.gameArray[entry].items[itemIndex].params.attack;
+					tableString += "<img class='item-entry-icon' src='" + imageData.getImage("items", "attack") + "'/> <span class='item-entry-text'>" + gameData.gameArray[entry].items[itemIndex].params.attack + "</span>";
 				}
 				if (typeof gameData.gameArray[entry].items[itemIndex].params.defense != "undefined")
 				{
 					if (!first) tableString += "<br />";
 					first = false;
-					tableString += "<img src='" + imageData.getImage("items", "defense") + "'/> " + gameData.gameArray[entry].items[itemIndex].params.defense;
+					tableString += "<img class='item-entry-icon' src='" + imageData.getImage("items", "defense") + "'/> <span class='item-entry-text'>" + gameData.gameArray[entry].items[itemIndex].params.defense + "</span>";
 				}
 				if (typeof gameData.gameArray[entry].items[itemIndex].params.focus != "undefined")
 				{
 					if (!first) tableString += "<br />";
 					first = false;
-					tableString += "<img src='" + imageData.getImage("items", "focus") + "'/> " + gameData.gameArray[entry].items[itemIndex].params.focus;
+					tableString += "<img class='item-entry-icon' src='" + imageData.getImage("items", "focus") + "'/> <span class='item-entry-text'>" + gameData.gameArray[entry].items[itemIndex].params.focus + "</span>";
 				}
 			}
 			tableString += "</td></tr>";
