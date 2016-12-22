@@ -1,0 +1,37 @@
+{
+	"langId": "de",
+	"langIdSub": "de",
+
+	"langName": "Deutsch",
+	"langNameSub": null,
+
+	"content":
+	{
+		"status": "Status",
+		"license": "Veröffentlicht unter MIT Lizenz",
+		"loadedGames": "Geladene spiele",
+		"storedGameData": "Gespeicherte spieledaten",
+		"noGames": "(keine spiele)",
+		"id": "Id",
+		"version": "Version",
+		"cacheSize": "Cachegröße",
+		"close": "schließen",
+
+		"savegames": "Spielstand",
+
+		"items": "Objekte",
+
+		"item": "Objekt",
+		"stats": "Status",
+
+		"botanic": "Botanik",
+		"enemies": "Gegner",
+		"rawData": "Rohdaten",
+
+		"settings": "Einstellungen",
+		"theme": "Thema",
+		"lang": "Sprache",
+		"environment": "Umgebung",
+		"storage": "Speicher"
+	}
+}

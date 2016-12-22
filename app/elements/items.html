@@ -1,7 +1,12 @@
 <script type="text/javascript">
+
 	$.getScript("js/items/list.js", function( data, textStatus, jqxhr ) {
 
 		$(function(){
+
+			// lang
+			$( "h1" ).html(langData.getEntry("items"));
+			$( "#versionSelect" ).html(langData.getEntry("version"));
 
 			if ((typeof moduleMemory['items'] == "undefined") || (typeof moduleMemory['items']['itemViewer'] == "undefined"))
 			{
@@ -46,8 +51,8 @@
 
 	});
 </script>
-<h1>Items</h1>
-Version:
+<h1></h1>
+<span id="versionSelect"></span>:
 <select name="version" id="versionList" onchange="moduleMemory['items']['versionTrigger']()" size="1">
 </select>
 <div class="elementcontainer" id="itemData">

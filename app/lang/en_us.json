@@ -1,0 +1,37 @@
+{
+	"langId": "en",
+	"langIdSub": "us",
+
+	"langName": "English",
+	"langNameSub": "US",
+
+	"content":
+	{
+		"status": "Status",
+		"license": "Released under MIT License",
+		"loadedGames": "Loaded games",
+		"storedGameData": "Stored game data",
+		"noGames": "(no games)",
+		"id": "Id",
+		"version": "Version",
+		"cacheSize": "Cache Size",
+		"close": "close",
+
+		"savegames": "Savegames",
+
+		"items": "Items",
+
+		"item": "Item",
+		"stats": "Stats",
+
+		"botanic": "Botanic",
+		"enemies": "Enemies",
+		"rawData": "Raw data",
+
+		"settings": "Settings",
+		"theme": "Theme",
+		"lang": "Language",
+		"environment": "Environment",
+		"storage": "Storage"
+	}
+}

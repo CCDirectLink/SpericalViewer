@@ -25,19 +25,19 @@ function menuMode(mode)
 		case 0:
 
 			// --
-			globalMenu.add("Status", null, "elements/status.html", true);
+			globalMenu.add(langData.getEntry("status"), null, "elements/status.html", true);
 
 			// --
-			globalMenu.add("Items", null, "elements/items.html", gameData.hasGame());
-			globalMenu.add("Savegames", null, null, false);//gameData.hasGame());
-			globalMenu.add("Botanic", null, null, false);//gameData.hasGame());
-			globalMenu.add("Enemies", null, null, false);//gameData.hasGame());
+			globalMenu.add(langData.getEntry("items"), null, "elements/items.html", gameData.hasGame());
+			globalMenu.add(langData.getEntry("savegames"), null, null, false);//gameData.hasGame());
+			globalMenu.add(langData.getEntry("botanic"), null, null, false);//gameData.hasGame());
+			globalMenu.add(langData.getEntry("enemies"), null, null, false);//gameData.hasGame());
 
 			// --
-			globalMenu.add("Raw data ...", rawDataCall, null, false);//gameData.hasGame());
+			globalMenu.add(langData.getEntry("rawData") + " ...", rawDataCall, null, false);//gameData.hasGame());
 
 			// --
-			globalMenu.add("Settings", null, "elements/settings.html", true);
+			globalMenu.add(langData.getEntry("settings"), null, "elements/settings.html", true);
 			break;
 
 		case 1:

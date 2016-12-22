@@ -1,19 +1,56 @@
 <script type="text/javascript">
 
-	$(function(){
+	$.getScript("js/settings/langList.js", function( data, textStatus, jqxhr ) {
 
-		// container dir
-		$( "#containerDir").html("Storage:" + envPath.storage);
+		$(function(){
+
+			// container dir
+			$( "#containerDir").html(langData.getEntry("storage") + ": " + envPath.storage);
+
+			$( "h1" ).html(langData.getEntry("settings"));
+			$( ".themeTitle" ).html(langData.getEntry("theme"));
+			$( ".langTitle" ).html(langData.getEntry("lang"));
+			$( ".environment" ).html(langData.getEntry("environment"));
+
+			if ((typeof moduleMemory['settings'] == "undefined") || (typeof moduleMemory['settings']['langList'] == "undefined"))
+			{
+				if (typeof moduleMemory['settings'] == "undefined") moduleMemory['settings'] = Object();
+				moduleMemory['settings']['langList'] = new langList();
+			}
+
+			if ((typeof moduleMemory['settings'] == "undefined") || (typeof moduleMemory['settings']['selectedLang'] == "undefined"))
+			{
+				if (typeof moduleMemory['settings'] == "undefined") moduleMemory['settings'] = Object();
+				moduleMemory['settings']['selectedLang'] = "en_us";
+			}
+
+			if ((typeof moduleMemory['settings'] == "undefined") || (typeof moduleMemory['settings']['langTrigger'] == "undefined"))
+			{
+				if (typeof moduleMemory['settings'] == "undefined") moduleMemory['settings'] = Object();
+				moduleMemory['settings']['langTrigger'] = function()
+				{
+					moduleMemory['settings']['selectedLang'] = $( "#langList" )[0].options[$( "#langList" )[0].selectedIndex].value;
+					var selectedLangArray = moduleMemory['settings']['selectedLang'].split("_");
+					langData.setLang(selectedLangArray[0], selectedLangArray[1]);
+					updateMenu();
+				}
+			}
+
+			$( "#langList" ).html(moduleMemory['settings']['langList'].getTable(moduleMemory['settings']['selectedLang']))
+
+		});
 
 	});
 
 </script>
-<h1>Settings</h1>
+<h1></h1>
 <div id="setTheme">
-Theme:
+<span class="themeTitle"></span>:
 <select name="theme" size="1">
   <option value="1" selected>Dark</option>
-</select>
+</select><br />
+<span class="langTitle"></span>:
+<select name="lang" id="langList" size="1" onchange="moduleMemory['settings']['langTrigger']()"></select>
 </div>
-Environment:
+<span class="environment"></span>:
 <div id="containerDir"></div>

@@ -2,7 +2,7 @@ function itemViewer()
 {
 	this.getTable = function(entry)
 	{
-		var tableString = "<tr><th>Id</th><th>Item</th><th>Stats</th></tr>";
+		var tableString = "<tr><th>" + langData.getEntry("id") + "</th><th>" + langData.getEntry("item") + "</th><th>" + langData.getEntry("stats") + "</th></tr>";
 
 		if ((typeof gameData.gameArray[entry] == "undefined") || (gameData.gameArray[entry] == null) || (typeof gameData.gameArray[entry].items == "undefined") || (gameData.gameArray[entry].items == null)) return tableString;
 

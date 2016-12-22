@@ -4,6 +4,12 @@
 
 		$(function(){
 
+			// lang
+			$( "#license" ).html(langData.getEntry("license"));
+			$( "#loadedGameTitle" ).html(langData.getEntry("loadedGames"));
+			$( "#storedGameTitle" ).html(langData.getEntry("storedGameData"));
+
+
 			if ((typeof moduleMemory['status'] == "undefined") || (typeof moduleMemory['status']['gameStorageController'] == "undefined"))
 			{
 				if (typeof moduleMemory['status'] == "undefined") moduleMemory['status'] = Object();
@@ -23,6 +29,7 @@
 
 			// init table
 			$( "#loadedGame").html("<table>" + moduleMemory['status']['statusList'].getTable() + "</table>");
+			$( "#storedGame").html(langData.getEntry("noGames"));
 
 			// register callback
 			if ((typeof moduleMemory['status'] == "undefined") || (typeof moduleMemory['status']['callbackRegistered'] == "undefined"))
@@ -63,13 +70,11 @@
 	<h1>SpericalViewer</h1>
 	<span id="version"></span> - build <span id="build"></span><br/>
 	&#169; 2016 CCDirectLink<br/>
-	Released under MIT License
+	<span id="license"></span>
 </center><br/>
-Loaded games:
+<span id="loadedGameTitle"></span>:
 <div class="elementcontainer" id="loadedGame">
-(no games)
 </div><br />
-Stored game data:
+<span id="storedGameTitle"></span>:
 <div class="elementcontainer" id="storedGame">
-(no games)
 </div>
