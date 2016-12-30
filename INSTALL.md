@@ -23,5 +23,6 @@
 1.  Install Node.js and Electron
 2.  Use the terminal and Navigate to the project directory
 3.  use `npm install` to install all required dependencies
-4.  test the application with `npm start` (if an abi error occur use `npm run rebuild`)
-5.  build the unpacked version with `npm run pack` or the distribution version with `npm run dist`
+4.  run genVersion (.bat if you use Windows or the file without extension on Linux and Mac OS)
+5.  test the application with `npm start` (if an abi error occur use `npm run rebuild`)
+6.  build the unpacked version with `npm run pack` or the distribution version with `npm run dist`
