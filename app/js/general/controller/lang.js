@@ -38,7 +38,7 @@ function languageController()
 		if (this.extern)
 		{
 
-			fs.readFile(langData.dir + envPath.seperator + langId + "_" + langIdSub + ".json", function (err, data) {
+			fs.readFile(langData.dir + spo.env.path.seperator + langId + "_" + langIdSub + ".json", function (err, data) {
 
 				if (typeof data == 'undefined') return;
 				var langJson = JSON.parse(data);
@@ -65,9 +65,9 @@ function languageController()
 		else
 		{
 
-			console.log("load lang: " + langData.dir + envPath.seperator + langId + "_" + langIdSub + ".json");
+			console.log("load lang: " + langData.dir + spo.env.path.seperator + langId + "_" + langIdSub + ".json");
 
-			$.getJSON(langData.dir + envPath.seperator + langId + "_" + langIdSub + ".json", function( data ) {
+			$.getJSON(langData.dir + spo.env.path.seperator + langId + "_" + langIdSub + ".json", function( data ) {
 
 				if (typeof data['langId'] == "undefined") return null;
 				if (data['langId'] != langId) return null;

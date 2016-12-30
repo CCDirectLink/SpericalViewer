@@ -110,7 +110,7 @@ function menuController(element, entryContainer, callback)
       {
         className = "menuentryDisabled";
       }
-      $( this.menuElement ).append("<li class=\"" + className + "\"><a class=\"menuelement\" id=\"" + entry + "\" onclick=\"globalMenu.select(" + entry + ")\">" + registeredEntrys[entry].name + "</a></li>")
+      $( this.menuElement ).append("<li class=\"" + className + "\"><a class=\"menuelement\" id=\"" + entry + "\" onclick=\"spo.globalMenu.select(" + entry + ")\">" + registeredEntrys[entry].name + "</a></li>")
     }
     
   }

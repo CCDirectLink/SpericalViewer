@@ -3,7 +3,7 @@ function langList()
 	this.getTable = function(currentId) {
 
 		var langString = "";
-		var langArray = langData.getList();
+		var langArray = spo.langData.getList();
 
 		for(var langId in langArray)
 		{

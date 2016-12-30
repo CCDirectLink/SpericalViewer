@@ -1,19 +1,19 @@
 
-var globalMenu = new menuController();
-var gameData = new gameDataController();
-var moduleMemory = new memoryController();
-var imageData = new imageController();
-var langData = new languageController();
+spo.globalMenu = new menuController();
+spo.gameData = new gameDataController();
+spo.moduleMemory = new memoryController();
+spo.imageData = new imageController();
+spo.langData = new languageController();
 
-langData.loadAll(function(){
-	langData.setLang("en", "us");
+spo.langData.loadAll(function(){
+	spo.langData.setLang("en", "us");
 });
 
 $(function(){
 
-  console.log("basic logic - " + envVersion);
+  console.log("basic logic - " + spo.env.version.string);
 
-  globalMenu.menuElement = $( "#menulist" )[0];
-  globalMenu.entryElement = $( ".entrycontainer" )[0];
+  spo.globalMenu.menuElement = $( "#menulist" )[0];
+  spo.globalMenu.entryElement = $( ".entrycontainer" )[0];
 
 });

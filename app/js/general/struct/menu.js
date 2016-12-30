@@ -4,53 +4,53 @@ $(function(){
 
 	currentMenuMode = 0;
 	menuMode(0);
-	globalMenu.select(0);
+	spo.globalMenu.select(0);
 
 });
 
 function updateMenu()
 {
-	var curentEntry = globalMenu.getSelect();
+	var curentEntry = spo.globalMenu.getSelect();
 	menuMode(currentMenuMode);
-	globalMenu.select(curentEntry);
+	spo.globalMenu.select(curentEntry);
 }
 
 function menuMode(mode)
 {
 
-	globalMenu.clear();
+	spo.globalMenu.clear();
 
 	switch (mode)
 	{
 		case 0:
 
 			// --
-			globalMenu.add(langData.getEntry("status"), null, "elements/status.html", true);
+			spo.globalMenu.add(spo.langData.getEntry("status"), null, "elements/status.html", true);
 
 			// --
-			globalMenu.add(langData.getEntry("items"), null, "elements/items.html", gameData.hasGame());
-			globalMenu.add(langData.getEntry("savegames"), null, null, false);//gameData.hasGame());
-			globalMenu.add(langData.getEntry("botanic"), null, null, false);//gameData.hasGame());
-			globalMenu.add(langData.getEntry("enemies"), null, null, false);//gameData.hasGame());
+			spo.globalMenu.add(spo.langData.getEntry("items"), null, "elements/items.html", spo.gameData.hasGame());
+			spo.globalMenu.add(spo.langData.getEntry("savegames"), null, null, false);//spo.gameData.hasGame());
+			spo.globalMenu.add(spo.langData.getEntry("botanic"), null, null, false);//spo.gameData.hasGame());
+			spo.globalMenu.add(spo.langData.getEntry("enemies"), null, null, false);//spo.gameData.hasGame());
 
 			// --
-			globalMenu.add(langData.getEntry("rawData") + " ...", rawDataCall, null, false);//gameData.hasGame());
+			spo.globalMenu.add(spo.langData.getEntry("rawData") + " ...", rawDataCall, null, false);//spo.gameData.hasGame());
 
 			// --
-			globalMenu.add(langData.getEntry("settings"), null, "elements/settings.html", true);
+			spo.globalMenu.add(spo.langData.getEntry("settings"), null, "elements/settings.html", true);
 			break;
 
 		case 1:
 
 			// --
-			globalMenu.add("..", rawDataBackCall, null, true);
+			spo.globalMenu.add("..", rawDataBackCall, null, true);
 
 			// --
-			globalMenu.add("test", null, "elements/test.html", true);
+			spo.globalMenu.add("test", null, "elements/test.html", true);
 			break;
 	}
 
-	globalMenu.updateAll();
+	spo.globalMenu.updateAll();
 
 }
 
@@ -68,7 +68,7 @@ function rawDataBackCall(id)
 
 
 $(function(){
-	gameData.registerCallback(function(data, entry, identifier, controller){
+	spo.gameData.registerCallback(function(data, entry, identifier, controller){
 		if ((data == null) && (!controller.hasGame()))
 		{
 			updateMenu();

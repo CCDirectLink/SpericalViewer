@@ -5,59 +5,59 @@
 		$(function(){
 
 			// lang
-			$( "#license" ).html(langData.getEntry("license"));
-			$( "#loadedGameTitle" ).html(langData.getEntry("loadedGames"));
-			$( "#storedGameTitle" ).html(langData.getEntry("storedGameData"));
+			$( "#license" ).html(spo.langData.getEntry("license"));
+			$( "#loadedGameTitle" ).html(spo.langData.getEntry("loadedGames"));
+			$( "#storedGameTitle" ).html(spo.langData.getEntry("storedGameData"));
 
 
-			if ((typeof moduleMemory['status'] == "undefined") || (typeof moduleMemory['status']['gameStorageController'] == "undefined"))
+			if ((typeof spo.moduleMemory['status'] == "undefined") || (typeof spo.moduleMemory['status']['gameStorageController'] == "undefined"))
 			{
-				if (typeof moduleMemory['status'] == "undefined") moduleMemory['status'] = Object();
-				moduleMemory['status']['gameStorageController'] = new gameStorageController();
+				if (typeof spo.moduleMemory['status'] == "undefined") spo.moduleMemory['status'] = Object();
+				spo.moduleMemory['status']['gameStorageController'] = new gameStorageController();
 			}
 			
-			if ((typeof moduleMemory['status'] == "undefined") || (typeof moduleMemory['status']['statusList'] == "undefined"))
+			if ((typeof spo.moduleMemory['status'] == "undefined") || (typeof spo.moduleMemory['status']['statusList'] == "undefined"))
 			{
-				if (typeof moduleMemory['status'] == "undefined") moduleMemory['status'] = Object();
-				moduleMemory['status']['statusList'] = new statusList();
+				if (typeof spo.moduleMemory['status'] == "undefined") spo.moduleMemory['status'] = Object();
+				spo.moduleMemory['status']['statusList'] = new statusList();
 			}
 			//moduleMemory['status']['gameStorageController'].cacheData;
 
 			// init programm data
-			$( "#version").html(envVersion);
-			$( "#build").html(envBuild);
+			$( "#version").html(spo.env.version.string);
+			$( "#build").html(spo.env.version.build);
 
 			// init table
-			$( "#loadedGame").html("<table>" + moduleMemory['status']['statusList'].getTable() + "</table>");
-			$( "#storedGame").html(langData.getEntry("noGames"));
+			$( "#loadedGame").html("<table>" + spo.moduleMemory['status']['statusList'].getTable() + "</table>");
+			$( "#storedGame").html(spo.langData.getEntry("noGames"));
 
 			// register callback
-			if ((typeof moduleMemory['status'] == "undefined") || (typeof moduleMemory['status']['callbackRegistered'] == "undefined"))
+			if ((typeof spo.moduleMemory['status'] == "undefined") || (typeof spo.moduleMemory['status']['callbackRegistered'] == "undefined"))
 			{
-				if (typeof moduleMemory['status'] == "undefined") moduleMemory['status'] = Object();
+				if (typeof spo.moduleMemory['status'] == "undefined") spo.moduleMemory['status'] = Object();
 
-				gameData.registerCallback(function(data, entry)
+				spo.gameData.registerCallback(function(data, entry)
 				{
 					if (data == null)
 					{
-						for (var statusIndex in moduleMemory['status']['statusList'].statusArray)
+						for (var statusIndex in spo.moduleMemory['status']['statusList'].statusArray)
 	      				{
-	      					if (moduleMemory['status']['statusList'].statusArray[statusIndex].id == entry)
+	      					if (spo.moduleMemory['status']['statusList'].statusArray[statusIndex].id == entry)
 	      					{
-	      						moduleMemory['status']['statusList'].statusArray.splice(statusIndex, 1);
+	      						spo.moduleMemory['status']['statusList'].statusArray.splice(statusIndex, 1);
 	      					}
 						}
 					}
 					else
 					{
-						moduleMemory['status']['statusList'].statusArray.push({id: data.shortId, version: data.version.string, size: "0 kiB"});
+						spo.moduleMemory['status']['statusList'].statusArray.push({id: data.shortId, version: data.version.string, size: "0 kiB"});
 					}
 
-					$( "#loadedGame").html("<table>" + moduleMemory['status']['statusList'].getTable() + "</table>");
+					$( "#loadedGame").html("<table>" + spo.moduleMemory['status']['statusList'].getTable() + "</table>");
 
 				}, {identifier: [{param: "version"}, {param: "shortId"}]});
 
-				moduleMemory['status']['callbackRegistered'] = true;
+				spo.moduleMemory['status']['callbackRegistered'] = true;
 
 			}
 

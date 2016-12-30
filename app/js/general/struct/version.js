@@ -6,10 +6,10 @@ function versioner()
 
 		var selectorString = "";
 
-		for(var versionIndex in gameData.idArray)
+		for(var versionIndex in spo.gameData.idArray)
 		{
-			var gameId = gameData.idArray[versionIndex];
-			var entryName = gameId + " - " + gameData.gameArray[gameId].version.string;
+			var gameId = spo.gameData.idArray[versionIndex];
+			var entryName = gameId + " - " + spo.gameData.gameArray[gameId].version.string;
 			var selected = "";
 			if (currentId == gameId) selected = "selected";
 

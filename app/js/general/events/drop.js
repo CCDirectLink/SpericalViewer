@@ -42,7 +42,7 @@ function drop(ev) {
 			var containerIdHex = containerId.digest('hex');
 			containerIdHex = containerIdHex.substr(0,8);
 			var zipPath = fileEntry.path;
-			var unzipPath = envPath.storage + envPath.seperator + containerIdHex + envPath.seperator;
+			var unzipPath = spo.env.path.storage + spo.env.path.seperator + containerIdHex + spo.env.path.seperator;
 
 			fs.stat(unzipPath, function(err, stat) {
 
@@ -85,7 +85,7 @@ function drop(ev) {
 			var containerIdHex = containerId.digest('hex');
 			containerIdHex = containerIdHex.substr(0,8);
 			var zipPath = fileEntry.path;
-			var unzipPath = envPath.storage + envPath.seperator + containerIdHex + envPath.seperator;
+			var unzipPath = spo.env.path.storage + spo.env.path.seperator + containerIdHex + spo.env.path.seperator;
 
 			fs.stat(unzipPath, function(err, stat) {
 
