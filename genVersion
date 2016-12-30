@@ -1,0 +1,41 @@
+#!/bin/bash
+# get git data
+
+# current location
+bashdir="$(dirname -- "$0")"
+cd "$bashdir"
+
+netModRev=$(git log --oneline | wc -l | sed 's/^ *//')
+netModDesc=$(git describe --tags --long)
+netModV=${netModDesc%%-*}
+netModHash=${netModDesc##*-}
+netModHashL=$(git rev-parse HEAD)
+
+netModDateDay=$(git log -1 --date=format:'%d' --pretty=format:%cd)
+netModDateMonth=$(git log -1 --date=format:'%m' --pretty=format:%cd)
+netModDateYear=$(git log -1 --date=format:'%Y' --pretty=format:%cd)
+
+echo "SpericalViewer ${netModV} - rev ${netModRev}"
+echo "${netModHashL} from ${netModDateYear}-${netModDateMonth}-${netModDateDay}"
+
+# JSON VERSION
+
+genFolder="app/version"
+templateFolder="templates"
+versionFile="versions.json"
+
+# make
+mkdir -p "${genFolder}"
+
+# replace
+\cp -f "${templateFolder}/${versionFile}" "${genFolder}/${versionFile}"
+
+# include data
+sed -i -- 's,_$_GIT_REV_PLACEHOLDER_$_,'"${netModRev}"',g' "${genFolder}/${versionFile}"
+sed -i -- 's,_$_GIT_DATE_DAY_PLACEHOLDER_$_,'"${netModDateDay}"',g' "${genFolder}/${versionFile}"
+sed -i -- 's,_$_GIT_DATE_MONTH_PLACEHOLDER_$_,'"${netModDateMonth}"',g' "${genFolder}/${versionFile}"
+sed -i -- 's,_$_GIT_DATE_YEAR_PLACEHOLDER_$_,'"${netModDateYear}"',g' "${genFolder}/${versionFile}"
+sed -i -- 's,_$_GIT_HASH_PLACEHOLDER_$_,\"'"${netModHash}"'\",g' "${genFolder}/${versionFile}"
+sed -i -- 's,_$_GIT_HASH_LONG_PLACEHOLDER_$_,\"'"${netModHashL}"'\",g' "${genFolder}/${versionFile}"
+sed -i -- 's,_$_GIT_VER_PLACEHOLDER_$_,\"'"${netModV}"'\",g' "${genFolder}/${versionFile}"
+rm "${genFolder}/${versionFile}--"

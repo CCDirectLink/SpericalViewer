@@ -24,8 +24,11 @@
 			//moduleMemory['status']['gameStorageController'].cacheData;
 
 			// init programm data
+			$( "h1").html(spo.env.name);
 			$( "#version").html(spo.env.version.string);
-			$( "#build").html(spo.env.version.build);
+
+			$( "#rev").html(spo.env.version.rev);
+			$( "#year").html(spo.env.build.date.year);
 
 			// init table
 			$( "#loadedGame").html("<table>" + spo.moduleMemory['status']['statusList'].getTable() + "</table>");
@@ -67,9 +70,9 @@
 
 </script>
 <center>
-	<h1>SpericalViewer</h1>
-	<span id="version"></span> - build <span id="build"></span><br/>
-	&#169; 2016 CCDirectLink<br/>
+	<h1></h1>
+	<span id="version"></span> - rev <span id="rev"></span><br/>
+	&#169; <span id="year"></span> CCDirectLink<br/>
 	<span id="license"></span>
 </center><br/>
 <span id="loadedGameTitle"></span>:

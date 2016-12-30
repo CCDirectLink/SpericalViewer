@@ -23,34 +23,57 @@
     <script type="text/javascript">const lwip = require('lwip');</script>
 
     <!-- added modules -->
+    <script type="text/javascript">
+        var spo = Object();
+        spo.initCallback = function(){
+
+            $(function(){
+                $( "title" ).html(spo.env.name);
+                $( ".titlebar" ).html(spo.env.name);
+            });
+
+            $.getScript("js/general/controller/game.js", function( data, textStatus, jqxhr ) {
+                $.getScript("js/general/controller/image.js", function( data, textStatus, jqxhr ) {
+                    $.getScript("js/general/controller/memory.js", function( data, textStatus, jqxhr ) {
+                        $.getScript("js/general/controller/menu.js", function( data, textStatus, jqxhr ) {
+                            $.getScript("js/general/controller/storage.js", function( data, textStatus, jqxhr ) {
+                                $.getScript("js/general/controller/lang.js", function( data, textStatus, jqxhr ) {
+                                    // basic
+                                    $.getScript("js/general/basic/basic.js", function( data, textStatus, jqxhr ) {
+                                        // menu
+                                        $.getScript("js/general/struct/menu.js", function( data, textStatus, jqxhr ) {
+                                            $.getScript("js/general/struct/version.js", function( data, textStatus, jqxhr ) {
+                                                // grab
+                                                $.getScript("js/general/service/containerBeginExec.js", function( data, textStatus, jqxhr ) {
+                                                    $.getScript("js/general/service/gameGrabber.js", function( data, textStatus, jqxhr ) {
+                                                        // drop
+                                                        $.getScript("js/general/events/drop.js", function( data, textStatus, jqxhr ) {});
+                                                    });
+                                                });
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+
+        };
+
+    </script>
     <script type="text/javascript" src="js/general/basic/env.js"></script>
-
-    <script type="text/javascript" src="js/general/controller/game.js"></script>
-    <script type="text/javascript" src="js/general/controller/image.js"></script>
-    <script type="text/javascript" src="js/general/controller/memory.js"></script>
-    <script type="text/javascript" src="js/general/controller/menu.js"></script>
-    <script type="text/javascript" src="js/general/controller/storage.js"></script>
-    <script type="text/javascript" src="js/general/controller/lang.js"></script>
-
-    <script type="text/javascript" src="js/general/basic/basic.js"></script>
-
-    <script type="text/javascript" src="js/general/struct/menu.js"></script>
-    <script type="text/javascript" src="js/general/struct/version.js"></script>
-
-    <script type="text/javascript" src="js/general/service/containerBeginExec.js"></script>
-    <script type="text/javascript" src="js/general/service/gameGrabber.js"></script>
-
-    <script type="text/javascript" src="js/general/events/drop.js"></script>
 
     <!-- basic html structure -->
     <link rel="icon" href="assets/ccdirectlink.png">
-    <title>SpericalViewer</title>
+    <title></title>
 
   </head>
   <body class="universe" ondrop="drop(event)" ondragover="allowDrop(event)">
 
     <div class="space">
-      <div class="titlebar" id="headbar">SpericalViewer</div>
+      <div class="titlebar" id="headbar"></div>
       <div class="content" id="servercontainer">
         <div class="menu" id="sidemenu">
           <ul id="menulist">
