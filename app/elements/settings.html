@@ -5,12 +5,13 @@
 		$(function(){
 
 			// container dir
-			$( "#containerDir").html(spo.langData.getEntry("storage") + ": " + spo.env.path.storage);
+			$( "#storageDir").html(spo.langData.getEntry("storage") + ": " + spo.env.path.storage);
+			$( "#savegameDir").html(spo.langData.getEntry("savegame") + ": " + spo.env.path.save.folder + spo.env.path.seperator + spo.env.path.save.file);
+			$( "#cacheDir").html(spo.langData.getEntry("cache") + ": " + spo.env.path.cache);
 
 			$( "h1" ).html(spo.langData.getEntry("settings"));
 			$( ".themeTitle" ).html(spo.langData.getEntry("theme"));
 			$( ".langTitle" ).html(spo.langData.getEntry("lang"));
-			$( ".environment" ).html(spo.langData.getEntry("environment"));
 
 			if ((typeof spo.moduleMemory['settings'] == "undefined") || (typeof spo.moduleMemory['settings']['langList'] == "undefined"))
 			{
@@ -52,5 +53,7 @@
 <span class="langTitle"></span>:
 <select name="lang" id="langList" size="1" onchange="spo.moduleMemory['settings']['langTrigger']()"></select>
 </div>
-<span class="environment"></span>:
-<div id="containerDir"></div>
+
+<p><div id="storageDir"></div></p>
+<p><div id="savegameDir"></div></p>
+<p><div id="cacheDir"></div></p>

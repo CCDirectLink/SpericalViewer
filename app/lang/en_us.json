@@ -31,7 +31,8 @@
 		"settings": "Settings",
 		"theme": "Theme",
 		"lang": "Language",
-		"environment": "Environment",
+		"savegame": "Savegame",
+		"cache": "Cache",
 		"storage": "Storage"
 	}
 }

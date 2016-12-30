@@ -31,7 +31,8 @@
 		"settings": "Einstellungen",
 		"theme": "Thema",
 		"lang": "Sprache",
-		"environment": "Umgebung",
+		"savegame": "Spielstand",
+		"cache": "Cache",
 		"storage": "Speicher"
 	}
 }

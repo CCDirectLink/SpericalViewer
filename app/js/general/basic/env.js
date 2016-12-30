@@ -8,6 +8,9 @@ if ((typeof spo == "undefined") || (spo == null))
 // read version data
 var _envTempVersionJson = $.getJSON('version/versions.json').done(function() {
 
+  // remote access
+  const {app} = require('electron').remote;
+
   var _envTempVersionVal = Object();
   var _envTempVersion = Object();
 
@@ -160,21 +163,23 @@ var _envTempVersionJson = $.getJSON('version/versions.json').done(function() {
   _envTemp.path.save.file = "cc.save";
   _envTemp.path.save.backupFile = "cc.save.backup";
 
+  _envTemp.path.cache = app.getPath('userData');
+
   if (process.platform == "darwin")
   {
-  	_envTemp.path.storage = process.env.HOME + "/Library/" + _envTemp.name;
+  	_envTemp.path.storage = process.env.HOME + "/Library/Application Support/" + _envTemp.name + "/GameStorage";
   	_envTemp.path.save.folder = process.env.HOME + "/Library/Application Support/CrossCode/" + "Default";
   	_envTemp.path.seperator = "/";
   }
   else if (process.platform == "win32")
   {
-  	_envTemp.path.storage = process.env.APPDATA + "\\" + _envTemp.name;
-  	_envTemp.path.save.folder = process.env.APPDATA + "\\CrossCode\\" + "Default";
+  	_envTemp.path.storage = process.env.LOCALAPPDATA + "\\" + _envTemp.name + "\\GameStorage";
+  	_envTemp.path.save.folder = process.env.LOCALAPPDATA + "\\CrossCode";
   	_envTemp.path.seperator = "\\";
   }
   else if (process.platform == "linux")
   {
-  	_envTemp.path.storage = process.env.HOME + "/" + _envTemp.name;
+  	_envTemp.path.storage = process.env.HOME + "/" + _envTemp.name + "/GameStorage";
   	_envTemp.path.save.folder = process.env.HOME + "/CrossCode/" + "Default";
   	_envTemp.path.seperator = "/";
   }
@@ -197,6 +202,8 @@ var _envTempVersionJson = $.getJSON('version/versions.json').done(function() {
   {
     spo.initCallback(spo);
   }
+
+  delete app;
 
   // ----------------
 
