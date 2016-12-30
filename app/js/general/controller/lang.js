@@ -106,13 +106,25 @@ function languageController()
 	this.getEntry = function(entryId)
 	{
 		if ((typeof langStore[this.selectedLang['id']] == "undefined") ||
-			(typeof langStore[this.selectedLang['id']][this.selectedLang['sub']] == "undefined"))
+			(typeof langStore[this.selectedLang['id']][this.selectedLang['sub']] == "undefined") ||
+			(langStore[this.selectedLang['id']] == null) ||
+			(langStore[this.selectedLang['id']][this.selectedLang['sub']] == null))
 		{
 			this.selectedLang = {id: null, sub: null};
 			return this.getDefaultEntry(entryId);
 		}
-		if (typeof langStore[this.selectedLang['id']][this.selectedLang['sub']]['content'] == "undefined") return this.getDefaultEntry(entryId);
-		if (typeof langStore[this.selectedLang['id']][this.selectedLang['sub']]['content'][entryId] == "undefined") return this.getDefaultEntry(entryId);
+		if ((typeof langStore[this.selectedLang['id']][this.selectedLang['sub']]['content'] == "undefined") ||
+			(langStore[this.selectedLang['id']][this.selectedLang['sub']]['content'] == null))
+		{
+			return this.getDefaultEntry(entryId);
+		}
+
+		if ((typeof langStore[this.selectedLang['id']][this.selectedLang['sub']]['content'][entryId] == "undefined") ||
+			(langStore[this.selectedLang['id']][this.selectedLang['sub']]['content'][entryId] == null))
+		{
+			return this.getDefaultEntry(entryId);
+		}
+
 		return langStore[this.selectedLang['id']][this.selectedLang['sub']]['content'][entryId];
 	}
 
@@ -137,12 +149,13 @@ function languageController()
 	this.getDefaultEntry = function(entryId)
 	{
 		if ((typeof langStore[this.defaultLang['id']] == "undefined") ||
-			(typeof langStore[this.defaultLang['id']][this.selectedLang['sub']] == "undefined"))
+			(typeof langStore[this.defaultLang['id']][this.defaultLang['sub']] == "undefined"))
 		{
 			return null;
 		}
 		if (typeof langStore[this.defaultLang['id']][this.defaultLang['sub']]['content'] == "undefined") return null;
 		if (typeof langStore[this.defaultLang['id']][this.defaultLang['sub']]['content'][entryId] == "undefined") return null;
+
 		return langStore[this.defaultLang['id']][this.defaultLang['sub']]['content'][entryId];
 	}
 }
