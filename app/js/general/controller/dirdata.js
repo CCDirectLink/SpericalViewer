@@ -20,7 +20,7 @@ else
 }
 
 
-exports.stats = function(directory, callback, options)
+exports.stats = function(directory, callthroughParam, callback, options)
 {
 	
 	var totalSize = 0;
@@ -91,7 +91,7 @@ exports.stats = function(directory, callback, options)
 
 		}
 
-		callback(error, {size: totalSize, files: fileNumber, folder: folderNumber});
+		callback(error, {size: totalSize, files: fileNumber, folder: folderNumber, dir: directory, extern: callthroughParam});
 
 	});
 
@@ -168,6 +168,6 @@ exports.statsSync = function(directory, options)
 
 	}
 
-	return {size: totalSize, files: fileNumber, folder: folderNumber, error: error};
+	return {size: totalSize, files: fileNumber, folder: folderNumber, error: error, dir: directory};
 
 }

@@ -13,9 +13,11 @@
 		"storedGameData": "Gespeicherte spieledaten",
 		"noGames": "(keine spiele)",
 		"id": "Id",
+		"containerId": "Container Id",
 		"version": "Version",
 		"cacheSize": "Cachegröße",
 		"close": "schließen",
+		"clear": "leeren",
 
 		"savegames": "Spielstand",
 

@@ -13,9 +13,11 @@
 		"storedGameData": "Stored game data",
 		"noGames": "(no games)",
 		"id": "Id",
+		"containerId": "Container Id",
 		"version": "Version",
 		"cacheSize": "Cache Size",
 		"close": "close",
+		"clear": "clear",
 
 		"savegames": "Savegames",
 

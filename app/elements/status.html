@@ -9,19 +9,19 @@
 			$( "#loadedGameTitle" ).html(spo.langData.getEntry("loadedGames"));
 			$( "#storedGameTitle" ).html(spo.langData.getEntry("storedGameData"));
 
-
-			if ((typeof spo.moduleMemory['status'] == "undefined") || (typeof spo.moduleMemory['status']['gameStorageController'] == "undefined"))
-			{
-				if (typeof spo.moduleMemory['status'] == "undefined") spo.moduleMemory['status'] = Object();
-				spo.moduleMemory['status']['gameStorageController'] = new gameStorageController();
-			}
-			
 			if ((typeof spo.moduleMemory['status'] == "undefined") || (typeof spo.moduleMemory['status']['statusList'] == "undefined"))
 			{
 				if (typeof spo.moduleMemory['status'] == "undefined") spo.moduleMemory['status'] = Object();
 				spo.moduleMemory['status']['statusList'] = new statusList();
 			}
-			//moduleMemory['status']['gameStorageController'].cacheData;
+
+			if ((typeof spo.moduleMemory['status'] == "undefined") || (typeof spo.moduleMemory['status']['gameStorageController'] == "undefined"))
+			{
+				if (typeof spo.moduleMemory['status'] == "undefined") spo.moduleMemory['status'] = Object();
+				spo.moduleMemory['status']['gameStorageController'] = new gameStorageController(function(){
+					$( "#storedGame").html("<table>" + spo.moduleMemory['status']['gameStorageController'].getTable() + "</table>");
+				});
+			}
 
 			// init programm data
 			$( "h1").html(spo.env.name);
@@ -33,6 +33,8 @@
 			// init table
 			$( "#loadedGame").html("<table>" + spo.moduleMemory['status']['statusList'].getTable() + "</table>");
 			$( "#storedGame").html(spo.langData.getEntry("noGames"));
+
+			spo.moduleMemory['status']['gameStorageController'].finTrigger();
 
 			// register callback
 			if ((typeof spo.moduleMemory['status'] == "undefined") || (typeof spo.moduleMemory['status']['callbackRegistered'] == "undefined"))
@@ -53,7 +55,14 @@
 					}
 					else
 					{
-						spo.moduleMemory['status']['statusList'].statusArray.push({id: data.shortId, version: data.version.string, size: "0 kiB"});
+						var sizeData = "0 kiB";
+						if ((typeof data.containerId != "undefined") &&
+							(data.containerId != null))
+						{
+							//sizeData = spo.moduleMemory['status']['gameStorageController'].cacheData[data.containerId].size;
+						}
+
+						spo.moduleMemory['status']['statusList'].statusArray.push({id: data.shortId, containerId: data.containerId, version: data.version.string, size: sizeData});
 					}
 
 					$( "#loadedGame").html("<table>" + spo.moduleMemory['status']['statusList'].getTable() + "</table>");
