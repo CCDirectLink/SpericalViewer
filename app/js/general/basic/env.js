@@ -179,8 +179,8 @@ var _envTempVersionJson = $.getJSON('version/versions.json').done(function() {
   }
   else if (process.platform == "linux")
   {
-  	_envTemp.path.storage = process.env.HOME + "/" + _envTemp.name + "/GameStorage";
-  	_envTemp.path.save.folder = process.env.HOME + "/CrossCode/" + "Default";
+  	_envTemp.path.storage = process.env.HOME + "/.config/" + _envTemp.name + "/GameStorage";
+  	_envTemp.path.save.folder = process.env.HOME + "/.config/CrossCode/" + "Default";
   	_envTemp.path.seperator = "/";
   }
   else
