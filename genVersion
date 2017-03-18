@@ -11,9 +11,9 @@ netModV=${netModDesc%%-*}
 netModHashL=$(git rev-parse HEAD)
 netModHash=${netModHashL:0:8}
 
-netModDateDay=$(git log -1 --date=format:'%d' --pretty=format:%cd)
-netModDateMonth=$(git log -1 --date=format:'%m' --pretty=format:%cd)
-netModDateYear=$(git log -1 --date=format:'%Y' --pretty=format:%cd)
+netModDateDay=$(git log -1 --date=format:'%-d' --pretty=format:%cd)
+netModDateMonth=$(git log -1 --date=format:'%-m' --pretty=format:%cd)
+netModDateYear=$(git log -1 --date=format:'%-Y' --pretty=format:%cd)
 
 echo "SpericalViewer ${netModV} - rev ${netModRev}"
 echo "${netModHashL} / ${netModHash} from ${netModDateYear}-${netModDateMonth}-${netModDateDay}"
@@ -38,4 +38,7 @@ sed -i -- 's,_$_GIT_DATE_YEAR_PLACEHOLDER_$_,'"${netModDateYear}"',g' "${genFold
 sed -i -- 's,_$_GIT_HASH_PLACEHOLDER_$_,\"'"${netModHash}"'\",g' "${genFolder}/${versionFile}"
 sed -i -- 's,_$_GIT_HASH_LONG_PLACEHOLDER_$_,\"'"${netModHashL}"'\",g' "${genFolder}/${versionFile}"
 sed -i -- 's,_$_GIT_VER_PLACEHOLDER_$_,\"'"${netModV}"'\",g' "${genFolder}/${versionFile}"
-rm "${genFolder}/${versionFile}--"
+
+if [ -f "${genFolder}/${versionFile}--" ]; then
+	rm "${genFolder}/${versionFile}--"
+fi

@@ -10,9 +10,9 @@ $netModV=$netModDesc.split("-")[0]
 $netModHashL=$(git rev-parse HEAD)
 $netModHash=$netModHashL.Substring(0,8)
 
-$netModDateDay=$(git log -1 --date=format:'%d' --pretty=format:%cd)
-$netModDateMonth=$(git log -1 --date=format:'%m' --pretty=format:%cd)
-$netModDateYear=$(git log -1 --date=format:'%Y' --pretty=format:%cd)
+$netModDateDay=$(git log -1 --date=format:'%-d' --pretty=format:%cd)
+$netModDateMonth=$(git log -1 --date=format:'%-m' --pretty=format:%cd)
+$netModDateYear=$(git log -1 --date=format:'%-Y' --pretty=format:%cd)
 
 echo $("SpericalViewer " + $netModV + " - rev " + $netModRev)
 echo $($netModHashL + " / " + $netModHash + " from " + $netModDateYear + "-" + $netModDateMonth + "-" + $netModDateDay)

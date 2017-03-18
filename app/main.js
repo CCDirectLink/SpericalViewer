@@ -1,3 +1,5 @@
+"use strict";
+
 const {app, BrowserWindow} = require('electron')
 
 const crypto = require('crypto');

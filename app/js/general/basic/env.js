@@ -207,9 +207,19 @@ var _envTempVersionJson = $.getJSON('version/versions.json').done(function() {
 
   // ----------------
 
-}).fail(function() {
-  alert("versions dependent file missing; run genVersion first");
+}).fail(function(jqxhr, textStatus, error) {
+
+  if (textStatus == "error")
+  {
+    alert("versions dependent file missing; run genVersion first");
+  }
+  else
+  {
+    alert("error in versions.json: " + error);
+  }
+  
   process.exit(0);
+
 });
 
 console.log(spo);
