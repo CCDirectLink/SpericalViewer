@@ -78,8 +78,8 @@ module.exports.load_environment = function load_environment(log, app)
   }
   else if (process.platform == "linux")
   {
-    _result.path.storage = process.env.HOME + "/" + _result.name + "/GameStorage";
-    _result.path.save.folder = process.env.HOME + "/CrossCode/" + "Default";
+    _result.path.storage = process.env.HOME + "/.config/" + _result.name + "/GameStorage";
+    _result.path.save.folder = process.env.HOME + "/.config/CrossCode/" + "Default";
     _result.path.seperator = "/";
   }
 
