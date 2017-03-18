@@ -5,74 +5,37 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" name="viewport">
 
-    <!-- basic css structure -->
-    <link rel="stylesheet" href="assets/basic.css">
-    
-    <!-- colorset -->
+    <!-- css theme -->
+    <link rel="stylesheet" href="assets/theme/dark/basic.css">
     <link rel="stylesheet" href="assets/theme/dark/style.css">
 
-    <!-- js libs -->
-    <script type="text/javascript">window.$ = window.jQuery = require('./lib/jquery-3.1.0.min.js');</script>
-
-    <!-- node libs -->
-    <script type="text/javascript">const crypto = require('crypto');</script>
-    <script type="text/javascript">const fs = require("fs");</script>
-    <script type="text/javascript">const async = require('async');</script>
-    <script type="text/javascript">const path = require('path');</script>
-    <script type="text/javascript">const stream = require('stream');</script>
-    <script type="text/javascript">const util = require('util');</script>
-    <script type="text/javascript">const unzip = require('unzip2');</script>
-    <script type="text/javascript">const lwip = require('lwip');</script>
-
-    <!-- added modules -->
+    <!-- code -->
     <script type="text/javascript">
-        var spo = Object();
-        spo.initCallback = function(){
 
-            $(function(){
-                $( "title" ).html(spo.env.name);
-                $( ".titlebar" ).html(spo.env.name);
-            });
+        window.$ = window.jQuery = require('./lib/jquery-3.1.0.min.js');
 
-            $.getScript("js/general/controller/game.js", function( data, textStatus, jqxhr ) {
-                $.getScript("js/general/controller/image.js", function( data, textStatus, jqxhr ) {
-                    $.getScript("js/general/controller/memory.js", function( data, textStatus, jqxhr ) {
-                        $.getScript("js/general/controller/lang.js", function( data, textStatus, jqxhr ) {
-                            $.getScript("js/general/controller/menu.js", function( data, textStatus, jqxhr ) {
-                                $.getScript("js/general/controller/storage.js", function( data, textStatus, jqxhr ) {
-                                    // basic
-                                    $.getScript("js/general/basic/basic.js", function( data, textStatus, jqxhr ) {
-                                        // menu
-                                        $.getScript("js/general/struct/menu.js", function( data, textStatus, jqxhr ) {
-                                            $.getScript("js/general/struct/version.js", function( data, textStatus, jqxhr ) {
-                                                // grab
-                                                $.getScript("js/general/service/containerBeginExec.js", function( data, textStatus, jqxhr ) {
-                                                    $.getScript("js/general/service/gameGrabber.js", function( data, textStatus, jqxhr ) {
-                                                        // drop
-                                                        $.getScript("js/general/events/drop.js", function( data, textStatus, jqxhr ) {});
-                                                    });
-                                                });
-                                            });
-                                        });
-                                    });
-                                });
-                            });
-                        });
-                    });
-                });
-            });
+        if ((typeof window.$ == "undefined") || (window.$ == null))
+        {
+          throw "jquery missing";
+        }
 
-        };
+        $.getScript("js/window/general/basic.js")
+        .done(function( data, textStatus, jqxhr ) {
+            // loading done
+        })
+        .fail(function( data, textStatus, jqxhr ) {
+            // loading failed
+            throw "basic load error";
+        });
 
     </script>
-    <script type="text/javascript" src="js/general/basic/env.js"></script>
 
     <!-- basic html structure -->
     <link rel="icon" href="assets/ccdirectlink.png">
     <title></title>
 
   </head>
-  <body class="universe" ondrop="drop(event)" ondragover="allowDrop(event)">
+  <body class="universe">
 
     <div class="space">
       <div class="titlebar" id="headbar"></div>
