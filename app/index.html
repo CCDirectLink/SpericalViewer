@@ -25,10 +25,14 @@
     <script type="text/javascript">const lwip = require('lwip');</script>
 
     <!-- added modules -->
-    <script type="text/javascript" src="js/base/env.js"></script>
-    <script type="text/javascript" src="js/base/module.js"></script>
-    <script type="text/javascript" src="js/base/menu.js"></script>
-    <script type="text/javascript" src="js/base/lang.js"></script>
+    <script type="text/javascript" src="js/env.js"></script>
+    <script type="text/javascript" src="js/module.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
+    <script type="text/javascript" src="js/lang.js"></script>
+    <script type="text/javascript" src="js/game.js"></script>
+    <script type="text/javascript" src="js/version.js"></script>
+    <script type="text/javascript" src="js/image.js"></script>
+    <script type="text/javascript" src="js/drop.js"></script>
 	
     <script type="text/javascript">
 		var globals = {
@@ -36,29 +40,16 @@
 			module: new Module(),
 			menu: new Menu("#menulist", ".entrycontainer"),
 			langData: new Language(),
-			moduleMemory: {module:{}}
+			gameData: new GameData(),
+			imageData: new ImageDatabase()
 		};
 		
 		$(function(){
 			$("title").html(globals.env.name);
 			$(".titlebar").html(globals.env.name);
 		
-		
-			var scripts = [
-				"js/general/controller/game.js",
-				"js/general/controller/image.js",
-				"js/general/controller/memory.js",
-				"js/general/controller/lang.js",
-				"js/general/controller/storage.js",
-				"js/general/basic/basic.js", //basic
-				"js/general/struct/menu.js", //menu
-				"js/general/struct/version.js",
-				"js/general/service/containerBeginExec.js", // grab
-				"js/general/service/gameGrabber.js",
-				"js/general/events/drop.js" //drop
-			];
-			
 			globals.langData.loadAll(function(){
+				globals.langData.setLang("en", "us");
 				var modules = globals.module.findModules("modules");
 				globals.module.loadModules(modules, function(){
 					globals.module.onLoaded();

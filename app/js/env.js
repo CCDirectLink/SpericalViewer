@@ -31,7 +31,7 @@ function Environment(){
 			},
 			cache: app.getPath('userData'),
 			storage: null,
-			seperator: "/"
+			seperator: path.sep
 		};
 	
 	function initialize(env){
@@ -65,7 +65,6 @@ function Environment(){
 			else if (process.platform == "win32") {
 				env.path.storage = process.env.LOCALAPPDATA + "\\" + env.name + "\\GameStorage";
 				env.path.save.folder = process.env.LOCALAPPDATA + "\\CrossCode";
-				env.path.seperator = "\\";
 			}
 			else if (process.platform == "linux") {
 				env.path.storage = process.env.HOME + "/.config/" + env.name + "/GameStorage";

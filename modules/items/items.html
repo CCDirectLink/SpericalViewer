@@ -1,43 +1,5 @@
 <script type="text/javascript">
-	globals.module.loadScript("../modules/items/list.js", function() {
-		$("h1").html(globals.langData.getEntry("items"));
-		$("#versionSelect").html(globals.langData.getEntry("version"));
-
-		if (globals.moduleMemory.items === undefined) 
-			globals.moduleMemory.items = {};
-		if (globals.moduleMemory.items.itemViewer === undefined) {
-			globals.moduleMemory.items.itemViewer = new ItemViewer();
-		}
-
-		if (globals.moduleMemory.items === undefined) 
-			globals.moduleMemory.items = {};
-		if (globals.moduleMemory.items.selectedVersion === undefined) {
-			globals.moduleMemory.items.selectedVersion = globals.gameData.idArray[0];
-		}
-
-		if (globals.moduleMemory.items === undefined) 
-			globals.moduleMemory.items = Object();
-		if (globals.moduleMemory.items.versioner === undefined) {
-			globals.moduleMemory.items.versioner = new versioner();
-		}
-
-		if (globals.moduleMemory.items.versionTrigger === undefined) {
-			globals.moduleMemory.items.versionTrigger = function() {
-				globals.moduleMemory.items.selectedVersion = $("#versionList")[0].options[$("#versionList")[0].selectedIndex].value;
-				$("#itemData").html("<table>" + globals.moduleMemory.items.itemViewer.getTable(globals.moduleMemory.items.selectedVersion) + "</table>");
-			}
-		}
-
-		if (!globals.gameData.hasGame(globals.moduleMemory.items.selectedVersion)) {
-			globals.moduleMemory.items.selectedVersion = globals.gameData.idArray[0];
-		}
-
-		// init versions
-		$("#versionList").html(globals.moduleMemory.items.versioner.getList(globals.moduleMemory.items.selectedVersion));
-
-		// init table
-		$("#itemData").html("<table>" + globals.moduleMemory.items.itemViewer.getTable(globals.moduleMemory.items.selectedVersion) + "</table>");
-	});
+	globals.items.display();
 </script>
 <h1></h1>
 <span id="versionSelect"></span>:
