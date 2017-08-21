@@ -1,0 +1,59 @@
+<script type="text/javascript">
+
+	$.getScript("js/settings/langList.js", function( data, textStatus, jqxhr ) {
+
+		$(function(){
+
+			// container dir
+			$( "#storageDir").html(spo.langData.getEntry("storage") + ": " + spo.env.path.storage);
+			$( "#savegameDir").html(spo.langData.getEntry("savegame") + ": " + spo.env.path.save.folder + spo.env.path.seperator + spo.env.path.save.file);
+			$( "#cacheDir").html(spo.langData.getEntry("cache") + ": " + spo.env.path.cache);
+
+			$( "h1" ).html(spo.langData.getEntry("settings"));
+			$( ".themeTitle" ).html(spo.langData.getEntry("theme"));
+			$( ".langTitle" ).html(spo.langData.getEntry("lang"));
+
+			if ((typeof spo.moduleMemory['settings'] == "undefined") || (typeof spo.moduleMemory['settings']['langList'] == "undefined"))
+			{
+				if (typeof spo.moduleMemory['settings'] == "undefined") spo.moduleMemory['settings'] = Object();
+				spo.moduleMemory['settings']['langList'] = new langList();
+			}
+
+			if ((typeof spo.moduleMemory['settings'] == "undefined") || (typeof spo.moduleMemory['settings']['selectedLang'] == "undefined"))
+			{
+				if (typeof spo.moduleMemory['settings'] == "undefined") spo.moduleMemory['settings'] = Object();
+				spo.moduleMemory['settings']['selectedLang'] = "en_us";
+			}
+
+			if ((typeof spo.moduleMemory['settings'] == "undefined") || (typeof spo.moduleMemory['settings']['langTrigger'] == "undefined"))
+			{
+				if (typeof spo.moduleMemory['settings'] == "undefined") spo.moduleMemory['settings'] = Object();
+				spo.moduleMemory['settings']['langTrigger'] = function()
+				{
+					spo.moduleMemory['settings']['selectedLang'] = $( "#langList" )[0].options[$( "#langList" )[0].selectedIndex].value;
+					var selectedLangArray = spo.moduleMemory['settings']['selectedLang'].split("_");
+					spo.langData.setLang(selectedLangArray[0], selectedLangArray[1]);
+					updateMenu();
+				}
+			}
+
+			$( "#langList" ).html(spo.moduleMemory['settings']['langList'].getTable(spo.moduleMemory['settings']['selectedLang']))
+
+		});
+
+	});
+
+</script>
+<h1></h1>
+<div id="setTheme">
+<span class="themeTitle"></span>:
+<select name="theme" size="1">
+  <option value="1" selected>Dark</option>
+</select><br />
+<span class="langTitle"></span>:
+<select name="lang" id="langList" size="1" onchange="spo.moduleMemory['settings']['langTrigger']()"></select>
+</div>
+
+<p><div id="storageDir"></div></p>
+<p><div id="savegameDir"></div></p>
+<p><div id="cacheDir"></div></p>

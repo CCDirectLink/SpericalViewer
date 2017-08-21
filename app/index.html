@@ -5,28 +5,68 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" name="viewport">
 
-    <!-- css theme -->
-    <link rel="stylesheet" href="assets/theme/dark/basic.css">
+    <!-- basic css structure -->
+    <link rel="stylesheet" href="assets/basic.css">
+    
+    <!-- colorset -->
     <link rel="stylesheet" href="assets/theme/dark/style.css">
 
-    <!-- code -->
+    <!-- js libs -->
+    <script type="text/javascript">window.$ = window.jQuery = require('./lib/jquery-3.1.0.min.js');</script>
+
+    <!-- node libs -->
+    <script type="text/javascript">const crypto = require('crypto');</script>
+    <script type="text/javascript">const fs = require("fs");</script>
+    <script type="text/javascript">const async = require('async');</script>
+    <script type="text/javascript">const path = require('path');</script>
+    <script type="text/javascript">const stream = require('stream');</script>
+    <script type="text/javascript">const util = require('util');</script>
+    <script type="text/javascript">const unzip = require('unzip2');</script>
+    <script type="text/javascript">const lwip = require('lwip');</script>
+
+    <!-- added modules -->
+    <script type="text/javascript" src="js/base/env.js"></script>
+    <script type="text/javascript" src="js/base/module.js"></script>
+    <script type="text/javascript" src="js/base/menu.js"></script>
+    <script type="text/javascript" src="js/base/lang.js"></script>
+	
     <script type="text/javascript">
-
-        window.$ = window.jQuery = require('./lib/jquery-3.1.0.min.js');
-
-        if ((typeof window.$ == "undefined") || (window.$ == null))
-        {
-          throw "jquery missing";
-        }
-
-        $.getScript("js/window/general/basic.js")
-        .done(function( data, textStatus, jqxhr ) {
-            // loading done
-        })
-        .fail(function( data, textStatus, jqxhr ) {
-            // loading failed
-            throw "basic load error";
-        });
+		var globals = {
+			env: new Environment(),
+			module: new Module(),
+			menu: new Menu("#menulist", ".entrycontainer"),
+			langData: new Language(),
+			moduleMemory: {module:{}}
+		};
+		
+		$(function(){
+			$("title").html(globals.env.name);
+			$(".titlebar").html(globals.env.name);
+		
+		
+			var scripts = [
+				"js/general/controller/game.js",
+				"js/general/controller/image.js",
+				"js/general/controller/memory.js",
+				"js/general/controller/lang.js",
+				"js/general/controller/storage.js",
+				"js/general/basic/basic.js", //basic
+				"js/general/struct/menu.js", //menu
+				"js/general/struct/version.js",
+				"js/general/service/containerBeginExec.js", // grab
+				"js/general/service/gameGrabber.js",
+				"js/general/events/drop.js" //drop
+			];
+			
+			globals.langData.loadAll(function(){
+				var modules = globals.module.findModules("modules");
+				globals.module.loadModules(modules, function(){
+					globals.module.onLoaded();
+				});
+			});
+			
+		});
+		
 
     </script>
 
@@ -35,7 +75,7 @@
     <title></title>
 
   </head>
-  <body class="universe">
+  <body class="universe" ondrop="drop(event)" ondragover="allowDrop(event)">
 
     <div class="space">
       <div class="titlebar" id="headbar"></div>

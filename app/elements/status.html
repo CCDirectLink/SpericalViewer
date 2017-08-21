@@ -1,0 +1,92 @@
+<script type="text/javascript">
+
+	$.getScript("js/status/list.js", function( data, textStatus, jqxhr ) {
+
+		$(function(){
+
+			// lang
+			$( "#license" ).html(spo.langData.getEntry("license"));
+			$( "#loadedGameTitle" ).html(spo.langData.getEntry("loadedGames"));
+			$( "#storedGameTitle" ).html(spo.langData.getEntry("storedGameData"));
+
+			if ((typeof spo.moduleMemory['status'] == "undefined") || (typeof spo.moduleMemory['status']['statusList'] == "undefined"))
+			{
+				if (typeof spo.moduleMemory['status'] == "undefined") spo.moduleMemory['status'] = Object();
+				spo.moduleMemory['status']['statusList'] = new statusList();
+			}
+
+			if ((typeof spo.moduleMemory['status'] == "undefined") || (typeof spo.moduleMemory['status']['gameStorageController'] == "undefined"))
+			{
+				if (typeof spo.moduleMemory['status'] == "undefined") spo.moduleMemory['status'] = Object();
+				spo.moduleMemory['status']['gameStorageController'] = new gameStorageController(function(){
+					$( "#storedGame").html("<table>" + spo.moduleMemory['status']['gameStorageController'].getTable() + "</table>");
+				});
+			}
+
+			// init programm data
+			$( "h1").html(spo.env.name);
+			$( "#version").html(spo.env.version.string);
+
+			$( "#rev").html(spo.env.version.rev);
+			$( "#year").html(spo.env.build.date.year);
+
+			// init table
+			$( "#loadedGame").html("<table>" + spo.moduleMemory['status']['statusList'].getTable() + "</table>");
+			$( "#storedGame").html(spo.langData.getEntry("noGames"));
+
+			spo.moduleMemory['status']['gameStorageController'].finTrigger();
+
+			// register callback
+			if ((typeof spo.moduleMemory['status'] == "undefined") || (typeof spo.moduleMemory['status']['callbackRegistered'] == "undefined"))
+			{
+				if (typeof spo.moduleMemory['status'] == "undefined") spo.moduleMemory['status'] = Object();
+
+				spo.gameData.registerCallback(function(data, entry)
+				{
+					if (data == null)
+					{
+						for (var statusIndex in spo.moduleMemory['status']['statusList'].statusArray)
+	      				{
+	      					if (spo.moduleMemory['status']['statusList'].statusArray[statusIndex].id == entry)
+	      					{
+	      						spo.moduleMemory['status']['statusList'].statusArray.splice(statusIndex, 1);
+	      					}
+						}
+					}
+					else
+					{
+						var sizeData = "0 kiB";
+						if ((typeof data.containerId != "undefined") &&
+							(data.containerId != null))
+						{
+							//sizeData = spo.moduleMemory['status']['gameStorageController'].cacheData[data.containerId].size;
+						}
+
+						spo.moduleMemory['status']['statusList'].statusArray.push({id: data.shortId, containerId: data.containerId, version: data.version.string, size: sizeData});
+					}
+
+					$( "#loadedGame").html("<table>" + spo.moduleMemory['status']['statusList'].getTable() + "</table>");
+
+				}, {identifier: [{param: "version"}, {param: "shortId"}]});
+
+				spo.moduleMemory['status']['callbackRegistered'] = true;
+
+			}
+
+		});
+
+	});
+
+</script>
+<center>
+	<h1></h1>
+	<span id="version"></span> - rev <span id="rev"></span><br/>
+	&#169; <span id="year"></span> CCDirectLink<br/>
+	<span id="license"></span>
+</center><br/>
+<span id="loadedGameTitle"></span>:
+<div class="elementcontainer" id="loadedGame">
+</div><br />
+<span id="storedGameTitle"></span>:
+<div class="elementcontainer" id="storedGame">
+</div>

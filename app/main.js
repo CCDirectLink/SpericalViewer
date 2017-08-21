@@ -1,8 +1,7 @@
 "use strict";
 
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow} = require('electron')
 
-// dependency
 const crypto = require('crypto');
 const fs = require("fs");
 const stream = require('stream');
@@ -10,38 +9,15 @@ const util = require('util');
 const unzip = require('unzip2');
 const lwip = require('lwip');
 
-// custom dependency
-const varTypes = require('./js/logic/varTypes');
-
-var sv = Object();
-
-// window
 let win;
-
-// SpericalViewer module init
-function createEnv () {
-  
-  sv.window = Object();
-
-  sv.env = require('./js/logic/environment').load_environment(null, app);
-  sv.settings = require('./js/logic/settings').load_settings(null, app);
-  sv.module = require('./js/logic/module').load_module(null, app);
-
-  sv.window.bg = '#3d4447';
-
-  return;
-  
-};
-
-createEnv();
 
 function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({
     width: 800,
     height: 600,
-    backgroundColor: sv.window.bg,
-    titleBarStyle: 'hidden'
+    titleBarStyle: 'hidden',
+	icon: __dirname + '/assets/ccdirectlink.png'
   })
 
   // and load the index.html of the app.
@@ -76,15 +52,3 @@ app.on('activate', () => {
     createWindow();
   }
 })
-
-module.exports = 
-{
-  crypto: crypto,
-  fs: fs,
-  stream: stream,
-  util: util,
-  unzip: unzip,
-  lwip: lwip,
-  varTypes: varTypes,
-  sv: sv
-}

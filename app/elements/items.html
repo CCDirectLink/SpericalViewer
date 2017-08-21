@@ -1,0 +1,59 @@
+<script type="text/javascript">
+
+	$.getScript("js/items/list.js", function( data, textStatus, jqxhr ) {
+
+		$(function(){
+
+			// lang
+			$( "h1" ).html(spo.langData.getEntry("items"));
+			$( "#versionSelect" ).html(spo.langData.getEntry("version"));
+
+			if ((typeof spo.moduleMemory['items'] == "undefined") || (typeof spo.moduleMemory['items']['itemViewer'] == "undefined"))
+			{
+				if (typeof spo.moduleMemory['items'] == "undefined") spo.moduleMemory['items'] = Object();
+				spo.moduleMemory['items']['itemViewer'] = new itemViewer();
+			}
+
+			if ((typeof spo.moduleMemory['items'] == "undefined") || (typeof spo.moduleMemory['items']['selectedVersion'] == "undefined"))
+			{
+				if (typeof spo.moduleMemory['items'] == "undefined") spo.moduleMemory['items'] = Object();
+				spo.moduleMemory['items']['selectedVersion'] = spo.gameData.idArray[0];
+			}
+
+			if ((typeof spo.moduleMemory['items'] == "undefined") || (typeof spo.moduleMemory['items']['versioner'] == "undefined"))
+			{
+				if (typeof spo.moduleMemory['items'] == "undefined") spo.moduleMemory['items'] = Object();
+				spo.moduleMemory['items']['versioner'] = new versioner();
+			}
+
+			if ((typeof spo.moduleMemory['items'] == "undefined") || (typeof spo.moduleMemory['items']['versionTrigger'] == "undefined"))
+			{
+				if (typeof spo.moduleMemory['items'] == "undefined") spo.moduleMemory['items'] = Object();
+				spo.moduleMemory['items']['versionTrigger'] = function()
+				{
+					spo.moduleMemory['items']['selectedVersion'] = $( "#versionList" )[0].options[$( "#versionList" )[0].selectedIndex].value;
+					$( "#itemData").html("<table>" + spo.moduleMemory['items']['itemViewer'].getTable(spo.moduleMemory['items']['selectedVersion']) + "</table>");
+				}
+			}
+
+			if (!spo.gameData.hasGame(spo.moduleMemory['items']['selectedVersion']))
+			{
+				spo.moduleMemory['items']['selectedVersion'] = spo.gameData.idArray[0];
+			}
+
+			// init versions
+			$( "#versionList").html(spo.moduleMemory['items']['versioner'].getList(spo.moduleMemory['items']['selectedVersion']));
+
+			// init table
+			$( "#itemData").html("<table>" + spo.moduleMemory['items']['itemViewer'].getTable(spo.moduleMemory['items']['selectedVersion']) + "</table>");
+
+		});
+
+	});
+</script>
+<h1></h1>
+<span id="versionSelect"></span>:
+<select name="version" id="versionList" onchange="spo.moduleMemory['items']['versionTrigger']()" size="1">
+</select>
+<div class="elementcontainer" id="itemData">
+</div>
