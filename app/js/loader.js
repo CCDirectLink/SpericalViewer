@@ -42,7 +42,7 @@ function Loader(){
 			globals.gameData.addData(data.shortId, "gameId", data.gameId);
 			globals.gameData.addData(data.shortId, "shortId", data.shortId);
 			globals.gameData.addData(data.shortId, "version", data.version);
-			globals.gameData.addData(data.shortId, "path", data.folder);
+			globals.gameData.addData(data.shortId, "path", data.path);
 			
 			
 			$.getJSON(data.path.main + data.path.list[0] + "database.json").done(function(json){
