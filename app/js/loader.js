@@ -20,25 +20,38 @@ function Loader(){
 	}
 	
 	function _extractData(file, id){
-		var folder = path.dirname(file);
-		var dataFolder = folder + path.sep + "data" + path.sep;
-		var mediaFolder = folder + path.sep + "media" + path.sep;
-		
-		_extractChangelog(dataFolder + "changelog.json", id, function(data){
+
+		var folder = "";
+
+		// id is null if there is no container to create
+		// -> Use the game folder directly
+		// -> path.dirname dosn't work with MAC_APP_PATH
+		// (Replace it with /Contents/Resources/)
+		if (id === null)
+		{
+			folder = file + path.sep;
+		}
+		else
+		{
+			folder = path.dirname(file) + path.sep;
+		}
+
+		_extractChangelog(folder, id, function(data){
 			globals.gameData.addData(data.shortId, "changelog", data.changelog);
 			globals.gameData.addData(data.shortId, "containerId", data.containerId);
 			globals.gameData.addData(data.shortId, "gameId", data.gameId);
 			globals.gameData.addData(data.shortId, "shortId", data.shortId);
 			globals.gameData.addData(data.shortId, "version", data.version);
+			globals.gameData.addData(data.shortId, "path", data.folder);
 			
 			
-			$.getJSON(dataFolder + "database.json").done(function(json){
+			$.getJSON(data.path.main + data.path.list[0] + "database.json").done(function(json){
 				globals.gameData.addData(data.shortId, "database", json);
 			});
-			$.getJSON(dataFolder + "global-settings.json").done(function(json){
+			$.getJSON(data.path.main + data.path.list[0] + "global-settings.json").done(function(json){
 				globals.gameData.addData(data.shortId, "globalSettings", json);
 			});
-			$.getJSON(dataFolder + "item-database.json").done(function(json){
+			$.getJSON(data.path.main + data.path.list[0] + "item-database.json").done(function(json){
 				globals.gameData.addData(data.shortId, "items", json.items);
 			});
 			
@@ -51,7 +64,8 @@ function Loader(){
 					var startX = columnIndex * (iconSet.dimension.width + iconSet.dimension.xpad);
 					var startY = rowIndex * (iconSet.dimension.height + iconSet.dimension.ypad);
 
-					globals.imageData.addImage("items", iconSpecify[columnIndex] + rowIndex, mediaFolder + "gui" + path.sep + "menu.png", "png", startX, startY, iconSet.dimension.width, iconSet.dimension.height);
+					globals.imageData.addImage("items", iconSpecify[columnIndex] + rowIndex,
+						data.path.main + data.path.list[2] + "font" + path.sep + "icons-items.png", "png", startX, startY, iconSet.dimension.width, iconSet.dimension.height);
 				}
 			}
 			
@@ -63,15 +77,23 @@ function Loader(){
 				var startX = (columnIndex * (iconSet.dimension.width + iconSet.dimension.xpad)) + iconSet.xstart;
 				var startY = iconSet.ystart;
 
-				globals.imageData.addImage("items", iconSpecify[columnIndex], mediaFolder + "gui" + path.sep + "menu.png", "png", startX, startY, iconSet.dimension.width, iconSet.dimension.height);
+				globals.imageData.addImage("items", iconSpecify[columnIndex], 
+					data.path.main + data.path.list[2] + "gui" + path.sep + "menu.png", "png", startX, startY, iconSet.dimension.width, iconSet.dimension.height);
 			}
 			
 			globals.menu.updateAll();
 		});
 	}
 	
-	function _extractChangelog(file, id, cb){
-		$.get(file).done(function(raw){
+	function _extractChangelog(folder, id, cb){
+
+		var folderList = [ "data" + path.sep,
+						   "game" + path.sep,
+						   "media" + path.sep,
+						   "js" + path.sep,
+						   "impact" + path.sep ];
+
+		$.get(folder + folderList[0] + "changelog.json").done(function(raw){
 			var gameId = crypto.createHash('sha256');
 			gameId.update(raw);
 
@@ -98,6 +120,7 @@ function Loader(){
 					containerId: id,
 					gameId: gameIdHex,
 					shortId: shortIdHex,
+					path: {main: folder, list: folderList},
 					version: {major: Number(versionArray[0]), minor: Number(versionArray[1]), patch: Number(versionArray[2]), hotfix: hotfixNumber, string: versionString}};
 					
 			cb(callbackData);
@@ -105,12 +128,14 @@ function Loader(){
 	}
 	
 	function _findFile(file, cb){
-		if(_isDirectory(file)){
-			return _searchDirectory(file, cb);
-		}
-		
+		// Mac apps are folders
+		// Check always first
 		if(_isApp(file)){
 			return cb(file + MAC_APP_PATH, null);
+		}
+
+		if(_isDirectory(file)){
+			return _searchDirectory(file, cb);
 		}
 		
 		var start = _getZip(file);
