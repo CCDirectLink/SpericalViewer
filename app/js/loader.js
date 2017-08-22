@@ -90,13 +90,12 @@ function Loader(){
 						   "js" + path.sep,
 						   "impact" + path.sep ];
 
-		var gameId = crypto.createHash('sha256');
-		gameId.update(folder);
-
-		var gameIdHex = gameId.digest('hex');
-		var shortIdHex = gameIdHex.substr(0,8);
-
 		$.get(folder + folderList[0] + "changelog.json").done(function(raw){
+			var gameId = crypto.createHash('sha256');
+			gameId.update(raw);
+
+			var gameIdHex = gameId.digest('hex');
+			var shortIdHex = gameIdHex.substr(0,8);
 
 			var data = JSON.parse(raw);
 			
