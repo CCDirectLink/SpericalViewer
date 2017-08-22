@@ -26,12 +26,12 @@ function GameData() {
 		if (!version || !property)
 			return null;
 
-		if (!this.versions[entry]) {
-			this.versions[entry] = {};
+		if (!this.versions[version]) {
+			this.versions[version] = {};
 		}
 
 		var game = this.versions[version];
-		game[identifier] = data;
+		game[property] = value;
 
 		_callObservers(game, property, value);
 	}
@@ -54,19 +54,19 @@ function GameData() {
     }
 	
 	this.getData = function(version, property) {
-		return this.versions[entry][property];
+		return this.versions[version][property];
 	}
 	
 	function _callObservers(game, property, value){
 		for (var observer in observers) {
 			var filter = observers[observer].property;
 			if(!filter || filter === property)
-				observers[callbackEntry].call(game, property, value);
+				observers[observer].call(game, property, value);
 			
 			if(filter.constructor === Array){
 				for(var i in filter){
 					if(filter[i] === property){
-						observers[callbackEntry].call(game, property, value);
+						observers[observer].call(game, property, value);
 						break;
 					}
 				}

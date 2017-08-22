@@ -16,7 +16,7 @@ function Status(){
 
 			$( "#loadedGame").html("<table>" + _getTable() + "</table>");
 
-		}, ["version", "shortId"]);
+		}, "version");
 	}
 	
 	this.display = function(){

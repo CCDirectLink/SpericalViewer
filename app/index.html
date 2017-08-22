@@ -31,6 +31,7 @@
     <script type="text/javascript" src="js/lang.js"></script>
     <script type="text/javascript" src="js/game.js"></script>
     <script type="text/javascript" src="js/version.js"></script>
+    <script type="text/javascript" src="js/loader.js"></script>
     <script type="text/javascript" src="js/image.js"></script>
     <script type="text/javascript" src="js/drop.js"></script>
 	
@@ -41,7 +42,8 @@
 			menu: new Menu("#menulist", ".entrycontainer"),
 			langData: new Language(),
 			gameData: new GameData(),
-			imageData: new ImageDatabase()
+			imageData: new ImageDatabase(),
+			loader: new Loader()
 		};
 		
 		$(function(){

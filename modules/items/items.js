@@ -10,10 +10,12 @@ function Items(){
 			};
 	
 	this.display = function(){
+		debugger;
+		
 		$("h1").html(globals.langData.getEntry("items"));
 		$("#versionSelect").html(globals.langData.getEntry("version"));
 
-		if (globals.gameData.hasGame(itemData.selectedVersion)) {
+		if (!globals.gameData.hasGame(itemData.selectedVersion)) {
 			itemData.selectedVersion = globals.gameData.getVersions()[0];
 		}
 		

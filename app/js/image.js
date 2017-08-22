@@ -4,11 +4,14 @@ function ImageDatabase(){
 	this.scale = 2;
 	this.method = "nearest-neighbor";
 
-	this.addImage = function(category, identifier, imageData, imageType, x, y, width, heigth) {
+	this.addImage = function(category, identifier, imageUrl, imageType, x, y, width, heigth) {
 		var scaleValue = this.scale;
 		var methodValue = this.method;
 
-		lwip.open(imageData, imageType, function(err, image) {
+		lwip.open(imageUrl, imageType, function(err, image) {
+			if(err)
+				throw err;
+			
 			image.crop(
 				x,
 				y,
