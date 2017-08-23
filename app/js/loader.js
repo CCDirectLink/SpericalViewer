@@ -61,7 +61,7 @@ function Loader(){
 					var startX = columnIndex * (iconSet.dimension.width + iconSet.dimension.xpad);
 					var startY = rowIndex * (iconSet.dimension.height + iconSet.dimension.ypad);
 
-					globals.imageData.addImage(id, "items", iconSpecify[columnIndex] + rowIndex,
+					globals.imageData.addImage(data.shortId, "items", iconSpecify[columnIndex] + rowIndex,
 						data.path.main + data.path.list[2] + "font" + path.sep + "icons-items.png", "png", startX, startY, iconSet.dimension.width, iconSet.dimension.height);
 				}
 			}
@@ -74,7 +74,7 @@ function Loader(){
 				var startX = (columnIndex * (iconSet.dimension.width + iconSet.dimension.xpad)) + iconSet.xstart;
 				var startY = iconSet.ystart;
 
-				globals.imageData.addImage(id, "items", iconSpecify[columnIndex], 
+				globals.imageData.addImage(data.shortId, "items", iconSpecify[columnIndex], 
 					data.path.main + data.path.list[2] + "gui" + path.sep + "menu.png", "png", startX, startY, iconSet.dimension.width, iconSet.dimension.height);
 			}
 			

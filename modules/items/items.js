@@ -6,7 +6,13 @@ function Items(){
 					var version = $("#versionList")[0].options[$("#versionList")[0].selectedIndex].value;
 					itemData.selectedVersion = version;
 					$("#itemData").html("<table>" + _getTable(version) + "</table>");
-				}
+				},
+				observer: globals.imageData.registerObserver(function(){
+					globals.items.updateTable();
+				}, "items"),
+				versionChangeObserver: globals.gameData.registerObserver(function(){
+					globals.items.updateVersion();
+				}, "version")
 			};
 	
 	this.display = function(){
@@ -17,24 +23,22 @@ function Items(){
 			itemData.selectedVersion = globals.gameData.getVersions()[0];
 		}
 		
-		// init versions
-		$("#versionList").html(itemData.version.getList(itemData.selectedVersion));
-
+		
+		this.updateTable();
+	}
+	
+	this.updateTable = function(){
+		// init table
+		$("#itemData").html("<table>" + _getTable(itemData.selectedVersion) + "</table>");
+	}
+	
+	this.updateVersion = function(){
 		// init table
 		$("#itemData").html("<table>" + _getTable(itemData.selectedVersion) + "</table>");
 	}
 	
 	function _getTable(version) {
-		debugger;
-		
 		var version = globals.gameData.getVersions()[0];
-		if(!version)
-			return;
-		
-		globals.imageData.registerObserver("items", ["hp", "attack", "defense", "focus"], function(){
-			globals.items.display();
-		});
-		
 		var tableString = "<tr><th>" + globals.langData.getEntry("id") + "</th><th>" + globals.langData.getEntry("item") + "</th><th>" + globals.langData.getEntry("stats") + "</th></tr>";
 
 		if (!globals.gameData.hasGame(version)) 
@@ -46,10 +50,6 @@ function Items(){
 			tableString += "<tr><td>" + i + "</td><td>";
 			tableString += "<img class='item-entry-icon' src='" + globals.imageData.getImage(version, "items", item.icon + item.rarity) + "'/> ";
 			tableString += "<span class='item-entry-text'>" + item.name.en_US + "</td><td>";
-			
-			globals.imageData.registerObserver("items", item.icon + item.rarity, function(){
-				globals.items.display();
-			});
 			
 			if (item.params !== undefined) {
 				var first = true;
@@ -86,6 +86,7 @@ function Items(){
 }
 globals.items = new Items();
 
+debugger;
 
 globals.module.registerOnLoaded(function(){
 	globals.menu.add("Items", function(){}, "../modules/items/items.html", true);

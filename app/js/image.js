@@ -5,7 +5,7 @@ function ImageDatabase(){
 	this.scale = 2;
 	this.method = "nearest-neighbor";
 
-	this.addImage = function(containerId, name, tileName, url, type, x, y, width, heigth) {
+	this.addImage = function(version, name, tileName, url, type, x, y, width, heigth) {
 		var scaleValue = this.scale;
 		var methodValue = this.method;
 
@@ -13,8 +13,8 @@ function ImageDatabase(){
 			if(err)
 				throw err;
 			
-			if(!imageDatabase[containerId])
-				imageDatabase[containerId] = {};
+			if(!imageDatabase[version])
+				imageDatabase[version] = {};
 			
 			if(x == undefined){
 				if(width){
@@ -24,7 +24,7 @@ function ImageDatabase(){
 						methodValue,
 						function(err, finishedImage) {
 							finishedImage.toBuffer(type, {compression: "none", interlaced: false, transparency: true}, function(err, buffer) {
-								globals.imageData.saveImage(containerId, name, tileName, "data:image/" + type + ";base64," + buffer.toString('base64'));
+								globals.imageData.saveImage(version, name, tileName, "data:image/" + type + ";base64," + buffer.toString('base64'));
 							});
 						}
 					);
@@ -35,7 +35,7 @@ function ImageDatabase(){
 						methodValue,
 						function(err, finishedImage) {
 							finishedImage.toBuffer(type, {compression: "none", interlaced: false, transparency: true}, function(err, buffer) {
-								globals.imageData.saveImage(containerId, name, tileName, "data:image/" + type + ";base64," + buffer.toString('base64'));
+								globals.imageData.saveImage(version, name, tileName, "data:image/" + type + ";base64," + buffer.toString('base64'));
 							});
 						}
 					);
@@ -53,7 +53,7 @@ function ImageDatabase(){
 							methodValue,
 							function(err, finishedImage) {
 								finishedImage.toBuffer(type, {compression: "none", interlaced: false, transparency: true}, function(err, buffer) {
-									globals.imageData.saveImage(containerId, name, tileName, "data:image/" + type + ";base64," + buffer.toString('base64'));
+									globals.imageData.saveImage(version, name, tileName, "data:image/" + type + ";base64," + buffer.toString('base64'));
 								});
 							}
 						);
@@ -63,41 +63,43 @@ function ImageDatabase(){
 		});
 	}
 	
-	this.saveImage = function(containerId, name, tileName, image){
+	this.saveImage = function(version, name, tileName, image){
 		if(!tileName){
-			imageDatabase[containerId][name] = image; //No tiles
+			imageDatabase[version][name] = image; //No tiles
 		} else {
-			if(!imageDatabase[containerId][name])
-				imageDatabase[containerId][name] = {};
+			if(!imageDatabase[version][name])
+				imageDatabase[version][name] = {};
 			
-			imageDatabase[containerId][name][tileName] = image; //With tiles
+			imageDatabase[version][name][tileName] = image; //With tiles
 		}
+		
+		_callObservers(name, tileName, image);
 	}
 
-	this.removeImage = function(containerId, name, tileName){
-		if (!imageDatabase[containerId] || !imageDatabase[containerId][name])
+	this.removeImage = function(version, name, tileName){
+		if (!imageDatabase[version] || !imageDatabase[version][name])
 			return;
 		
 		if(!tileName)
-			delete imageDatabase[containerId][name];
+			delete imageDatabase[version][name];
 		else
-			delete imageDatabase[containerId][name][tileName];
+			delete imageDatabase[version][name][tileName];
 		
 		_callObservers(name, tileName);
 	}
 
-	this.getImage = function(containerId, name, tileName) {
-		if (!imageDatabase[containerId] || !imageDatabase[containerId][name])
+	this.getImage = function(version, name, tileName) {
+		if (!imageDatabase[version] || !imageDatabase[version][name])
 			return "";
 
 		if(!tileName)
-			return imageDatabase[containerId][name];
+			return imageDatabase[version][name];
 		else
-			return imageDatabase[containerId][name][tileName];
+			return imageDatabase[version][name][tileName];
 	}
 	
 	this.registerObserver = function(cb, name, tileName){
-		observers.push({name: name, tileName:tileName, cb: cb});
+		return observers.push({name: name, tileName:tileName, cb: cb});
 	}
 	
 	function _callObservers(name, tileName, image){
