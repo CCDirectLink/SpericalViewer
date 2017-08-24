@@ -55,6 +55,7 @@
 				var modules = globals.module.findModules("modules");
 				globals.module.loadModules(modules, function(){
 					globals.module.onLoaded();
+					globals.loader.loadSaved();
 				});
 			});
 			

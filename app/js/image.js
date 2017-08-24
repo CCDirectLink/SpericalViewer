@@ -93,9 +93,9 @@ function ImageDatabase(){
 			return "";
 
 		if(!tileName)
-			return imageDatabase[version][name];
+			return imageDatabase[version][name] || "";
 		else
-			return imageDatabase[version][name][tileName];
+			return imageDatabase[version][name][tileName] || "";
 	}
 	
 	this.registerObserver = function(cb, name, tileName){

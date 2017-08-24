@@ -2,6 +2,13 @@ function Loader(){
 	const MAC_APP_PATH = "/Contents/Resources/app.nw/";
 	const MAIN_PATH = "node-webkit.html";
 	
+	this.loadSaved = function(){
+		var versions = globals.env.getSavedVersions();
+		for(var version in versions){
+			_findFile(versions[version], _extractData);
+		}
+	}
+	
 	this.load = function(file){
 		if(!file)
 			return;
@@ -34,6 +41,8 @@ function Loader(){
 		}
 
 		_extractChangelog(folder, id, function(data){
+			globals.env.saveVersionPath(data.containerId, folder);
+			
 			globals.gameData.addData(data.shortId, "changelog", data.changelog);
 			globals.gameData.addData(data.shortId, "containerId", data.containerId);
 			globals.gameData.addData(data.shortId, "gameId", data.gameId);

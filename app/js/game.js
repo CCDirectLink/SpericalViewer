@@ -60,7 +60,7 @@ function GameData() {
 	function _callObservers(game, property, value){
 		for (var observer in observers) {
 			var filter = observers[observer].property;
-			if(!filter || filter === property)
+			if(!filter || !property || filter === property)
 				observers[observer].call(game, property, value);
 			
 			if(filter.constructor === Array){

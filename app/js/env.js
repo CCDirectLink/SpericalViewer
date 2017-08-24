@@ -20,6 +20,8 @@ function Environment(){
 		}
 	};
 	
+	var versionList = {};
+	
 	this.name = "SpericalViewer";
 	this.version = version;
 	this.build = build;
@@ -34,7 +36,23 @@ function Environment(){
 			seperator: path.sep
 		};
 	
+	this.saveVersionPath = function(id, path){
+		versionList[id] = path;
+		localStorage.setItem("versionList", JSON.stringify(versionList));
+	}
+	
+	this.removeVersionPath = function(id){
+		delete versionList[id];
+		localStorage.setItem("versionList", JSON.stringify(versionList));
+	}
+	
+	this.getSavedVersions = function(){
+		return versionList;
+	}
+	
 	function initialize(env){
+		versionList = JSON.parse(localStorage.getItem("versionList")) || {};
+		
 		var tmp = $.getJSON('version/versions.json').done(function(){
 			var jsonData = tmp.responseJSON;
 			var versionArray = jsonData.ver.split(".");
@@ -88,6 +106,7 @@ function Environment(){
 			process.exit(0);
 		});
 	}
+	
 	
 	initialize(this);
 }
