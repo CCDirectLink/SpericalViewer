@@ -20,16 +20,12 @@ function Menu(element, entryContainer, callback) {
 	this.add = function(name, func, siteUrl, enableState, pos = null) {
 		var id = entrys.length;
 		entrys.push({function: func, name: name, site: siteUrl, enabled: enableState, id: id});
-		if ((pos === null) || (typeof(pos) !== "number"))
-		{
+		if ((pos === null) || (typeof(pos) !== "number")){
 			position.push(entrys[id]);
 			entrys[id]["pos"] = id;
-		}
-		else
-		{
+		} else {
 			if ((pos >= entrys.length) ||
-				(pos < 0))
-			{
+				(pos < 0)) {
 				pos = entrys.length - 1;
 			}
 			position.splice(pos, 0, entrys[id]);
@@ -53,8 +49,7 @@ function Menu(element, entryContainer, callback) {
 		if ((typeof(id) === "number") &&
 			(typeof(pos) === "number")) {
 			if ((pos >= entrys.length) ||
-				(pos < 0))
-			{
+				(pos < 0)) {
 				pos = entrys.length - 1;
 			}
 			position.splice(pos, 0, position.splice(entrys[id].pos, 1)[0]);
