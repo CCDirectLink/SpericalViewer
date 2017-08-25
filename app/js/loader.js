@@ -1,5 +1,5 @@
 function Loader(){
-	const MAC_APP_PATH = "/Contents/Resources/app.nw/";
+	const MAC_APP_PATH = "/Contents/Resources/app.nw";
 	const MAIN_PATH = "node-webkit.html";
 	
 	this.loadSaved = function(){
