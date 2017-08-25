@@ -1,6 +1,7 @@
 function Menu(element, entryContainer, callback) {
 	var currentId = -1;
 	var entrys = [];
+	var position = [];
   
 	function initialize(){
 		if(!element){
@@ -15,22 +16,58 @@ function Menu(element, entryContainer, callback) {
 		this.entryElement = entryContainer;
 	}
 	
-	this.add = function(name, func, siteUrl, enableState) {
-		entrys[entrys.length] = {function: func, name: name, site: siteUrl, enabled: enableState};
+	// pos: <0 or >length = last
+	this.add = function(name, func, siteUrl, enableState, pos = null) {
+		var id = entrys.length;
+		entrys.push({function: func, name: name, site: siteUrl, enabled: enableState, id: id});
+		if ((pos === null) || (typeof(pos) !== "number"))
+		{
+			position.push(entrys[id]);
+			entrys[id]["pos"] = id;
+		}
+		else
+		{
+			if ((pos >= entrys.length) ||
+				(pos < 0))
+			{
+				pos = entrys.length - 1;
+			}
+			position.splice(pos, 0, entrys[id]);
+			entrys[id]["pos"] = pos;
+		}
+		return id;
 	}
 	
 	this.edit = function (id, name, func, siteUrl, enableState) {
 		if (typeof(id) === "number") {
-			entrys[id] = {function: func, name: name, site: siteUrl, enabled: enableState};
+			entrys[id] = {function: func, name: name, site: siteUrl, enabled: enableState, pos: entrys[id]["pos"], id: id};
 			return true;
 		} else {
 			this.update(id);
 			return false;
 		}
 	}
+
+	// pos: <0 or >length = last
+	this.moveTo = function (id, pos) {
+		if ((typeof(id) === "number") &&
+			(typeof(pos) === "number")) {
+			if ((pos >= entrys.length) ||
+				(pos < 0))
+			{
+				pos = entrys.length - 1;
+			}
+			position.splice(pos, 0, position.splice(entrys[id].pos, 1)[0]);
+			this.updateAll();
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	this.remove = function(id) {
 		if (typeof(id) === "number") {
+			position.splice(entrys[id].pos, 1);
 			entrys.splice(id, 1);
 			this.updateAll();
 			return true;
@@ -81,15 +118,15 @@ function Menu(element, entryContainer, callback) {
 	
 	this.updateAll = function() {
 		$(this.menuElement).empty();
-		for (var entry in entrys) {
+		for (var entry in position) {
 			var className = "menuentry";
 			if (entry == currentId) {
 				className = "menuentrySelected";
 			}
-			if (!entrys[entry].enabled) {
+			if (!position[entry].enabled) {
 				className = "menuentryDisabled";
 			}
-			$(this.menuElement).append("<li class=\"" + className + "\"><a class=\"menuelement\" id=\"" + entry + "\" onclick=\"globals.menu.select(" + entry + ")\">" + entrys[entry].name + "</a></li>")
+			$(this.menuElement).append("<li class=\"" + className + "\"><a class=\"menuelement\" id=\"" + position[entry].id + "\" onclick=\"globals.menu.select(" + position[entry].id + ")\">" + position[entry].name + "</a></li>")
 		}
 	}
 	
