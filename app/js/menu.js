@@ -115,7 +115,7 @@ function Menu(element, entryContainer, callback) {
 		$(this.menuElement).empty();
 		for (var entry in position) {
 			var className = "menuentry";
-			if (entry == currentId) {
+			if (position[entry].id == currentId) {
 				className = "menuentrySelected";
 			}
 			if (!position[entry].enabled) {
