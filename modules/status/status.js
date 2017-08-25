@@ -78,6 +78,7 @@ globals.status = new Status();
 
 
 globals.module.registerOnLoaded(function(){
-	globals.menu.add("Status", function(){}, "../modules/status/status.html", true);
+	var id = globals.menu.add("Status", function(){}, "../modules/status/status.html", true, 0);
 	globals.menu.updateAll();
+	globals.menu.select(id);
 });
