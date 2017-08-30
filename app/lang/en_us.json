@@ -20,6 +20,10 @@
 		"clear": "clear",
 		"path": "Path",
 		"installed": "Installed",
+		"install": "Install",
+		"start": "Start",
+		"downloading": "Downloading...",
+		"installing": "Installing...",
 
 		"savegames": "Savegames",
 

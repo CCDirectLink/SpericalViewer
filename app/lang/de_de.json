@@ -20,6 +20,10 @@
 		"clear": "leeren",
 		"path": "Pfad",
 		"installed": "Installiert",
+		"install": "Installieren",
+		"start": "Öffnen",
+		"downloading": "Lade herunter...",
+		"installing": "Installiere...",
 
 		"savegames": "Spielstand",
 
