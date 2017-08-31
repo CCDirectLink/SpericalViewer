@@ -1,5 +1,5 @@
 .DS_Store
 dist/
 node_modules/
-npm-debug.log
+npm-debug.*
 app/version/
