@@ -42,7 +42,7 @@ function CCLoader(){
 	}
 	
 	this.start = function(id){
-		exec(globals.gameData.versions[id].path.main + "../crosscode-beta.exe"); //TODO: Make platform-independant
+		globals.gameData.start(id);
 	}
 	
 	function _extract(file, unzipPath, cb){

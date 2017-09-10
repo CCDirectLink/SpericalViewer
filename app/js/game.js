@@ -57,6 +57,10 @@ function GameData() {
 		return this.versions[version][property];
 	}
 	
+	this.start = function(version){
+		exec(globals.gameData.versions[version].path.main + "../crosscode-beta.exe"); //TODO: Make platform-independant
+	}
+	
 	function _callObservers(game, property, value){
 		for (var observer in observers) {
 			var filter = observers[observer].property;
