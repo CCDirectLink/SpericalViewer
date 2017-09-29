@@ -19,6 +19,7 @@
 	"fixnative:linux": "./node_modules/.bin/electron-rebuild",
 	"fixnative:mac": "./node_modules/.bin/electron-rebuild",
 	"fixnative:win": ".\\node_modules\\.bin\\electron-rebuild.cmd",
+	"genVersion": "node genVersion.js",
     "dist": "build",
     "dist:all": "build --mac --win --linux"
   },
