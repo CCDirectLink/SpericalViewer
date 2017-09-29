@@ -7,7 +7,7 @@ const fs = require("fs");
 const stream = require('stream');
 const util = require('util');
 const unzip = require('unzip2');
-const lwip = require('lwip');
+const lwip = require('@mcph/lwip');
 
 let win;
 

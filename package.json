@@ -15,6 +15,10 @@
     "pack:mac": "build --dir --mac",
     "pack:win": "build --dir --win",
     "pack:linux": "build --dir --linux",
+	"fixnative": "./node_modules/.bin/electron-rebuild",
+	"fixnative:linux": "./node_modules/.bin/electron-rebuild",
+	"fixnative:mac": "./node_modules/.bin/electron-rebuild",
+	"fixnative:win": ".\\node_modules\\.bin\\electron-rebuild.cmd",
     "dist": "build",
     "dist:all": "build --mac --win --linux"
   },
@@ -40,7 +44,7 @@
     "electron-rebuild": "^1.4.0"
   },
   "dependencies": {
-    "lwip": "0.0.9",
+    "@mcph/lwip": "git+https://github.com/mixer/lwip.git",
     "unzip2": "^0.2.5"
   }
 }
