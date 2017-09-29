@@ -222,12 +222,12 @@ function Loader(){
 	
 	function _unZip(file, start, callback){
 		var id = _getId(file);
-		var unzipPath = globals.env.path.storage + path.sep + id + path.sep;
+		var unzipPath = globals.env.path.storage + path.sep + id;
 		fs.createReadStream(file, {start: start})
 			.pipe(unzip.Extract({ path: unzipPath }))
 			.on('close', function () {
-				if(cb)
-					cb(unzipPath, id);
+				if(callback)
+					callback(unzipPath, id);
 			});
 	}
 }
