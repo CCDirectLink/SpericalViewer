@@ -55,6 +55,17 @@
 			globals.langData.loadAll(function(){
 				globals.langData.setLang("en", "us");
 				var modules = globals.module.findModules("modules");
+                if (!globals.env.isDevEnv)
+                {
+                    // dist / pack build only
+                    // internal modules (static, hard links)
+                    modules = modules.concat([
+                        `file://${__dirname}/../modules/ccloader/package.json`,
+                        `file://${__dirname}/../modules/items/package.json`,
+                        `file://${__dirname}/../modules/settings/package.json`,
+                        `file://${__dirname}/../modules/status/package.json`
+                        ]);
+                }
 				globals.module.loadModules(modules, function(){
 					globals.module.onLoaded();
 					globals.loader.loadSaved();

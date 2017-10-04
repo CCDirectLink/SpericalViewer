@@ -1,5 +1,8 @@
 function Environment(){
 	const {app} = require('electron').remote; //remote access
+
+	// check if dev
+	this.isDevEnv = require('electron').remote.require('electron-is-dev');
 	
 	var version = {
 		major: 0, 

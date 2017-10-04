@@ -1,6 +1,6 @@
 "use strict";
 
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow} = require('electron');
 
 const crypto = require('crypto');
 const fs = require("fs");
@@ -8,6 +8,7 @@ const stream = require('stream');
 const util = require('util');
 const unzip = require('unzip2');
 const lwip = require('@mcph/lwip');
+const isDevEnv = require('electron-is-dev');
 
 let win;
 
@@ -23,8 +24,10 @@ function createWindow () {
   // and load the index.html of the app.
   win.loadURL(`file://${__dirname}/index.html`);
 
-  // Open the DevTools.
-  win.openDevTools();
+  // Open the DevTools (if not packed).
+  if (isDevEnv) {
+    win.openDevTools();
+  }
 
   // Emitted when the window is closed.
   win.on('closed', () => {

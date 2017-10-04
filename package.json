@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "@mcph/lwip": "git+https://github.com/mixer/lwip.git",
+    "electron-is-dev": "^0.3.0",
     "unzip2": "^0.2.5"
   }
 }
