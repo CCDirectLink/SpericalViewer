@@ -1,6 +1,6 @@
 {
   "name": "SpericalViewer",
-  "version": "0.2.0",
+  "version": "0.3.1",
   "description": "Viewer for CrossCode content",
   "main": "app/main.js",
   "author": "CCDirectLink",
@@ -15,11 +15,11 @@
     "pack:mac": "build --dir --mac",
     "pack:win": "build --dir --win",
     "pack:linux": "build --dir --linux",
-	"fixnative": "./node_modules/.bin/electron-rebuild",
-	"fixnative:linux": "./node_modules/.bin/electron-rebuild",
-	"fixnative:mac": "./node_modules/.bin/electron-rebuild",
-	"fixnative:win": ".\\node_modules\\.bin\\electron-rebuild.cmd",
-	"genVersion": "node genVersion.js",
+    "fixnative": "./node_modules/.bin/electron-rebuild",
+    "fixnative:linux": "./node_modules/.bin/electron-rebuild",
+    "fixnative:mac": "./node_modules/.bin/electron-rebuild",
+    "fixnative:win": ".\\node_modules\\.bin\\electron-rebuild.cmd",
+    "genVersion": "node genVersion.js",
     "dist": "build",
     "dist:all": "build --mac --win --linux"
   },
@@ -33,7 +33,7 @@
     },
     "win": {
       "title": "SpericalViewer",
-      "version": "0.2.0",
+      "version": "0.3.1",
       "noMsi": true,
       "authors": "CCDirectLink"
     }
