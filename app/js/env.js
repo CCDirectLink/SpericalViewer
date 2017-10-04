@@ -34,6 +34,10 @@ function Environment(){
 				backupFile: "cc.save.backup",
 				folder: null
 			},
+			module: {
+				user: null,
+				app: null
+			},
 			cache: app.getPath('userData'),
 			storage: null,
 			seperator: path.sep
@@ -80,19 +84,36 @@ function Environment(){
 			build.date = jsonData.date;
 
 			if (process.platform == "darwin") {
+				env.path.module.user = process.env.HOME + "/Library/Application Support/" + env.name + "/modules";
+				var _appFolderPath = app.getAppPath();
+
+				if ((_appFolderPath.length > 32) &&
+					(_appFolderPath.substr(_appFolderPath.length - 32, _appFolderPath.length) == ".app/Contents/Resources/app.asar"))
+				{
+					_appFolderPath = _appFolderPath.substr(0, _appFolderPath.length - 32);
+					_appFolderPath = _appFolderPath.substr(0, _appFolderPath.lastIndexOf("/"));
+				}
+	
+				env.path.module.app = _appFolderPath + "/modules";
 				env.path.storage = process.env.HOME + "/Library/Application Support/" + env.name + "/GameStorage";
 				env.path.save.folder = process.env.HOME + "/Library/Application Support/CrossCode/" + "Default";
 			}
 			else if (process.platform == "win32") {
+				env.path.module.user = process.env.LOCALAPPDATA + "\\" + env.name + "\\modules";
+				env.path.module.app = app.getAppPath() + "/modules";
 				env.path.storage = process.env.LOCALAPPDATA + "\\" + env.name + "\\GameStorage";
 				env.path.save.folder = process.env.LOCALAPPDATA + "\\CrossCode";
 			}
 			else if (process.platform == "linux") {
+				nv.path.module.user = process.env.HOME + "/.config/" + env.name + "/modules";
+				env.path.module.app = app.getAppPath() + "/modules";
 				env.path.storage = process.env.HOME + "/.config/" + env.name + "/GameStorage";
 				env.path.save.folder = process.env.HOME + "/.config/CrossCode/" + "Default";
 			}
 			else {
 				alert("Unknown System Environment\r\nUsing linux defaults");
+				env.path.module.user = process.env.HOME + "/.config/" + env.name + "/modules";
+				env.path.module.app = app.getAppPath() + "/modules";
 				env.path.storage = process.env.HOME + "/.config/" + env.name + "/GameStorage";
 				env.path.save.folder = process.env.HOME + "/.config/CrossCode/" + "Default";
 			}
