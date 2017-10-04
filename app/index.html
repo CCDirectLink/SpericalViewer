@@ -54,7 +54,11 @@
 		
 			globals.langData.loadAll(function(){
 				globals.langData.setLang("en", "us");
-				var modules = globals.module.findModules("modules");
+                // external modules
+				var modules = globals.module.findModules([
+                    globals.env.path.module.user,
+                    globals.env.path.module.app
+                    ]);
                 if (!globals.env.isDevEnv)
                 {
                     // dist / pack build only
