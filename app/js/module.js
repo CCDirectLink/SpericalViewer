@@ -52,11 +52,35 @@ function Module(){
 		})
 	}
 
-	this.findModules = function(directory){
-		var files = fs.readdirSync(directory);
+	this.findModules = function(directories){
+		var files = [];
 		var result = [];
+
+		if (typeof directories === 'string' || directories instanceof String) {
+			try {
+				files = fs.readdirSync(directories);
+				for(var i in files){
+					files[i] = directories + "/" + files[i];
+				}
+			} catch(err) {
+				// no module folder - ignore files
+			}
+		} else {
+			for(var i in directories){
+				try {
+					var _tempFiles = fs.readdirSync(directories[i]);
+					for(var j in _tempFiles){
+						_tempFiles[j] = directories[i] + "/" + _tempFiles[j];
+					}
+					files = files.concat(_tempFiles);
+				} catch(err) {
+					// no module folder - ignore files
+				}
+			}
+		}
+		
 		for(var i in files){
-			var file = fs.realpathSync(directory + "/" + files[i]);
+			var file = fs.realpathSync(files[i]);
 			if(file.endsWith(MODULE_EXTENSION)){
 				result.push(file);
 			} else if (fs.lstatSync(file).isDirectory() && fs.existsSync(file + "/package.json")){
