@@ -59,8 +59,7 @@
                     globals.env.path.module.user,
                     globals.env.path.module.app
                     ]);
-                if (!globals.env.isDevEnv)
-                {
+                if (!globals.env.isDevEnv) {
                     // dist / pack build only
                     // internal modules (static, hard links)
                     modules = modules.concat([
