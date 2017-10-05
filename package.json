@@ -9,7 +9,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
-    "rebuild": "npm rebuild --runtime=electron --target=1.4.12 --disturl=https://atom.io/download/atom-shell --abi=51",
     "pack": "build --dir",
     "pack:all": "build --dir --mac --win --linux",
     "pack:mac": "build --dir --mac",
