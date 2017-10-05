@@ -24,25 +24,23 @@
     "dist:all": "build --mac --win --linux"
   },
   "build": {
-    "appId": "ccdirectlink.sperical-viewer",
+    "appId": "com.electron.ccdirectlink.sperical-viewer",
+    "productName": "SpericalViewer",
     "mac": {
       "category": "service"
     },
     "dmg": {
-      "title": "SpericalViewer"
+      "title": "SpericalViewer ${version}"
     },
     "win": {
-      "title": "SpericalViewer",
-      "version": "0.3.1",
-      "noMsi": true,
-      "authors": "CCDirectLink"
+      "target": "portable"
     }
   },
   "devDependencies": {
-    "electron-builder": "^10.8.1",
-    "electron-packager": "^4.2.0",
-    "electron-prebuilt": "^1.4.12",
-    "electron-rebuild": "^1.4.0"
+    "electron-builder": "^19.32.2",
+    "electron-packager": "^9.1.0",
+    "electron": "^1.7.8",
+    "electron-rebuild": "^1.6.0"
   },
   "dependencies": {
     "@mcph/lwip": "git+https://github.com/mixer/lwip.git",
