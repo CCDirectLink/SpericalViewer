@@ -39,6 +39,8 @@ function saveVersion(){
 		hashlong: commitHash,
 		ver: tag.name
 	}
+
+	console.log(version);
 	
 	if(!fs.statSync(dir).isDirectory())
 		fs.mkdirSync(dir);
