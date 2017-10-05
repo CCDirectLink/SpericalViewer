@@ -5,8 +5,8 @@
   "main": "app/main.js",
   "author": "CCDirectLink",
   "license": "MIT",
-  "postinstall": "install-app-deps",
   "scripts": {
+    "postinstall": "node postinstall.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
     "pack": "build --dir",
