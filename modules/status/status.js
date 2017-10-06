@@ -16,6 +16,7 @@ function Status(){
 	
 	this.display = function(){
 		$("#license").html(globals.langData.getEntry("license"));
+		$('#loadGame').html(globals.langData.getEntry("loadGame"));
 		$("#loadedGameTitle").html(globals.langData.getEntry("loadedGames"));
 		$("#storedGameTitle").html(globals.langData.getEntry("storedGameData"));
 
@@ -43,6 +44,11 @@ function Status(){
 	this.removeVersion = function(version){
 		globals.env.removeVersionPath(version);
 		$("#storedGame").html("<table>" + _getPathsTable() + "</table>");
+	}
+	
+	this.onchange = function(){
+		globals.loader.load($('#file')[0].files);
+		$('#file')[0].value = "";
 	}
 	
 	function _getTable() {

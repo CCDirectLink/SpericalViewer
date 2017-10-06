@@ -1,13 +1,15 @@
 function Settings(){
 	var settings = {
-			selectedLang: "en_us",
-			langTrigger: function() {
-					settings.selectedLang = $( "#langList" )[0].options[$("#langList")[0].selectedIndex].value;
-					var split = settings.selectedLang.split("_");
-					globals.langData.setLang(split[0], split[1]);
-					globals.menu.updateAll();
-				}
+			selectedLang: "en_us"
 		};
+	
+	this.langTrigger = function() {
+		settings.selectedLang = $( "#langList" )[0].options[$("#langList")[0].selectedIndex].value;
+		var split = settings.selectedLang.split("_");
+		globals.langData.setLang(split[0], split[1]);
+		globals.menu.updateAll();
+		this.display();
+	}
 	
 	this.display = function(){
 		// container dir

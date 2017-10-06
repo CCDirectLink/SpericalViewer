@@ -9,6 +9,7 @@
 	{
 		"status": "Status",
 		"license": "Released under MIT License",
+		"loadGame": "Load game",
 		"loadedGames": "Loaded games",
 		"storedGameData": "Stored game data",
 		"noGames": "(no games)",

@@ -82,7 +82,7 @@ function Menu(element, entryContainer, callback) {
 	
 	this.select = function(id) {
 		if ((currentId != id) && (typeof(id) === "number") && (typeof(entrys[id]) === "object")) {
-			if (!entrys[id].enabled) {
+			if (!isEnabled(entrys[id])) {
 				return false;
 			}
 
@@ -118,7 +118,7 @@ function Menu(element, entryContainer, callback) {
 			if (position[entry].id == currentId) {
 				className = "menuentrySelected";
 			}
-			if (!position[entry].enabled) {
+			if (!isEnabled(position[entry])) {
 				className = "menuentryDisabled";
 			}
 			$(this.menuElement).append("<li class=\"" + className + "\"><a class=\"menuelement\" id=\"" + position[entry].id + "\" onclick=\"globals.menu.select(" + position[entry].id + ")\">" + position[entry].name + "</a></li>")
@@ -131,7 +131,7 @@ function Menu(element, entryContainer, callback) {
 			if (entrys[id].name == null) {
 				entryName = "Entry(" + id + ")";
 			}
-			if (!entrys[entry].enabled) {
+			if (!isEnabled(entrys[entry])) {
 				$(".menuentry a#" + currentId)[0].parentNode.className = "menuentryDisabled";
 			}
 			else {
@@ -141,6 +141,14 @@ function Menu(element, entryContainer, callback) {
 			return true;
 		}
 		return false;
+	}
+	
+	function isEnabled(entry){
+		if(entry.enabled.constructor === Boolean){
+			return entry;
+		}
+		
+		entry.enabled();
 	}
 	
 	initialize.call(this);
