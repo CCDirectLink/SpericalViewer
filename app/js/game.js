@@ -5,7 +5,7 @@ function GameData() {
 
 	/**
  	 * Version storage
- 	 * DO NOT USE .length (undefined) USE getVersions() INSTEAD
+ 	 * DO NOT USE .length (undefined) USE size() INSTEAD
  	 */
 	this.versions = {};
 
