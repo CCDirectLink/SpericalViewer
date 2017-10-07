@@ -11,6 +11,8 @@ function Status(){
 			$("#loadedGame").html("<table>" + _getTable() + "</table>");
 			$("#storedGame").html("<table>" + _getPathsTable() + "</table>");
 
+			globals.menu.updateAll();
+
 		}, "version");
 	}
 	

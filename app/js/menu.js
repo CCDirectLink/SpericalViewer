@@ -148,7 +148,7 @@ function Menu(element, entryContainer, callback) {
 			return entry;
 		}
 		
-		entry.enabled();
+		return entry.enabled();
 	}
 	
 	initialize.call(this);

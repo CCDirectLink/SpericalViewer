@@ -98,7 +98,7 @@ globals.items = new Items();
 
 globals.module.registerOnLoaded(function(){
 	globals.menu.add("Items", function(){}, "../modules/items/items.html", function(){
-			return globals.gameData.versions.length > 0;
+			return globals.gameData.containGames();
 		});
 	globals.menu.updateAll();
 });

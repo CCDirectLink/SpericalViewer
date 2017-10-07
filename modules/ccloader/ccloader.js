@@ -95,7 +95,7 @@ globals.ccloader = new CCLoader();
 
 globals.module.registerOnLoaded(function(){
 	globals.menu.add("CCLoader", function(){}, "../modules/ccloader/ccloader.html", function(){
-			return globals.gameData.versions.length > 0;
+			return globals.gameData.containGames();
 		});
 	globals.menu.updateAll();
 });

@@ -1,9 +1,19 @@
 function GameData() {
 	this.versions = {};
+
+	var length = 0;
 	var observers = [];
 
+	this.size = function(){
+		return length;
+	}
+
+	this.containGames = function() {
+		return (length > 0);
+	}
+
 	this.hasGame = function(version) {
-		if (this.versions.length == 0) 
+		if (length == 0) 
 			return false;
 
 		if (!version)
@@ -24,9 +34,10 @@ function GameData() {
 
 	this.addData = function(version, property, value) {
 		if (!version || !property)
-			return null;
+			return false;
 
 		if (!this.versions[version]) {
+			length += 1;
 			this.versions[version] = {};
 		}
 
@@ -34,6 +45,7 @@ function GameData() {
 		game[property] = value;
 
 		_callObservers(game, property, value);
+		return true;
 	}
 
 	this.removeData = function(version, property) {
@@ -41,10 +53,12 @@ function GameData() {
 			return false;
 		
 		if (!property) {
+			length -= 1;
 			delete this.versions[version];
 		} else {
 			delete this.versions[version][property];
 			if (Object.keys(versions[version]).length == 0) {
+				length -= 1;
 				delete this.versions[version];
 			}
 		}
