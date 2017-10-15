@@ -1,5 +1,4 @@
 function Loader(){
-	const MAC_APP_PATH = "/Contents/Resources/app.nw";
 	const MAIN_PATH = "node-webkit.html";
 	
 	this.loadSaved = function(){
@@ -28,17 +27,7 @@ function Loader(){
 	
 	function _extractData(file, id){
 
-		var folder = "";
-
-		// id is null if there is no container to create
-		// -> Use the game folder directly
-		// -> path.dirname dosn't work with MAC_APP_PATH
-		// (Replace it with /Contents/Resources/)
-		if (id === null) {
-			folder = file + path.sep;
-		} else {
-			folder = path.dirname(file) + path.sep;
-		}
+		var folder = file;
 
 		_extractChangelog(folder, id, function(data){
 			globals.env.saveVersionPath(data.containerId, folder);
@@ -135,13 +124,7 @@ function Loader(){
 	}
 	
 	function _findFile(file, cb){
-		// Mac apps are folders
-		// Check always first
-		if(_isApp(file)){
-			return cb(file + MAC_APP_PATH, null);
-		}
-
-		if(_isDirectory(file)){
+		if(_isDirectory(file) || _isApp(file)){
 			return _searchDirectory(file, cb);
 		}
 		
@@ -150,7 +133,7 @@ function Loader(){
 			return _searchDirectory(path.dirname(file), cb);
 		
 		_unZip(file, start, function(unzipPath, id){
-			cb(unzipPath + path.sep + MAIN_PATH, id);
+			cb(unzipPath + path.sep + MAIN_PATH + path.sep, id);
 		});
 	}
 	
@@ -172,17 +155,11 @@ function Loader(){
 		
 		for(var i in files){
 			var file = fs.realpathSync(folder + path.sep + files[i]);
-			if(file.endsWith(path.sep + MAIN_PATH)) //Is 'folder' /assets ?
-				cb(file, _getId(file));
-			else if(_isDirectory(file)){
-				var subFiles = fs.readdirSync(file); //Check subfolder
-				for(var j in subFiles){
-					var subFile = fs.realpathSync(file + path.sep + subFiles[j]);
-					if(subFile.endsWith(path.sep + MAIN_PATH)){ //Is 'folder/subFile' /assets ?
-						cb(subFile, _getId(subFile));
-						break;
-					}
-				}
+			if(file.endsWith(path.sep + MAIN_PATH)){ // Check if data folder
+				file = file.slice(0, -(MAIN_PATH.length));
+				cb(file, null);
+			} else if(_isDirectory(file)){
+				_searchDirectory(file, cb); // Recursive search
 			}
 		}
 	}
@@ -204,14 +181,14 @@ function Loader(){
 											// Signature
 			if ((data[i] == 0x50) &&		// P
 				(data[i + 1] == 0x4b) &&	// K
-				(data[i + 2] == 0x03) &&   // 0x3
+				(data[i + 2] == 0x03) &&	// 0x3
 				(data[i + 3] == 0x04) &&	// 0x4
 
 				(data[i + 30] == 0x64) &&	// d
-				(data[i + 31] == 0x61) && 	// a
-				(data[i + 32] == 0x74) && 	// t
-				(data[i + 33] == 0x61) && 	// a
-				(data[i + 34] == 0x2f)) { 	// slash
+				(data[i + 31] == 0x61) &&	// a
+				(data[i + 32] == 0x74) &&	// t
+				(data[i + 33] == 0x61) &&	// a
+				(data[i + 34] == 0x2f)) {	// slash
 			
 				return i;
 			}
@@ -222,7 +199,7 @@ function Loader(){
 	
 	function _unZip(file, start, callback){
 		var id = _getId(file);
-		var unzipPath = globals.env.path.storage + path.sep + id;
+		var unzipPath = globals.env.path.storage + path.sep + id + path.sep;
 		fs.createReadStream(file, {start: start})
 			.pipe(unzip.Extract({ path: unzipPath }))
 			.on('close', function () {
