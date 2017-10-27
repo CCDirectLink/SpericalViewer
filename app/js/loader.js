@@ -25,12 +25,16 @@ function Loader(){
 		_findFile(file.path, _extractData);
 	}
 	
-	function _extractData(file, id){
+	function _extractData(file, dropped, id){
 
 		var folder = file;
 
-		_extractChangelog(folder, id, function(data){
-			globals.env.saveVersionPath(data.containerId, folder);
+		_extractChangelog(folder, dropped, id, function(data){
+			
+			if (data.containerId)
+			{
+				globals.env.saveVersionPath(data.containerId, folder);
+			}
 			
 			globals.gameData.addData(data.shortId, "changelog", data.changelog);
 			globals.gameData.addData(data.shortId, "containerId", data.containerId);
@@ -38,15 +42,17 @@ function Loader(){
 			globals.gameData.addData(data.shortId, "shortId", data.shortId);
 			globals.gameData.addData(data.shortId, "version", data.version);
 			globals.gameData.addData(data.shortId, "path", data.path);
+			globals.gameData.addData(data.shortId, "os", data.os);
+			globals.gameData.addData(data.shortId, "isExecutable", data.isExecutable);
 			
 			
-			$.getJSON(data.path.main + data.path.list[0] + "database.json").done(function(json){
+			$.getJSON(data.path.data + "database.json").done(function(json){
 				globals.gameData.addData(data.shortId, "database", json);
 			});
-			$.getJSON(data.path.main + data.path.list[0] + "global-settings.json").done(function(json){
+			$.getJSON(data.path.data + "global-settings.json").done(function(json){
 				globals.gameData.addData(data.shortId, "globalSettings", json);
 			});
-			$.getJSON(data.path.main + data.path.list[0] + "item-database.json").done(function(json){
+			$.getJSON(data.path.data + "item-database.json").done(function(json){
 				globals.gameData.addData(data.shortId, "items", json.items);
 			});
 			
@@ -60,7 +66,7 @@ function Loader(){
 					var startY = rowIndex * (iconSet.dimension.height + iconSet.dimension.ypad);
 
 					globals.imageData.addImage(data.shortId, "items", iconSpecify[columnIndex] + rowIndex,
-						data.path.main + data.path.list[2] + "font" + path.sep + "icons-items.png", "png", startX, startY, iconSet.dimension.width, iconSet.dimension.height);
+						data.path.media + "font" + path.sep + "icons-items.png", "png", startX, startY, iconSet.dimension.width, iconSet.dimension.height);
 				}
 			}
 			
@@ -73,28 +79,65 @@ function Loader(){
 				var startY = iconSet.ystart;
 
 				globals.imageData.addImage(data.shortId, "items", iconSpecify[columnIndex], 
-					data.path.main + data.path.list[2] + "gui" + path.sep + "menu.png", "png", startX, startY, iconSet.dimension.width, iconSet.dimension.height);
+					data.path.media + "gui" + path.sep + "menu.png", "png", startX, startY, iconSet.dimension.width, iconSet.dimension.height);
 			}
 			
 			globals.menu.updateAll();
 		});
 	}
 	
-	function _extractChangelog(folder, id, cb){
+	function _extractChangelog(folder, dropped, id, cb){
 
-		var folderList = [ "data" + path.sep,
-						   "game" + path.sep,
-						   "media" + path.sep,
-						   "js" + path.sep,
-						   "impact" + path.sep ];
+		var os = "";
+		var isExecutable = false;
+
+		if (_isApp(dropped)) {
+			os = "darwin";
+		} else if (_isExe(dropped)) {
+			os = "win32";
+		} else if (!_isDirectory(dropped)) {
+			os = "linux";
+		} else if (_isDirectory(dropped)) {
+			os = "raw";
+		}
+
+		var pathList = { main: folder,
+			data: folder + "data" + path.sep,
+			page: folder + "game" + path.sep + "page" + path.sep,
+			gameHtml: folder + MAIN_PATH,
+			gamePackage: folder + "package.json",
+			media: folder + "media" + path.sep,
+			compiledLogic: folder + "js" + path.sep + "game.compiled.js",
+			impact: folder + "impact" + path.sep,
+			executeable: null };
+
+		if (os == globals.env.os)
+		{
+			isExecutable = true;
+			pathList.executeable = dropped;
+		}
+		else if ((globals.env.os == "darwin") && (os == "raw") &&
+				(fs.stat(dropped + path.sep + ".." + path.sep + "nwjs.app", function(data){
+					console.log(data);
+				}))){}
+		else if ((globals.env.os == "win32") && (os == "raw") &&
+				(fs.existsSync(dropped + path.sep + ".." + path.sep + "nwjs.app", function(data){
+					console.log(data);
+				}))){}
+		else if ((globals.env.os == "linux") && (os == "raw") &&
+				(fs.existsSync(dropped + path.sep + ".." + path.sep + "nwjs.app", function(data){
+					console.log(data);
+				}))){}
+
+	
 
 		var gameId = crypto.createHash('sha256');
-		gameId.update(folder);
+		gameId.update(pathList.main);
 
 		var gameIdHex = gameId.digest('hex');
 		var shortIdHex = gameIdHex.substr(0,8);
 
-		$.get(folder + folderList[0] + "changelog.json").done(function(raw){
+		$.get(pathList.data + "changelog.json").done(function(raw){
 
 			var data = JSON.parse(raw);
 			
@@ -113,10 +156,12 @@ function Loader(){
 			}
 			
 			var callbackData = {changelog: data.changelog,
+					os: os,
+					isExecutable: isExecutable,
 					containerId: id,
 					gameId: gameIdHex,
 					shortId: shortIdHex,
-					path: {main: folder, list: folderList},
+					path: pathList,
 					version: {major: Number(versionArray[0]), minor: Number(versionArray[1]), patch: Number(versionArray[2]), hotfix: hotfixNumber, string: versionString}};
 					
 			cb(callbackData);
@@ -125,20 +170,24 @@ function Loader(){
 	
 	function _findFile(file, cb){
 		if(_isDirectory(file) || _isApp(file)){
-			return _searchDirectory(file, cb);
+			return _searchDirectory(file, file, cb);
 		}
 		
 		var start = _getZip(file);
 		if(start < 0)
-			return _searchDirectory(path.dirname(file), cb);
+			return _searchDirectory(path.dirname(file), file, cb);
 		
 		_unZip(file, start, function(unzipPath, id){
-			cb(unzipPath + path.sep + MAIN_PATH + path.sep, id);
+			cb(unzipPath + path.sep + MAIN_PATH + path.sep, file, id);
 		});
 	}
 	
 	function _isApp(file){
 		return file.endsWith(".app");
+	}
+
+	function _isExe(file){
+		return file.endsWith(".exe");
 	}
 	
 	function _getId(file){
@@ -150,16 +199,16 @@ function Loader(){
 		return id;
 	}
 	
-	function _searchDirectory(folder, cb){
+	function _searchDirectory(folder, dropped, cb){
 		var files = fs.readdirSync(folder);
 		
 		for(var i in files){
 			var file = fs.realpathSync(folder + path.sep + files[i]);
 			if(file.endsWith(path.sep + MAIN_PATH)){ // Check if data folder
 				file = file.slice(0, -(MAIN_PATH.length));
-				cb(file, null);
+				cb(file, dropped, null);
 			} else if(_isDirectory(file)){
-				_searchDirectory(file, cb); // Recursive search
+				_searchDirectory(file, dropped, cb); // Recursive search
 			}
 		}
 	}
@@ -204,7 +253,7 @@ function Loader(){
 			.pipe(unzip.Extract({ path: unzipPath }))
 			.on('close', function () {
 				if(callback)
-					callback(unzipPath, id);
+					callback(unzipPath, file, id);
 			});
 	}
 }
