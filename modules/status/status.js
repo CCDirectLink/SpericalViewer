@@ -60,7 +60,19 @@ function Status(){
 			return globals.langData.getEntry("noGames");
 
 		for (var i in statusArray) {
-			tableString += "<tr><td>" + statusArray[i].id + "</td><td>" + statusArray[i].containerId + "</td><td>" + statusArray[i].version + "</td><td>" + statusArray[i].size + "</td><td><a class=\"close\" id=\"" + statusArray[i].id + "\" onclick=\"globals.status.removeData('" + statusArray[i].id + "');\">" + globals.langData.getEntry("close") + "</a></td></tr>";
+
+			tableString += "<tr><td>" + statusArray[i].id + "</td><td>";
+
+			if (statusArray[i].containerId) {
+				tableString += statusArray[i].containerId;
+			}
+			else
+			{
+				tableString += "(local)";
+			}
+
+			tableString += "</td><td>" + statusArray[i].version + "</td><td>" + statusArray[i].size + "</td><td><a class=\"close\" id=\"" + statusArray[i].id + "\" onclick=\"globals.status.removeData('" + statusArray[i].id + "');\">" + globals.langData.getEntry("close") + "</a></td></tr>";
+		
 		}
 
 		return tableString;
