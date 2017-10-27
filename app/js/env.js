@@ -1,6 +1,9 @@
 function Environment(){
 	const {app} = require('electron').remote; //remote access
 
+	const STORAGE_FOLDER = "GameStorage";
+	const MODULES_FOLDER = "modules";
+
 	// check if dev
 	this.isDevEnv = require('electron').remote.require('electron-is-dev');
 	
@@ -39,8 +42,7 @@ function Environment(){
 				app: null
 			},
 			cache: app.getPath('userData'),
-			storage: null,
-			seperator: path.sep
+			storage: null
 		};
 	
 	this.saveVersionPath = function(id, path){
@@ -83,39 +85,41 @@ function Environment(){
 			build.longhash = jsonData.hashlong;
 			build.date = jsonData.date;
 
+			env.os = process.platform;
+
 			if (process.platform == "darwin") {
-				env.path.module.user = process.env.HOME + "/Library/Application Support/" + env.name + "/modules";
+				env.path.module.user = process.env.HOME + path.sep + "Library" + path.sep + "Application Support" + path.sep + env.name + path.sep + MODULES_FOLDER;
 				var _appFolderPath = app.getAppPath();
 
 				if ((_appFolderPath.length > 32) &&
-					(_appFolderPath.substr(_appFolderPath.length - 32, _appFolderPath.length) == ".app/Contents/Resources/app.asar"))
+					(_appFolderPath.substr(_appFolderPath.length - 32, _appFolderPath.length) == (".app" + path.sep + "Contents" + path.sep + "Resources" + path.sep + "app.asar")))
 				{
 					_appFolderPath = _appFolderPath.substr(0, _appFolderPath.length - 32);
-					_appFolderPath = _appFolderPath.substr(0, _appFolderPath.lastIndexOf("/"));
+					_appFolderPath = _appFolderPath.substr(0, _appFolderPath.lastIndexOf(path.sep));
 				}
 	
-				env.path.module.app = _appFolderPath + "/modules";
-				env.path.storage = process.env.HOME + "/Library/Application Support/" + env.name + "/GameStorage";
-				env.path.save.folder = process.env.HOME + "/Library/Application Support/CrossCode/" + "Default";
+				env.path.module.app = _appFolderPath + path.sep + MODULES_FOLDER;
+				env.path.storage = process.env.HOME + path.sep + "Library" + path.sep + "Application Support" + path.sep + env.name + path.sep + STORAGE_FOLDER;
+				env.path.save.folder = process.env.HOME + path.sep + "Library" + path.sep + "Application Support" + path.sep + "CrossCode" + path.sep + "Default";
 			}
 			else if (process.platform == "win32") {
-				env.path.module.user = process.env.LOCALAPPDATA + "\\" + env.name + "\\modules";
-				env.path.module.app = app.getAppPath() + "/modules";
-				env.path.storage = process.env.LOCALAPPDATA + "\\" + env.name + "\\GameStorage";
-				env.path.save.folder = process.env.LOCALAPPDATA + "\\CrossCode";
+				env.path.module.user = process.env.LOCALAPPDATA + path.sep + env.name + path.sep + MODULES_FOLDER;
+				env.path.module.app = app.getAppPath() + path.sep + MODULES_FOLDER;
+				env.path.storage = process.env.LOCALAPPDATA + path.sep + env.name + path.sep + STORAGE_FOLDER;
+				env.path.save.folder = process.env.LOCALAPPDATA + path.sep + "CrossCode";
 			}
 			else if (process.platform == "linux") {
-				nv.path.module.user = process.env.HOME + "/.config/" + env.name + "/modules";
-				env.path.module.app = app.getAppPath() + "/modules";
-				env.path.storage = process.env.HOME + "/.config/" + env.name + "/GameStorage";
-				env.path.save.folder = process.env.HOME + "/.config/CrossCode/" + "Default";
+				env.path.module.user = process.env.HOME + path.sep + ".config" + path.sep + env.name + path.sep + MODULES_FOLDER;
+				env.path.module.app = app.getAppPath() + path.sep + MODULES_FOLDER;
+				env.path.storage = process.env.HOME + path.sep + ".config" + path.sep + env.name + path.sep + STORAGE_FOLDER;
+				env.path.save.folder = process.env.HOME + path.sep + ".config" + path.sep + "CrossCode" + path.sep + "Default";
 			}
 			else {
 				alert("Unknown System Environment\r\nUsing linux defaults");
-				env.path.module.user = process.env.HOME + "/.config/" + env.name + "/modules";
-				env.path.module.app = app.getAppPath() + "/modules";
-				env.path.storage = process.env.HOME + "/.config/" + env.name + "/GameStorage";
-				env.path.save.folder = process.env.HOME + "/.config/CrossCode/" + "Default";
+				env.path.module.user = process.env.HOME + path.sep + ".config" + path.sep + env.name + path.sep + MODULES_FOLDER;
+				env.path.module.app = app.getAppPath() + path.sep + MODULES_FOLDER;
+				env.path.storage = process.env.HOME + path.sep + ".config" + path.sep + env.name + path.sep + STORAGE_FOLDER;
+				env.path.save.folder = process.env.HOME + path.sep + ".config" + path.sep + "CrossCode" + path.sep + "Default";
 			}
 
 			delete app;
