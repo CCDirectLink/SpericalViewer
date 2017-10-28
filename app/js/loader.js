@@ -1,5 +1,4 @@
 function Loader(){
-	const MAIN_PATH = "node-webkit.html";
 	
 	this.loadSaved = function(){
 		var versions = globals.env.getSavedVersions();
@@ -42,9 +41,6 @@ function Loader(){
 			globals.gameData.addData(data.shortId, "shortId", data.shortId);
 			globals.gameData.addData(data.shortId, "version", data.version);
 			globals.gameData.addData(data.shortId, "path", data.path);
-			globals.gameData.addData(data.shortId, "os", data.os);
-			globals.gameData.addData(data.shortId, "isExecutable", data.isExecutable);
-			
 			
 			$.getJSON(data.path.data + "database.json").done(function(json){
 				globals.gameData.addData(data.shortId, "database", json);
@@ -54,7 +50,7 @@ function Loader(){
 			});
 			$.getJSON(data.path.data + "item-database.json").done(function(json){
 				globals.gameData.addData(data.shortId, "items", json.items);
-			});
+			}); // fail if old version
 			
 			//"/media/font/icons-items.png"
 			var iconSpecify = ["undef", "item-helm", "item-sword", "item-belt", "item-shoe", "item-items", "item-key", "item-trade"];
@@ -86,50 +82,66 @@ function Loader(){
 		});
 	}
 	
-	function _extractChangelog(folder, dropped, id, cb){
+	function _nwjsExec(folder, exec) {
 
-		var os = "";
-		var isExecutable = false;
-
-		if (_isApp(dropped)) {
-			os = "darwin";
-		} else if (_isExe(dropped)) {
-			os = "win32";
-		} else if (!_isDirectory(dropped)) {
-			os = "linux";
-		} else if (_isDirectory(dropped)) {
-			os = "raw";
+		if (globals.env.os == "darwin")
+		{
+			// TODO
+			// exec.vanilla.push({ path: folder, os: "raw", isExecutable: rawIsExec });
 		}
+		else if (globals.env.os == "win32")
+		{
+			// TODO
+		}
+		else if (globals.env.os == "linux")
+		{
+			// TODO
+		}
+
+	}
+
+	function _searchExec(folder, exec) {
+
+		if (_isApp(folder))
+		{
+			exec.vanilla.push({ path: folder, os: "darwin", isExecutable: (globals.env.os == "darwin") });
+		} else if (_isExe(folder)) {
+			exec.vanilla.push({ path: folder, os: "win32", isExecutable: (globals.env.os == "win32") });
+		} else if (_isLinuxExec(folder)) {
+			exec.vanilla.push({ path: folder, os: "linux", isExecutable: (globals.env.os == "linux") });
+		} else if (_isCCMain(folder)) {
+			folder = folder.slice(0, -16);
+			_nwjsExec(folder, exec);
+		} else if(_isDirectory(folder)) {
+
+			var files = fs.readdirSync(folder);
+			
+			for(var i in files){
+				var file = fs.realpathSync(folder + path.sep + files[i]);
+				_searchExec(file, exec); // Recursive search
+			}
+
+		}
+
+	}
+
+	function _extractChangelog(folder, dropped, id, cb){
 
 		var pathList = { main: folder,
 			data: folder + "data" + path.sep,
 			page: folder + "game" + path.sep + "page" + path.sep,
-			gameHtml: folder + MAIN_PATH,
+			gameHtml: folder + "node-webkit.html",
 			gamePackage: folder + "package.json",
 			media: folder + "media" + path.sep,
 			compiledLogic: folder + "js" + path.sep + "game.compiled.js",
 			impact: folder + "impact" + path.sep,
-			executeable: null };
+			exec: {
+				vanilla: [], // { path: null, os: null, isExecutable: false }
+				ccloader: [] // { path: null, os: null, isExecutable: false }
+			}
+		};
 
-		if (os == globals.env.os)
-		{
-			isExecutable = true;
-			pathList.executeable = dropped;
-		}
-		else if ((globals.env.os == "darwin") && (os == "raw") &&
-				(fs.stat(dropped + path.sep + ".." + path.sep + "nwjs.app", function(data){
-					console.log(data);
-				}))){}
-		else if ((globals.env.os == "win32") && (os == "raw") &&
-				(fs.existsSync(dropped + path.sep + ".." + path.sep + "nwjs.app", function(data){
-					console.log(data);
-				}))){}
-		else if ((globals.env.os == "linux") && (os == "raw") &&
-				(fs.existsSync(dropped + path.sep + ".." + path.sep + "nwjs.app", function(data){
-					console.log(data);
-				}))){}
-
-	
+		_searchExec(dropped, pathList.exec);
 
 		var gameId = crypto.createHash('sha256');
 		gameId.update(pathList.main);
@@ -137,10 +149,8 @@ function Loader(){
 		var gameIdHex = gameId.digest('hex');
 		var shortIdHex = gameIdHex.substr(0,8);
 
-		$.get(pathList.data + "changelog.json").done(function(raw){
+		$.getJSON(pathList.data + "changelog.json").done(function(data){
 
-			var data = JSON.parse(raw);
-			
 			var versionArray = data.changelog[0].version.split('.');
 			var versionString = data.changelog[0].version;
 			var hotfixNumber = 0;
@@ -156,13 +166,17 @@ function Loader(){
 			}
 			
 			var callbackData = {changelog: data.changelog,
-					os: os,
-					isExecutable: isExecutable,
 					containerId: id,
 					gameId: gameIdHex,
 					shortId: shortIdHex,
 					path: pathList,
-					version: {major: Number(versionArray[0]), minor: Number(versionArray[1]), patch: Number(versionArray[2]), hotfix: hotfixNumber, string: versionString}};
+					version: {
+						major: Number(versionArray[0]),
+						minor: Number(versionArray[1]),
+						patch: Number(versionArray[2]),
+						hotfix: hotfixNumber,
+						string: versionString
+					}};
 					
 			cb(callbackData);
 		});
@@ -183,11 +197,19 @@ function Loader(){
 	}
 	
 	function _isApp(file){
-		return file.endsWith(".app");
+		return ((file.endsWith(".app")) &&
+			(fs.existsSync(file + path.sep + "Contents" + path.sep + "Info.plist")) &&
+			(fs.existsSync(file + path.sep + "Contents" + path.sep + "MacOS" + path.sep + "nwjs")) &&
+			(fs.existsSync(file + path.sep + "Contents" + path.sep + "Resources" + path.sep + "app.nw" + path.sep + "package.json"))
+			);
 	}
 
 	function _isExe(file){
 		return file.endsWith(".exe");
+	}
+
+	function _isLinuxExec(file){
+		return false;
 	}
 	
 	function _getId(file){
@@ -204,13 +226,17 @@ function Loader(){
 		
 		for(var i in files){
 			var file = fs.realpathSync(folder + path.sep + files[i]);
-			if(file.endsWith(path.sep + MAIN_PATH)){ // Check if data folder
-				file = file.slice(0, -(MAIN_PATH.length));
+			if(_isCCMain(file)){ // Check if data folder
+				file = file.slice(0, -16);
 				cb(file, dropped, null);
 			} else if(_isDirectory(file)){
 				_searchDirectory(file, dropped, cb); // Recursive search
 			}
 		}
+	}
+
+	function _isCCMain(files){
+		return files.endsWith(path.sep + "node-webkit.html");
 	}
 	
 	function _isDirectory(file){
@@ -226,7 +252,7 @@ function Loader(){
 	
 	function _checkSignature(file){
 		var data = fs.readFileSync(file);
-		for(var i = 0; i < data.length - 34; i++) {
+		for(var i = 0; i < data.length - 34; ++i) {
 											// Signature
 			if ((data[i] == 0x50) &&		// P
 				(data[i + 1] == 0x4b) &&	// K
