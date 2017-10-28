@@ -1,5 +1,7 @@
 # SpericalViewer #
 
+[![dependencies Status](https://david-dm.org/CCDirectLink/SpericalViewer/status.svg)](https://david-dm.org/CCDirectLink/SpericalViewer) [![devDependencies Status](https://david-dm.org/CCDirectLink/SpericalViewer/dev-status.svg)](https://david-dm.org/CCDirectLink/SpericalViewer?type=dev)
+
 This is an Electron application for [CrossCode](http://cross-code.com).
 
 ## How to use ##
