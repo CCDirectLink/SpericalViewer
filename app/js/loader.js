@@ -62,7 +62,7 @@ function Loader(){
 					var startY = rowIndex * (iconSet.dimension.height + iconSet.dimension.ypad);
 
 					globals.imageData.addImage(data.shortId, "items", iconSpecify[columnIndex] + rowIndex,
-						data.path.media + "font" + path.sep + "icons-items.png", "png", startX, startY, iconSet.dimension.width, iconSet.dimension.height);
+						path.join(data.path.media, "font", "icons-items.png"), "png", startX, startY, iconSet.dimension.width, iconSet.dimension.height);
 				}
 			}
 			
@@ -75,7 +75,7 @@ function Loader(){
 				var startY = iconSet.ystart;
 
 				globals.imageData.addImage(data.shortId, "items", iconSpecify[columnIndex], 
-					data.path.media + "gui" + path.sep + "menu.png", "png", startX, startY, iconSet.dimension.width, iconSet.dimension.height);
+					path.join(data.path.media, "gui", "menu.png"), "png", startX, startY, iconSet.dimension.width, iconSet.dimension.height);
 			}
 			
 			globals.menu.updateAll();
@@ -117,7 +117,7 @@ function Loader(){
 			var files = fs.readdirSync(folder);
 			
 			for(var i in files){
-				var file = fs.realpathSync(folder + path.sep + files[i]);
+				var file = fs.realpathSync(path.join(folder, files[i]));
 				_searchExec(file, exec); // Recursive search
 			}
 
@@ -128,13 +128,13 @@ function Loader(){
 	function _extractChangelog(folder, dropped, id, cb){
 
 		var pathList = { main: folder,
-			data: folder + "data" + path.sep,
-			page: folder + "game" + path.sep + "page" + path.sep,
-			gameHtml: folder + "node-webkit.html",
-			gamePackage: folder + "package.json",
-			media: folder + "media" + path.sep,
-			compiledLogic: folder + "js" + path.sep + "game.compiled.js",
-			impact: folder + "impact" + path.sep,
+			data: path.join(folder, "data") + path.sep,
+			page: path.join(folder, "game", "page") + path.sep,
+			gameHtml: path.join(folder, "node-webkit.html"),
+			gamePackage: path.join(folder, "package.json"),
+			media: path.join(folder, "media") + path.sep,
+			compiledLogic: path.join(folder, "js", "game.compiled.js"),
+			impact: path.join(folder, "impact") + path.sep,
 			exec: {
 				vanilla: [], // { path: null, os: null, isExecutable: false }
 				ccloader: [] // { path: null, os: null, isExecutable: false }
@@ -192,15 +192,15 @@ function Loader(){
 			return _searchDirectory(path.dirname(file), file, cb);
 		
 		_unZip(file, start, function(unzipPath, id){
-			cb(unzipPath + path.sep + MAIN_PATH + path.sep, file, id);
+			cb(path.join(unzipPath, MAIN_PATH) + path.sep, file, id);
 		});
 	}
 	
 	function _isApp(file){
 		return ((file.endsWith(".app")) &&
-			(fs.existsSync(file + path.sep + "Contents" + path.sep + "Info.plist")) &&
-			(fs.existsSync(file + path.sep + "Contents" + path.sep + "MacOS" + path.sep + "nwjs")) &&
-			(fs.existsSync(file + path.sep + "Contents" + path.sep + "Resources" + path.sep + "app.nw" + path.sep + "package.json"))
+			(fs.existsSync(path.join(file, "Contents", "Info.plist"))) &&
+			(fs.existsSync(path.join(file, "Contents", "MacOS", + "nwjs"))) &&
+			(fs.existsSync(path.join(file, "Contents", "Resources", "app.nw", "package.json")))
 			);
 	}
 
@@ -225,7 +225,7 @@ function Loader(){
 		var files = fs.readdirSync(folder);
 		
 		for(var i in files){
-			var file = fs.realpathSync(folder + path.sep + files[i]);
+			var file = fs.realpathSync(path.join(folder, files[i]));
 			if(_isCCMain(file)){ // Check if data folder
 				file = file.slice(0, -16);
 				cb(file, dropped, null);
@@ -274,7 +274,7 @@ function Loader(){
 	
 	function _unZip(file, start, callback){
 		var id = _getId(file);
-		var unzipPath = globals.env.path.storage + path.sep + id + path.sep;
+		var unzipPath = path.join(globals.env.path.storage, id) + path.sep;
 		fs.createReadStream(file, {start: start})
 			.pipe(unzip.Extract({ path: unzipPath }))
 			.on('close', function () {

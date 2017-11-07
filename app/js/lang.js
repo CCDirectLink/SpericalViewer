@@ -32,7 +32,7 @@ function Language() {
 		var langData = {store: langStore, dir: this.languageDirectory, selected: this.selectedLang, extern: this.extern};
 
 		if (this.extern) {
-			fs.readFile(langData.dir + path.sep + langId + "_" + langIdSub + ".json", function (err, data) {
+			fs.readFile(path.join(langData.dir, langId + "_" + langIdSub + ".json"), function (err, data) {
 				if (typeof data == 'undefined') 
 					return;
 				
@@ -53,7 +53,7 @@ function Language() {
 			});
 		}
 		else {
-			$.getJSON(langData.dir + path.sep + langId + "_" + langIdSub + ".json", function(data) {
+			$.getJSON(path.join(langData.dir, langId + "_" + langIdSub + ".json"), function(data) {
 
 				if (data['langId'] === undefined || data['langId'] != langId)
 					return null;
