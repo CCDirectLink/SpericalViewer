@@ -1,7 +1,6 @@
 "use strict";
 
-const {app, BrowserWindow} = require('electron');
-
+const path = require('path');
 const crypto = require('crypto');
 const fs = require("fs");
 const stream = require('stream');
@@ -10,7 +9,91 @@ const unzip = require('unzip2');
 const lwip = require('@mcph/lwip');
 const isDevEnv = require('electron-is-dev');
 
+// setup userData
+function _checkAbsolute (path) {
+
+  return (
+    ((process.platform == "win32") &&
+    ((path.substr(1, 2) === ":/") || (path.substr(1, 2) === ":\\") ||
+      (path.substr(0, 1) === "%") || (path.substr(0, 1) === "\\") || (path.substr(0, 1) === "/"))
+    ) || (((process.platform == "darwin") || (process.platform == "linux")) &&
+    ((path.substr(0, 1) === "/") || (path.substr(0, 1) === "\\") || (path.substr(0, 1) === "~"))));
+
+}
+
+function _setSettingsDir (entry, local, defaultPath) {
+
+  try {
+    var jsonData = JSON.parse(fs.readFileSync(path.join(local, 'settings.json')));
+  } catch (err) {
+    return defaultPath;
+  }
+
+  if ((jsonData[process.platform]) &&
+      (jsonData[process.platform][entry]) &&
+      (typeof jsonData[process.platform][entry] === "string")) {
+
+    if (_checkAbsolute(jsonData[process.platform][entry])) {
+      return jsonData[process.platform][entry];
+    }
+    else {
+      return path.join(local, jsonData[process.platform][entry]);
+    }
+
+  }
+  else {
+    return defaultPath;
+  }
+
+}
+
+const STORAGE_FOLDER = "SpericalStorage";
+const CACHE_FOLDER = "SpericalData";
+const MODULES_FOLDER = "modules";
+
+function userPreSetup () {
+
+  if (isDevEnv) {
+    global.appDir = fs.realpathSync(path.join(__dirname, ".."));
+  }
+  else
+  {
+    global.appDir = fs.realpathSync(__dirname);
+  }
+
+  if ((global.appDir.length > 32) &&
+      (global.appDir.substr(global.appDir.length - 32, global.appDir.length) == (path.join(".app", "Contents", "Resources", "app.asar"))))
+  {
+    global.appDir = global.appDir.substr(0, global.appDir.length - 32);
+    global.appDir = global.appDir.substr(0, global.appDir.lastIndexOf(path.sep));
+  }
+
+  console.log(global.appDir);
+
+  if (process.platform == "win32") {
+    global.userDir = _setSettingsDir("userData", global.appDir, path.join(global.appDir, CACHE_FOLDER));
+    global.storageDir = _setSettingsDir("userStorage", global.appDir, path.join(global.appDir, STORAGE_FOLDER));
+    global.modulesUserDir = _setSettingsDir("modules", global.appDir, path.join(global.appDir, MODULES_FOLDER));
+  }
+
+  global.modulesAppDir = path.join(global.appDir, MODULES_FOLDER);
+
+}
+
+userPreSetup();
+
 let win;
+
+const {app, BrowserWindow} = require('electron');
+
+if (global.userDir)
+  app.setPath('userData', global.userDir);
+
+if (!global.storageDir)
+  global.storageDir = path.join(app.getPath('userData'), STORAGE_FOLDER);
+
+if (!global.modulesUserDir)
+  global.modulesUserDir = path.join(app.getPath('userData'), MODULES_FOLDER);
 
 function createWindow () {
   // Create the browser window.
@@ -18,7 +101,7 @@ function createWindow () {
     width: 800,
     height: 600,
     titleBarStyle: 'hidden',
-	icon: __dirname + '/assets/ccdirectlink.png'
+  icon: __dirname + '/assets/ccdirectlink.png'
   })
 
   // and load the index.html of the app.

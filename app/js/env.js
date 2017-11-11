@@ -1,8 +1,10 @@
 function Environment(){
 	const {app} = require('electron').remote; //remote access
 
-	const STORAGE_FOLDER = "GameStorage";
-	const MODULES_FOLDER = "modules";
+	// globals
+	const STORAGE_DIR = require('electron').remote.getGlobal('storageDir');
+	const MODULES_USER_DIR = require('electron').remote.getGlobal('modulesUserDir');
+	const MODULES_APP_DIR = require('electron').remote.getGlobal('modulesAppDir');
 
 	// check if dev
 	this.isDevEnv = require('electron').remote.require('electron-is-dev');
@@ -38,11 +40,11 @@ function Environment(){
 				folder: null
 			},
 			module: {
-				user: null,
-				app: null
+				user: MODULES_USER_DIR,
+				app: MODULES_APP_DIR
 			},
 			cache: app.getPath('userData'),
-			storage: null
+			storage: STORAGE_DIR
 		};
 	
 	this.saveVersionPath = function(id, path){
@@ -88,37 +90,16 @@ function Environment(){
 			env.os = process.platform;
 
 			if (process.platform == "darwin") {
-				env.path.module.user = path.join(process.env.HOME, "Library", "Application Support", env.name, MODULES_FOLDER);
-				var _appFolderPath = app.getAppPath();
-
-				if ((_appFolderPath.length > 32) &&
-					(_appFolderPath.substr(_appFolderPath.length - 32, _appFolderPath.length) == (path.join(".app", "Contents", "Resources", "app.asar"))))
-				{
-					_appFolderPath = _appFolderPath.substr(0, _appFolderPath.length - 32);
-					_appFolderPath = _appFolderPath.substr(0, _appFolderPath.lastIndexOf(path.sep));
-				}
-	
-				env.path.module.app = path.join(_appFolderPath, MODULES_FOLDER);
-				env.path.storage = path.join(process.env.HOME, "Library", "Application Support", env.name, STORAGE_FOLDER);
 				env.path.save.folder = path.join(process.env.HOME, "Library", "Application Support", "CrossCode", "Default");
 			}
 			else if (process.platform == "win32") {
-				env.path.module.user = path.join(process.env.LOCALAPPDATA, env.name, MODULES_FOLDER);
-				env.path.module.app = path.join(app.getAppPath(), MODULES_FOLDER);
-				env.path.storage = path.join(process.env.LOCALAPPDATA, env.name, STORAGE_FOLDER);
 				env.path.save.folder = path.join(process.env.LOCALAPPDATA, "CrossCode");
 			}
 			else if (process.platform == "linux") {
-				env.path.module.user = path.join(process.env.HOME, ".config", env.name, MODULES_FOLDER);
-				env.path.module.app = path.join(app.getAppPath(), MODULES_FOLDER);
-				env.path.storage = path.join(process.env.HOME, ".config", env.name, STORAGE_FOLDER);
 				env.path.save.folder = path.join(process.env.HOME, ".config", "CrossCode", "Default");
 			}
 			else {
 				alert("Unknown System Environment\r\nUsing linux defaults");
-				env.path.module.user = path.join(process.env.HOME, ".config", env.name, MODULES_FOLDER);
-				env.path.module.app = path.join(app.getAppPath(), MODULES_FOLDER);
-				env.path.storage = path.join(process.env.HOME, ".config", env.name, STORAGE_FOLDER);
 				env.path.save.folder = path.join(process.env.HOME, ".config", "CrossCode", "Default");
 			}
 
