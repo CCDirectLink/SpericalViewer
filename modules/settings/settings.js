@@ -14,8 +14,10 @@ function Settings(){
 	this.display = function(){
 		// container dir
 		$("#storageDir").html(globals.langData.getEntry("storage") + ": " + globals.env.path.storage);
-		$("#savegameDir").html(globals.langData.getEntry("savegame") + ": " + globals.env.path.save.folder + globals.env.path.seperator + globals.env.path.save.file);
+		$("#savegameDir").html(globals.langData.getEntry("savegame") + ": " + globals.env.path.save.folder + path.sep + globals.env.path.save.file);
 		$("#cacheDir").html(globals.langData.getEntry("cache") + ": " + globals.env.path.cache);
+		$("#moduleUserDir").html("Module - User: " + globals.env.path.module.user);
+		$("#moduleAppDir").html("Module - App: " + globals.env.path.module.app);
 
 		$("h1").html(globals.langData.getEntry("settings"));
 		$(".themeTitle").html(globals.langData.getEntry("theme"));
@@ -48,6 +50,6 @@ globals.settings = new Settings();
 
 
 globals.module.registerOnLoaded(function(){
-	globals.menu.add("Settings", function(){}, "../modules/settings/settings.html", true);
+	globals.menu.add("Settings", function(){}, "../modules/settings/settings.html", true, -1);
 	globals.menu.updateAll();
 });
