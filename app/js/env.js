@@ -2,7 +2,18 @@ function Environment(){
 	const {app} = require('electron').remote; //remote access
 
 	// globals
+	const TOOLNAME = require('electron').remote.getGlobal('toolname');
+
+	const CC_SAVE = require('electron').remote.getGlobal('ccSave');
+	const CC_SAVE_BACKUP = require('electron').remote.getGlobal('ccSaveBackup');
+
+	const CC_SAVE_FOLDER = require('electron').remote.getGlobal('saveFolder');
+
+
+	const MAIN_DIR = require('electron').remote.getGlobal('mainDir');
 	const STORAGE_DIR = require('electron').remote.getGlobal('storageDir');
+
+	const CACHE_DIR = require('electron').remote.getGlobal('cacheDir');
 	const MODULES_USER_DIR = require('electron').remote.getGlobal('modulesUserDir');
 	const MODULES_APP_DIR = require('electron').remote.getGlobal('modulesAppDir');
 
@@ -30,22 +41,24 @@ function Environment(){
 	
 	var versionList = {};
 	
-	this.name = "SpericalViewer";
+	this.name = TOOLNAME;
 	this.version = version;
 	this.build = build;
 	this.path = {
 			save: {
-				file: "cc.save",
-				backupFile: "cc.save.backup",
-				folder: null
+				file: CC_SAVE,
+				backupFile: CC_SAVE_BACKUP,
+				folder: CC_SAVE_FOLDER
 			},
 			module: {
 				user: MODULES_USER_DIR,
 				app: MODULES_APP_DIR
 			},
-			cache: app.getPath('userData'),
+			cache: CACHE_DIR,
 			storage: STORAGE_DIR
 		};
+
+	this.os = process.platform;
 	
 	this.saveVersionPath = function(id, path){
 		versionList[id] = path;
@@ -87,26 +100,13 @@ function Environment(){
 			build.longhash = jsonData.hashlong;
 			build.date = jsonData.date;
 
-			env.os = process.platform;
-
-			if (process.platform == "darwin") {
-				env.path.save.folder = path.join(process.env.HOME, "Library", "Application Support", "CrossCode", "Default");
-			}
-			else if (process.platform == "win32") {
-				env.path.save.folder = path.join(process.env.LOCALAPPDATA, "CrossCode");
-			}
-			else if (process.platform == "linux") {
-				env.path.save.folder = path.join(process.env.HOME, ".config", "CrossCode", "Default");
-			}
-			else {
-				alert("Unknown System Environment\r\nUsing linux defaults");
-				env.path.save.folder = path.join(process.env.HOME, ".config", "CrossCode", "Default");
-			}
-
+			// remove electron access & module access
 			delete app;
+			delete require;
+
 		}).fail(function(jqxhr, textStatus, error) {
 			if (textStatus == "error") {
-				alert("versions dependent file missing; run genVersion first");
+				alert("versions dependent file missing");
 			}
 			else {
 				alert("error in versions.json: " + error);

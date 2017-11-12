@@ -47,11 +47,19 @@ function _setSettingsDir (entry, local, defaultPath) {
 
 }
 
-const STORAGE_FOLDER = "SpericalStorage";
-const CACHE_FOLDER = "SpericalData";
-const MODULES_FOLDER = "modules";
+// globals - pre set
+global.toolname = "SpericalViewer";
+
+global.ccSave = "cc.save";
+global.ccSaveBackup = "cc.save.backup";
 
 function userPreSetup () {
+
+  const STORAGE_FOLDER = "SpericalStorage";
+  const DATA_FOLDER = "SpericalData";
+
+  const CACHE_FOLDER = "cache";
+  const MODULES_FOLDER = "modules";
 
   if (isDevEnv) {
     global.appDir = fs.realpathSync(path.join(__dirname, ".."));
@@ -68,12 +76,42 @@ function userPreSetup () {
     global.appDir = global.appDir.substr(0, global.appDir.lastIndexOf(path.sep));
   }
 
-  console.log(global.appDir);
-
   if (process.platform == "win32") {
-    global.userDir = _setSettingsDir("userData", global.appDir, path.join(global.appDir, CACHE_FOLDER));
-    global.storageDir = _setSettingsDir("userStorage", global.appDir, path.join(global.appDir, STORAGE_FOLDER));
-    global.modulesUserDir = _setSettingsDir("modules", global.appDir, path.join(global.appDir, MODULES_FOLDER));
+    global.mainDir = global.appDir;
+
+    global.storageDir = _setSettingsDir("userStorage", global.mainDir, path.join(global.mainDir, STORAGE_FOLDER));
+    global.dataDir = _setSettingsDir("userData", global.mainDir, path.join(global.mainDir, DATA_FOLDER));
+
+    global.cacheDir = _setSettingsDir("cache", global.dataDir, path.join(global.dataDir, CACHE_FOLDER));
+    global.modulesUserDir = _setSettingsDir("modules", global.dataDir, path.join(global.dataDir, MODULES_FOLDER));
+
+    global.saveFolder = path.join(process.env.LOCALAPPDATA, "CrossCode");
+  }
+  else if (process.platform == "darwin") {
+    global.mainDir = path.join(process.env.HOME, "Library", "Application Support", global.toolname);
+
+    global.storageDir = _setSettingsDir("userStorage", global.mainDir, path.join(global.mainDir, STORAGE_FOLDER));
+    global.dataDir = _setSettingsDir("userData", global.mainDir, path.join(global.mainDir, DATA_FOLDER));
+
+    global.cacheDir = _setSettingsDir("cache", global.dataDir, path.join(global.dataDir, CACHE_FOLDER));
+    global.modulesUserDir = _setSettingsDir("modules", global.dataDir, path.join(global.dataDir, MODULES_FOLDER));
+
+    global.saveFolder = path.join(process.env.HOME, "Library", "Application Support", "CrossCode", "Default");
+  }
+  else if (process.platform == "linux") {
+    global.mainDir = path.join(process.env.HOME, ".config", global.toolname);
+
+    global.storageDir = _setSettingsDir("userStorage", global.mainDir, path.join(global.mainDir, STORAGE_FOLDER));
+    global.dataDir = _setSettingsDir("userData", global.mainDir, path.join(global.mainDir, DATA_FOLDER));
+
+    global.cacheDir = _setSettingsDir("cache", global.dataDir, path.join(global.dataDir, CACHE_FOLDER));
+    global.modulesUserDir = _setSettingsDir("modules", global.dataDir, path.join(global.dataDir, MODULES_FOLDER));
+
+    global.saveFolder = path.join(process.env.HOME, ".config", "CrossCode", "Default");
+  }
+  else {
+    alert("Unsupported System Environment");
+    return;
   }
 
   global.modulesAppDir = path.join(global.appDir, MODULES_FOLDER);
@@ -85,15 +123,17 @@ userPreSetup();
 let win;
 
 const {app, BrowserWindow} = require('electron');
+app.setPath('userData', global.cacheDir);
 
-if (global.userDir)
-  app.setPath('userData', global.userDir);
+// path ---
+console.log("appDir: " + global.appDir);
+console.log("mainDir: " + global.mainDir);
 
-if (!global.storageDir)
-  global.storageDir = path.join(app.getPath('userData'), STORAGE_FOLDER);
+console.log("storageDir: " + global.storageDir);
+console.log("cacheDir: " + global.cacheDir);
 
-if (!global.modulesUserDir)
-  global.modulesUserDir = path.join(app.getPath('userData'), MODULES_FOLDER);
+console.log("modulesAppDir: " + global.modulesAppDir);
+console.log("modulesUserDir: " + global.modulesUserDir);
 
 function createWindow () {
   // Create the browser window.
