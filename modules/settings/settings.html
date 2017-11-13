@@ -3,16 +3,53 @@
 </script>
 <h1></h1>
 <div id="setTheme">
-<span class="themeTitle"></span>:
-<select name="theme" size="1">
-  <option value="1" selected>Dark</option>
-</select><br />
-<span class="langTitle"></span>:
-<select name="lang" id="langList" size="1" onchange="globals.settings.langTrigger()"></select>
 </div>
 
-<p><div id="storageDir"></div></p>
-<p><div id="savegameDir"></div></p>
-<p><div id="cacheDir"></div></p>
-<p><div id="moduleUserDir"></div></p>
-<p><div id="moduleAppDir"></div></p>
+<table>
+	<tr>
+		<td id="themeTitle">
+		</td>
+		<td>
+			<select id="theme" size="1">
+				<option value="1" selected>Dark</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td id="langTitle">
+		</td>
+		<td>
+			<select id="lang" id="langList" size="1" onchange="globals.settings.langTrigger()"></select>
+		</td>
+	</tr>
+	<tr>
+		<td id="storageDirName">
+		</td>
+		<td id="storageDir">
+		</td>
+	</tr>
+	<tr>
+		<td id="savegameDirName">
+		</td>
+		<td id="savegameDir">
+		</td>
+	</tr>
+	<tr>
+		<td id="cacheDirName">
+		</td>
+		<td id="cacheDir">
+		</td>
+	</tr>
+	<tr>
+		<td id="moduleUserDirName">
+		</td>
+		<td id="moduleUserDir">
+		</td>
+	</tr>
+	<tr>
+		<td id="moduleAppDirName">
+		</td>
+		<td id="moduleAppDir">
+		</td>
+	</tr>
+</table>
