@@ -65,58 +65,81 @@ global.ccSaveBackup = "cc.save.backup";
 
 function userPreSetup () {
 
+  // folder consts
   const STORAGE_FOLDER = "SpericalStorage";
   const DATA_FOLDER = "SpericalData";
 
   const CACHE_FOLDER = "cache";
   const MODULES_FOLDER = "modules";
 
-  if (isDevEnv) {
-    global.appDir = fs.realpathSync(path.join(__dirname, ".."));
-  }
-  else
-  {
-    global.appDir = fs.realpathSync(__dirname);
-  }
+  // remove /app from __dirname
+  global.appDir = fs.realpathSync(path.join(__dirname, ".."));
 
-  if ((global.appDir.length > 32) &&
-      (global.appDir.substr(global.appDir.length - 32, global.appDir.length) == (path.join(".app", "Contents", "Resources", "app.asar"))))
-  {
-    global.appDir = global.appDir.substr(0, global.appDir.length - 32);
-    global.appDir = global.appDir.substr(0, global.appDir.lastIndexOf(path.sep));
-  }
+  // raw app path
+  console.log("raw dirname: " + __dirname);
+  console.log("raw app dir: " + global.appDir);
 
+  // platform dependend path
   if (process.platform == "win32") {
+
+  	console.log(global.appDir.substr(global.appDir.length - 18, global.appDir.length));
+  	console.log(path.join("resources", "app.asar"));
+
+    // packed app
+    if ((global.appDir.length > 18) &&
+        (global.appDir.substr(global.appDir.length - 18, global.appDir.length) == (path.join("resources", "app.asar"))))
+    {
+      global.appDir = fs.realpathSync(path.join(global.appDir, "..", ".."));
+    }
+
+    // default main path
     global.mainDir = global.appDir;
 
+    // overrideable path
     global.storageDir = _setSettingsDir("userStorage", global.mainDir, path.join(global.mainDir, STORAGE_FOLDER));
     global.dataDir = _setSettingsDir("userData", global.mainDir, path.join(global.mainDir, DATA_FOLDER));
 
     global.cacheDir = _setSettingsDir("cache", global.dataDir, path.join(global.dataDir, CACHE_FOLDER));
     global.modulesUserDir = _setSettingsDir("modules", global.dataDir, path.join(global.dataDir, MODULES_FOLDER));
 
+    // save path
     global.saveFolder = path.join(process.env.LOCALAPPDATA, "CrossCode");
   }
   else if (process.platform == "darwin") {
+
+    // packed app
+    if ((global.appDir.length > 32) &&
+        (global.appDir.substr(global.appDir.length - 32, global.appDir.length) == (path.join(".app", "Contents", "Resources", "app.asar"))))
+    {
+		  global.appDir = fs.realpathSync(path.join(global.appDir, "..", "..", "..", ".."));
+    }
+
+    // default main path
     global.mainDir = path.join(process.env.HOME, "Library", "Application Support", global.toolname);
 
+    // overrideable path
     global.storageDir = _setSettingsDir("userStorage", global.mainDir, path.join(global.mainDir, STORAGE_FOLDER));
     global.dataDir = _setSettingsDir("userData", global.mainDir, path.join(global.mainDir, DATA_FOLDER));
 
     global.cacheDir = _setSettingsDir("cache", global.dataDir, path.join(global.dataDir, CACHE_FOLDER));
     global.modulesUserDir = _setSettingsDir("modules", global.dataDir, path.join(global.dataDir, MODULES_FOLDER));
 
+    // save path
     global.saveFolder = path.join(process.env.HOME, "Library", "Application Support", "CrossCode", "Default");
   }
   else if (process.platform == "linux") {
+
+    // default main path
     global.mainDir = path.join(process.env.HOME, ".config", global.toolname);
 
+    // overrideable path
     global.storageDir = _setSettingsDir("userStorage", global.mainDir, path.join(global.mainDir, STORAGE_FOLDER));
     global.dataDir = _setSettingsDir("userData", global.mainDir, path.join(global.mainDir, DATA_FOLDER));
 
     global.cacheDir = _setSettingsDir("cache", global.dataDir, path.join(global.dataDir, CACHE_FOLDER));
     global.modulesUserDir = _setSettingsDir("modules", global.dataDir, path.join(global.dataDir, MODULES_FOLDER));
 
+    // save path
     global.saveFolder = path.join(process.env.HOME, ".config", "CrossCode", "Default");
   }
   else {
@@ -124,10 +147,12 @@ function userPreSetup () {
     return;
   }
 
+  // module dir
   global.modulesAppDir = path.join(global.appDir, MODULES_FOLDER);
 
 }
 
+// START -------
 userPreSetup();
 
 let win;
