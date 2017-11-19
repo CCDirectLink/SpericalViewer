@@ -199,7 +199,7 @@ function Loader(){
 	function _isApp(file){
 		return ((file.endsWith(".app")) &&
 			(fs.existsSync(path.join(file, "Contents", "Info.plist"))) &&
-			(fs.existsSync(path.join(file, "Contents", "MacOS", + "nwjs"))) &&
+			(fs.existsSync(path.join(file, "Contents", "MacOS", "nwjs"))) &&
 			(fs.existsSync(path.join(file, "Contents", "Resources", "app.nw", "package.json")))
 			);
 	}
