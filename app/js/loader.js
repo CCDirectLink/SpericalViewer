@@ -179,6 +179,8 @@ function Loader(){
 					}};
 					
 			cb(callbackData);
+		}).fail(function(){
+			// legacy version (no changelog found)
 		});
 	}
 	
