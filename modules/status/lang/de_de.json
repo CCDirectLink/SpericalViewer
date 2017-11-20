@@ -1,0 +1,21 @@
+{
+	"langId": "de",
+	"langIdSub": "de",
+
+	"content":
+	{
+		"status.status": "Status",
+		"status.license": "Veröffentlicht unter MIT Lizenz",
+		"status.loadGame": "Spiel laden",
+		"status.loadedGames": "Geladene spiele",
+		"status.storedGameData": "Gespeicherte spieledaten",
+		"status.noGames": "(keine spiele)",
+		"status.id": "Id",
+		"status.containerId": "Container Id",
+		"status.version": "Version",
+		"status.cacheSize": "Cachegröße",
+		"status.close": "schließen",
+		"status.clear": "leeren",
+		"status.path": "Pfad"
+	}
+}

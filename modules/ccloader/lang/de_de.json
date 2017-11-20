@@ -1,0 +1,15 @@
+{
+	"langId": "de",
+	"langIdSub": "de",
+
+	"content":
+	{
+		"ccloader.id": "Id",
+		"ccloader.version": "Version",
+		"ccloader.installed": "Installiert",
+		"ccloader.install": "Installieren",
+		"ccloader.start": "Öffnen",
+		"ccloader.downloading": "Lade herunter...",
+		"ccloader.installing": "Installiere..."
+	}
+}

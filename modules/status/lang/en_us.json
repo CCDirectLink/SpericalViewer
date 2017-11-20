@@ -1,0 +1,21 @@
+{
+	"langId": "en",
+	"langIdSub": "us",
+
+	"content":
+	{
+		"status.status": "Status",
+		"status.license": "Released under MIT License",
+		"status.loadGame": "Load game",
+		"status.loadedGames": "Loaded games",
+		"status.storedGameData": "Stored game data",
+		"status.noGames": "(no games)",
+		"status.id": "Id",
+		"status.containerId": "Container Id",
+		"status.version": "Version",
+		"status.cacheSize": "Cache Size",
+		"status.close": "close",
+		"status.clear": "clear",
+		"status.path": "Path"
+	}
+}

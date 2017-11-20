@@ -1,0 +1,14 @@
+{
+	"langId": "de",
+	"langIdSub": "de",
+
+	"content":
+	{
+		"settings.settings": "Einstellungen",
+		"settings.theme": "Thema",
+		"settings.lang": "Sprache",
+		"settings.savegame": "Spielstand",
+		"settings.cache": "Cache",
+		"settings.storage": "Speicher"
+	}
+}

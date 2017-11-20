@@ -1,0 +1,12 @@
+{
+	"langId": "en",
+	"langIdSub": "us",
+
+	"content":
+	{
+		"items.id": "Id",
+		"items.items": "Items",
+		"items.item": "Item",
+		"items.stats": "Stats"
+	}
+}
