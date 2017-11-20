@@ -1,4 +1,5 @@
 {
 	"name": "settings",
+	"langfolder": "lang",
 	"main": "settings.js"
 }

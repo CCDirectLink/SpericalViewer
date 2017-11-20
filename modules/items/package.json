@@ -1,4 +1,5 @@
 {
 	"name": "items",
+	"langfolder": "lang",
 	"main": "items.js"
 }

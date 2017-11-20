@@ -1,4 +1,5 @@
 {
 	"name": "ccloader",
+	"langfolder": "lang",
 	"main": "ccloader.js"
 }
