@@ -2,11 +2,14 @@ function Settings(){
 	var settings = {
 			selectedLang: "en_us"
 		};
+
+	var langEntries = globals.module.getLangData();
 	
 	this.langTrigger = function() {
 		settings.selectedLang = $( "#lang" )[0].options[$("#lang")[0].selectedIndex].value;
 		var split = settings.selectedLang.split("_");
-		globals.langData.setLang(split[0], split[1]);
+		globals.module.setLang(split[0], split[1]);
+		langEntries = globals.module.getLangData();
 		globals.menu.updateAll();
 		this.display();
 	}
@@ -14,13 +17,13 @@ function Settings(){
 	this.display = function(){
 		// container dir
 		
-		$("#storageDirName").html(globals.langData.getEntry("storage"));
+		$("#storageDirName").html(langEntries.content['settings.storage']);
 		$("#storageDir").html(globals.env.path.storage);
 		
-		$("#savegameDirName").html(globals.langData.getEntry("savegame"));
+		$("#savegameDirName").html(langEntries.content['settings.savegame']);
 		$("#savegameDir").html(globals.env.path.save.folder + path.sep + globals.env.path.save.file);
 		
-		$("#cacheDirName").html(globals.langData.getEntry("cache"));
+		$("#cacheDirName").html(langEntries.content['settings.cache']);
 		$("#cacheDir").html(globals.env.path.cache);
 		
 		$("#moduleUserDirName").html("Module - User");
@@ -29,16 +32,16 @@ function Settings(){
 		$("#moduleAppDirName").html("Module - App");
 		$("#moduleAppDir").html(globals.env.path.module.app);
 
-		$("h1").html(globals.langData.getEntry("settings"));
-		$("#themeTitle").html(globals.langData.getEntry("theme"));
-		$("#langTitle").html(globals.langData.getEntry("lang"));
+		$("h1").html(langEntries.content['settings.settings']);
+		$("#themeTitle").html(langEntries.content['settings.theme']);
+		$("#langTitle").html(langEntries.content['settings.lang']);
 
 		$("#lang").html(_getTable(settings.selectedLang));
 	}
 	
 	function _getTable(currentId) {
 		var langString = "";
-		var langArray = globals.langData.getList();
+		var langArray = globals.module.getLangList();
 
 		for(var i in langArray) {
 			var langValue = langArray[i].langId + "_" + langArray[i].langIdSub;
@@ -56,10 +59,10 @@ function Settings(){
 		return langString;
 	}
 }
+
 globals.settings = new Settings();
 
-
-globals.module.registerOnLoaded(function(){
+globals.module.on("modulesLoaded", function(){
 	globals.menu.add("Settings", function(){}, "../modules/settings/settings.html", true, -1);
 	globals.menu.updateAll();
 });

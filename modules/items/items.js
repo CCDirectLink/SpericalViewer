@@ -13,10 +13,16 @@ function Items(){
 					globals.items.updateVersion();
 				}, "version")
 			};
+
+	var langEntries = globals.module.getLangData();
+
+	globals.module.on("langChanged", function(id, subId, data) {
+		langEntries = data;
+	});
 	
 	this.display = function(){
-		$("h1").html(globals.langData.getEntry("items"));
-		$("#versionSelect").html(globals.langData.getEntry("version"));
+		$("h1").html(langEntries.content['items.items']);
+		$("#versionSelect").html(langEntries.content['status.version']);
 
 		if (!globals.gameData.hasGame(itemData.selectedVersion)) {
 			itemData.selectedVersion = globals.gameData.getVersions()[0];
@@ -49,7 +55,7 @@ function Items(){
 	
 	function _getTable(version) {
 		var version = globals.gameData.getVersions()[0];
-		var tableString = "<tr><th>" + globals.langData.getEntry("id") + "</th><th>" + globals.langData.getEntry("item") + "</th><th>" + globals.langData.getEntry("stats") + "</th></tr>";
+		var tableString = "<tr><th>" + langEntries.content['items.id'] + "</th><th>" + langEntries.content['items.item'] + "</th><th>" + langEntries.content['items.stats'] + "</th></tr>";
 
 		if (!globals.gameData.hasGame(version)) 
 			return tableString;
@@ -96,7 +102,7 @@ function Items(){
 }
 globals.items = new Items();
 
-globals.module.registerOnLoaded(function(){
+globals.module.on("modulesLoaded", function(){
 	globals.menu.add("Items", function(){}, "../modules/items/items.html", function(){
 			return globals.gameData.containGames();
 		});

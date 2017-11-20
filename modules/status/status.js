@@ -1,5 +1,7 @@
 function Status(){
 	var statusArray = [];
+
+	var langEntries = globals.module.getLangData();
 	
 	function initialize(){
 		globals.gameData.registerObserver(function(game, property, value) {
@@ -15,12 +17,16 @@ function Status(){
 
 		}, "version");
 	}
+
+	globals.module.on("langChanged", function(id, subId, data) {
+		langEntries = data;
+	});
 	
 	this.display = function(){
-		$("#license").html(globals.langData.getEntry("license"));
-		$('#loadGame').html(globals.langData.getEntry("loadGame"));
-		$("#loadedGameTitle").html(globals.langData.getEntry("loadedGames"));
-		$("#storedGameTitle").html(globals.langData.getEntry("storedGameData"));
+		$("#license").html(langEntries.content['status.license']);
+		$('#loadGame').html(langEntries.content['status.loadGame']);
+		$("#loadedGameTitle").html(langEntries.content['status.loadedGames']);
+		$("#storedGameTitle").html(langEntries.content['status.storedGameData']);
 
 		// init programm data
 		$("h1").html(globals.env.name);
@@ -54,10 +60,15 @@ function Status(){
 	}
 	
 	function _getTable() {
-		var tableString = "<tr><th>" + globals.langData.getEntry("id") + "</th><th>" + globals.langData.getEntry("containerId") + "</th><th>" + globals.langData.getEntry("version") + "</th><th>" + globals.langData.getEntry("cacheSize") + "</th><th></th></tr>";
+		var tableString = 
+		"<tr><th>" + langEntries.content['status.id'] + 
+		"</th><th>" + langEntries.content['status.containerId'] + 
+		"</th><th>" + langEntries.content['status.version'] + 
+		"</th><th>" + langEntries.content['status.cacheSize'] + 
+		"</th><th></th></tr>";
 
 		if (statusArray.length === 0)
-			return globals.langData.getEntry("noGames");
+			return langEntries.content['status.noGames'];
 
 		for (var i in statusArray) {
 
@@ -71,7 +82,8 @@ function Status(){
 				tableString += "(local)";
 			}
 
-			tableString += "</td><td>" + statusArray[i].version + "</td><td>" + statusArray[i].size + "</td><td><a class=\"close\" id=\"" + statusArray[i].id + "\" onclick=\"globals.status.removeData('" + statusArray[i].id + "');\">" + globals.langData.getEntry("close") + "</a></td></tr>";
+			tableString += "</td><td>" + statusArray[i].version + "</td><td>" + statusArray[i].size + "</td><td><a class=\"close\" id=\"" + statusArray[i].id + "\" onclick=\"globals.status.removeData('" + statusArray[i].id + "');\">" +
+			langEntries.content['status.close'] + "</a></td></tr>";
 		
 		}
 
@@ -79,14 +91,18 @@ function Status(){
 	}
 	
 	function _getPathsTable(){
-		var tableString = "<tr><th>" + globals.langData.getEntry("containerId") + "</th><th>" + globals.langData.getEntry("path") + "</th><th></th></tr>";
+		var tableString = 
+		"<tr><th>" + langEntries.content['status.containerId'] +
+		"</th><th>" + langEntries.content['status.path'] +
+		"</th><th></th></tr>";
 
 		var versions = globals.env.getSavedVersions();
 		if (Object.keys(versions).length === 0)
-			return globals.langData.getEntry("noGames");
+			return langEntries.content['status.noGames'];
 
 		for (var version in versions) {
-			tableString += "<tr><td>" + version + "</td><td>" + versions[version] + "</td><td><a class=\"close\" id=\"" + version + "\" onclick=\"globals.status.removeVersion('" + version + "');\">" + globals.langData.getEntry("clear") + "</a></td></tr>";
+			tableString += "<tr><td>" + version + "</td><td>" + versions[version] + "</td><td><a class=\"close\" id=\"" + version + "\" onclick=\"globals.status.removeVersion('" + version + "');\">" +
+			langEntries.content['status.clear'] + "</a></td></tr>";
 		}
 
 		return tableString;
@@ -94,10 +110,10 @@ function Status(){
 	
 	initialize();
 }
+
 globals.status = new Status();
 
-
-globals.module.registerOnLoaded(function(){
+globals.module.on("modulesLoaded", function(){
 	var id = globals.menu.add("Status", function(){}, "../modules/status/status.html", true, 0);
 	globals.menu.updateAll();
 	globals.menu.select(id);
