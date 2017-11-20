@@ -38,8 +38,7 @@ function _setSettingsDir (entry, local, defaultPath) {
     	if (((process.platform == "darwin") || (process.platform == "linux")) &&
     		(jsonData[process.platform][entry].substr(0, 1) === "~")) {
     		return path.join(process.env.HOME,
-    			jsonData[process.platform][entry].substr(1,
-    				jsonData[process.platform][entry].length - 1));
+    			jsonData[process.platform][entry].substr(1));
     	}
     	else {
     		return jsonData[process.platform][entry];
