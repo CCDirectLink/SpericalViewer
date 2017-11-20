@@ -62,7 +62,7 @@ function Loader(){
 					var startY = rowIndex * (iconSet.dimension.height + iconSet.dimension.ypad);
 
 					globals.imageData.addImage(data.shortId, "items", iconSpecify[columnIndex] + rowIndex,
-						path.join(data.path.media, "font", "icons-items.png"), "png", startX, startY, iconSet.dimension.width, iconSet.dimension.height);
+						path.join(data.path.media, "font", "icons-items.png"), startX, startY, iconSet.dimension.width, iconSet.dimension.height);
 				}
 			}
 			
@@ -75,7 +75,7 @@ function Loader(){
 				var startY = iconSet.ystart;
 
 				globals.imageData.addImage(data.shortId, "items", iconSpecify[columnIndex], 
-					path.join(data.path.media, "gui", "menu.png"), "png", startX, startY, iconSet.dimension.width, iconSet.dimension.height);
+					path.join(data.path.media, "gui", "menu.png"), startX, startY, iconSet.dimension.width, iconSet.dimension.height);
 			}
 			
 			globals.menu.updateAll();

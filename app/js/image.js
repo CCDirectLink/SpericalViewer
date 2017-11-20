@@ -5,9 +5,11 @@ function ImageDatabase(){
 	this.scale = 2;
 	this.method = "nearest-neighbor";
 
-	this.addImage = function(version, name, tileName, url, type, x, y, width, heigth) {
+	this.addImage = function(version, name, tileName, url, x, y, width, heigth) {
 		var scaleValue = this.scale;
 		var methodValue = this.method;
+
+		const type = path.extname(url).substring(1);
 
 		lwip.open(url, type, function(err, image) {
 			if(err)
