@@ -30,7 +30,6 @@
     <script type="text/javascript" src="js/env.js"></script>
     <script type="text/javascript" src="js/module.js"></script>
     <script type="text/javascript" src="js/menu.js"></script>
-    <script type="text/javascript" src="js/lang.js"></script>
     <script type="text/javascript" src="js/game.js"></script>
     <script type="text/javascript" src="js/version.js"></script>
     <script type="text/javascript" src="js/loader.js"></script>
@@ -39,21 +38,26 @@
 	
     <script type="text/javascript">
 		var globals = {
-			env: new Environment(),
-			module: new Module(),
-			menu: new Menu("#menulist", ".entrycontainer"),
-			langData: new Language(),
-			gameData: new GameData(),
-			imageData: new ImageDatabase(),
-			loader: new Loader()
-		};
+			env: new Environment()
+        };
+
+        globals.module = new Module({langId: "en", langIdSub: "us"}, `file://${__dirname}/lang/langlist.json`);
+
+        globals.module.on("langInitDone", function(){
+
+            globals.menu = new Menu("#menulist", ".entrycontainer");
+            globals.gameData = new GameData();
+            globals.imageData = new ImageDatabase();
+            globals.loader = new Loader();
 		
-		$(function(){
-			$("title").html(globals.env.name);
-			$(".titlebar").html(globals.env.name);
-		
-			globals.langData.loadAll(function(){
-				globals.langData.setLang("en", "us");
+    		$(function() {
+    			$("title").html(globals.env.name);
+                $("<div/>").attr('id','title').html(globals.env.name).appendTo('.titlebar'); 
+
+                if (process.platform == "win32") {
+                    $("<div/>").attr('id','titleButtons').html("").appendTo('.titlebar'); 
+                }
+
                 // external modules
 				var modules = globals.module.findModules([
                     globals.env.path.module.user,
@@ -70,12 +74,12 @@
                         ]);
                 }
 				globals.module.loadModules(modules, function(){
-					globals.module.onLoaded();
+					globals.module.trigger("modulesLoaded");
 					globals.loader.loadSaved();
 				});
 			});
-			
-		});
+
+        });
 		
 
     </script>
