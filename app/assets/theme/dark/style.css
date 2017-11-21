@@ -53,6 +53,10 @@
   border-color: #1f2224;  
 }
 
+.entrycontainer a {
+  color: rgb(52, 152, 219);
+}
+
 table {
   border-color: #1f2224;
 }
