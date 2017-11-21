@@ -72,11 +72,23 @@ function CCModDB(){
 	}
 
 	function _getTable() {
-		var tableString = "<tr><th>" + langEntries.content['ccmodapi.name'] + "</th><th>" + langEntries.content['ccmodapi.desc'] + "</th><th>" + langEntries.content['ccmodapi.download'] + "</th></tr>";
+		var tableString = "<tr><th>" + langEntries.content['ccmodapi.name'] + "</th><th>" + langEntries.content['ccmodapi.desc'] + "</th><th>" + langEntries.content['ccmodapi.license'] + "</th><th>" + langEntries.content['ccmodapi.download'] + "</th></tr>";
+
+		if (!instance.moddata) {
+			return langEntries.content['ccmodapi.connection'];
+		}
 
 		for (var i in instance.moddata.mods) {
+
+			if ((!instance.moddata.mods[i].name) ||
+				(!instance.moddata.mods[i].archive_link) ||
+				(!instance.moddata.mods[i].version)) {
+				continue;
+			}
+
 			tableString += "<tr><td>" + instance.moddata.mods[i].name + " (" + i + ")</td>";
-			tableString += "<td>" + instance.moddata.mods[i].description + "</td>";
+			tableString += "<td>" + (instance.moddata.mods[i].description || "") + "</td>";
+			tableString += "<td>" + (instance.moddata.mods[i].license || "") + "</td>";
 			tableString += "<td><a href=\"" + instance.moddata.mods[i].archive_link + "\">" + langEntries.content['ccmodapi.version'] + " " + instance.moddata.mods[i].version + "</a></td></tr>";
 		}
 
