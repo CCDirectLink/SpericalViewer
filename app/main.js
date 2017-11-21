@@ -7,6 +7,7 @@ const stream = require('stream');
 const util = require('util');
 const unzip = require('unzip2');
 const lwip = require('@mcph/lwip');
+const open = require("open");
 const isDevEnv = require('electron-is-dev');
 
 // setup userData
@@ -177,6 +178,11 @@ function createWindow () {
     titleBarStyle: 'hidden',
   icon: __dirname + '/assets/ccdirectlink.png'
   })
+
+  win.webContents.on('new-window', function(event, url){
+    event.preventDefault();
+    open(url);
+  });
 
   // and load the index.html of the app.
   win.loadURL(`file://${__dirname}/index.html`);
