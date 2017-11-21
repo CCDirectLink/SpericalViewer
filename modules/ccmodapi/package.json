@@ -1,0 +1,6 @@
+{
+	"name": "ccloader-modapi",
+	"version": "0.3.1",
+	"langfolder": "lang",
+	"main": "ccmodapi.js"
+}

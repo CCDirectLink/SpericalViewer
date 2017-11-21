@@ -1,0 +1,13 @@
+{
+	"langId": "en",
+	"langIdSub": "us",
+
+    "content":
+    {
+        "ccmodapi.mods": "Mods",
+        "ccmodapi.name": "Name",
+        "ccmodapi.desc": "Description",
+        "ccmodapi.version": "Version",
+        "ccmodapi.download": "Download"
+    }
+}
