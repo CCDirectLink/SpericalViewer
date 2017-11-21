@@ -74,10 +74,10 @@ function CCModDB(){
 	function _getTable() {
 		var tableString = "<tr><th>" + langEntries.content['ccmodapi.name'] + "</th><th>" + langEntries.content['ccmodapi.desc'] + "</th><th>" + langEntries.content['ccmodapi.download'] + "</th></tr>";
 
-		for (var i in instance.moddata) {
-			tableString += "<tr><td>" + instance.moddata[i].name + " (" + i + ")</td>";
-			tableString += "<td>" + instance.moddata[i].description + "</td>";
-			tableString += "<td><a href=\"" + instance.moddata[i].archive_link + "\">" + langEntries.content['ccmodapi.version'] + " " + instance.moddata[i].version + "</a></td></tr>";
+		for (var i in instance.moddata.mods) {
+			tableString += "<tr><td>" + instance.moddata.mods[i].name + " (" + i + ")</td>";
+			tableString += "<td>" + instance.moddata.mods[i].description + "</td>";
+			tableString += "<td><a href=\"" + instance.moddata.mods[i].archive_link + "\">" + langEntries.content['ccmodapi.version'] + " " + instance.moddata.mods[i].version + "</a></td></tr>";
 		}
 
 		return tableString;
