@@ -42,8 +42,12 @@ function saveVersion(){
 
 	console.log(version);
 	
-	if(!fs.statSync(dir).isDirectory())
+	try{
+		if(!fs.statSync(dir).isDirectory())
+			fs.mkdirSync(dir);
+	}catch(e){
 		fs.mkdirSync(dir);
+	}
 	fs.writeFileSync(dir + file, JSON.stringify(version));
 }
 
