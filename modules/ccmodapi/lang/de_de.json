@@ -8,6 +8,7 @@
 		"ccmodapi.name": "Name",
 		"ccmodapi.desc": "Beschreibung",
 		"ccmodapi.version": "Version",
-        "ccmodapi.download": "Download"
+        "ccmodapi.download": "Download",
+        "ccmodapi.provided": "Data provided by <a target=\"_blank\" href=\"https://github.com/CCDirectLink/CCModDB\">CCModDB</a>"
 	}
 }

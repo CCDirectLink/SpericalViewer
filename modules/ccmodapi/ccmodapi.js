@@ -53,6 +53,7 @@ function CCModDB(){
 
 	this.display = function(){
 		$("h1").html(langEntries.content['ccmodapi.mods']);
+		$("#provideinfo").html(langEntries.content['ccmodapi.provided']);
 
 		this.updateTable();
 	}
