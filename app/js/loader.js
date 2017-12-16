@@ -175,8 +175,15 @@ function Loader(){
 						minor: Number(versionArray[1]),
 						patch: Number(versionArray[2]),
 						hotfix: hotfixNumber,
+						numeric: 0,
 						string: versionString
 					}};
+
+			callbackData.version.numeric =
+			(callbackData.version.major * 10000000000) +
+			(callbackData.version.minor * 1000000) +
+			(callbackData.version.patch * 100) +
+			callbackData.version.hotfix;
 					
 			cb(callbackData);
 		}).fail(function(){

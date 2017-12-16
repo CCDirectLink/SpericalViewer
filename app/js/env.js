@@ -23,9 +23,12 @@ function Environment(){
 	var version = {
 		major: 0, 
 		minor: 0, 
-		build: 0, 
+		patch: 0,
+		hotfix: 0,
 		rev: 0, 
-		string: "0.0.0", 
+		string: "0.0.0", // or 0.0.0-0
+		numeric: 0, // major [infinite digits] minor [4 digits] patch [4 digits] hotfix [2 digits]
+					// unique (single) version number for fast and easy comparisons
 		note: ""
 	};
 	
@@ -83,7 +86,10 @@ function Environment(){
 			if (typeof versionArray[0] != "undefined"){
 				version.major = Number(versionArray[0].replace('v', ''));
 				version.minor = Number(versionArray[1]);
-				version.build = Number(versionArray[2].replace(/\D/g, '')); //Remove note
+				version.patch = Number(versionArray[2].replace(/\D/g, '')); //Remove note
+				version.hotfix = 0;
+
+				version.numeric = (version.major * 10000000000) + (version.minor * 1000000) + (version.patch * 100) + version.hotfix;
 
 				var noteData = /\D/g.exec(versionArray[2]); //Extract note
 
@@ -94,7 +100,7 @@ function Environment(){
 			}
 
 			version.rev = jsonData.rev;
-			version.string = version.major + "." + version.minor + "." + version.build + version.note;
+			version.string = version.major + "." + version.minor + "." + version.patch + version.note;
 			
 			build.sorthash = jsonData.hash;
 			build.longhash = jsonData.hashlong;
