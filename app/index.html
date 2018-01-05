@@ -46,6 +46,8 @@
             loader: null
         };
 
+        var sv = globals;
+
         globals.module = new Module({langId: "en", langIdSub: "us"}, `file://${__dirname}/lang/langlist.json`);
 
         globals.module.on("langInitDone", function(){
