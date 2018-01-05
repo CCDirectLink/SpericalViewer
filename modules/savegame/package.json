@@ -1,0 +1,5 @@
+{
+	"name": "savegame",
+	"langfolder": "lang",
+	"main": "savegame.js"
+}

@@ -1,0 +1,11 @@
+{
+	"langId": "de",
+	"langIdSub": "de",
+
+	"content":
+	{
+        "savegame.savegame": "Spielstand",
+        "savegame.savegames": "Spielstände",
+		"savegame.foundSaves": "Gefundene Spielstände"
+	}
+}

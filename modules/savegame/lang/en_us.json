@@ -1,0 +1,11 @@
+{
+	"langId": "en",
+	"langIdSub": "us",
+
+	"content":
+	{
+        "savegame.savegame": "Savegame",
+        "savegame.savegames": "Savegames",
+		"savegame.foundSaves": "Found savegames"
+	}
+}
