@@ -60,7 +60,9 @@ function Settings(){
 	}
 }
 
-globals.settings = new Settings();
+globals.module.sharedMemory['settings'] = {
+	controller: new Settings()
+};
 
 globals.module.on("modulesLoaded", function(){
 	globals.menu.add("Settings", function(){}, "../modules/settings/settings.html", true, -1);

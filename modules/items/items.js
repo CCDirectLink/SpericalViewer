@@ -1,16 +1,15 @@
 function Items(){
+
+	var instance = this;
+
 	var itemData = {
 				selectedVersion: globals.gameData.getVersions()[0],
 				version: new Version(),
-				versionTrigger: function() {
-					itemData.selectedVersion = $("#versionList")[0].options[$("#versionList")[0].selectedIndex].value;
-					globals.items.updateTable();
-				},
 				observer: globals.imageData.registerObserver(function(name, tileName, image){
-					globals.items.updateIcon(name, tileName, image);
+					instance.updateIcon(name, tileName, image);
 				}, "items"),
 				versionChangeObserver: globals.gameData.registerObserver(function(){
-					globals.items.updateVersion();
+					instance.updateVersion();
 				}, "version")
 			};
 
@@ -19,6 +18,11 @@ function Items(){
 	globals.module.on("langChanged", function(id, subId, data) {
 		langEntries = data;
 	});
+
+	this.versionTrigger = function() {
+		itemData.selectedVersion = $("#versionList")[0].options[$("#versionList")[0].selectedIndex].value;
+		instance.updateTable();
+	}
 	
 	this.display = function(){
 		$("h1").html(langEntries.content['items.items']);
@@ -100,7 +104,10 @@ function Items(){
 		return tableString;
 	}
 }
-globals.items = new Items();
+
+globals.module.sharedMemory['items'] = {
+	controller: new Items()
+};
 
 globals.module.on("modulesLoaded", function(){
 	globals.menu.add("Items", function(){}, "../modules/items/items.html", function(){

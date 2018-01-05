@@ -1,9 +1,9 @@
 <script type="text/javascript">
-	globals.items.display();
+	globals.module.sharedMemory['items']['controller'].display();
 </script>
 <h1></h1>
 <span id="versionSelect"></span>:
-<select name="version" id="versionList" onchange="globals.moduleMemory['items']['versionTrigger']()" size="1">
+<select name="version" id="versionList" onchange="globals.module.sharedMemory['items']['controller'].versionTrigger()" size="1">
 </select>
 <div class="elementcontainer" id="itemData">
 </div>

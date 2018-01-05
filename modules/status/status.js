@@ -111,7 +111,9 @@ function Status(){
 	initialize();
 }
 
-globals.status = new Status();
+globals.module.sharedMemory['status'] = {
+	controller: new Status()
+};
 
 globals.module.on("modulesLoaded", function(){
 	var id = globals.menu.add("Status", function(){}, "../modules/status/status.html", true, 0);

@@ -103,7 +103,9 @@ function CCModDB(){
 
 }
 
-globals.ccmoddb = new CCModDB();
+globals.module.sharedMemory['ccmoddb'] = {
+	controller: new CCModDB()
+};
 
 globals.module.on("modulesLoaded", function(){
 	globals.menu.add("CCMods", function(){}, "../modules/ccmodapi/ccmodapi.html", true);

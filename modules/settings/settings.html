@@ -1,5 +1,5 @@
 <script type="text/javascript">
-	globals.settings.display();
+	globals.module.sharedMemory['settings']['controller'].display();
 </script>
 <h1></h1>
 <div id="setTheme">
@@ -19,7 +19,7 @@
 		<td id="langTitle">
 		</td>
 		<td>
-			<select id="lang" id="langList" size="1" onchange="globals.settings.langTrigger()"></select>
+			<select id="lang" id="langList" size="1" onchange="globals.module.sharedMemory['settings']['controller'].langTrigger()"></select>
 		</td>
 	</tr>
 	<tr>

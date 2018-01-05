@@ -1,5 +1,5 @@
 <script type="text/javascript">
-	globals.status.display();
+	globals.module.sharedMemory['status']['controller'].display();
 </script>
 <center>
 	<h1></h1>
@@ -8,7 +8,7 @@
 	<span id="license"></span>
 </center><br/>
 <span id="loadGame"></span>:
-<input type="file" id="file" onchange="globals.status.onchange()"/>
+<input type="file" id="file" onchange="globals.module.sharedMemory['status']['controller'].onchange()"/>
 <br />
 <br />
 <span id="loadedGameTitle"></span>:

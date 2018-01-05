@@ -6,7 +6,7 @@ function CCLoader(){
 	
 	this.initialize = function(){
 		globals.gameData.registerObserver(function(){
-			globals.ccloader.display();
+			globals.module.sharedMemory['ccloader']['controller'].display();
 		}, "path");
 	}
 
@@ -35,7 +35,7 @@ function CCLoader(){
 				$('h2').html(langEntries.content['ccloader.installing']);
 				_extract(filename, globals.gameData.versions[id].path.main + "..", function(){
 					$('h2').html("");
-					globals.ccloader.display();
+					globals.module.sharedMemory['ccloader']['controller'].display();
 				});
 			});
 			response.on('data', function(data){
@@ -97,7 +97,10 @@ function CCLoader(){
 	
 	this.initialize();
 }
-globals.ccloader = new CCLoader();
+
+globals.module.sharedMemory['ccloader'] = {
+	controller: new CCLoader()
+};
 
 globals.module.on("modulesLoaded", function(){
 	globals.menu.add("CCLoader", function(){}, "../modules/ccloader/ccloader.html", function(){

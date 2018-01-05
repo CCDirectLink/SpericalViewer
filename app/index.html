@@ -35,10 +35,15 @@
     <script type="text/javascript" src="js/loader.js"></script>
     <script type="text/javascript" src="js/image.js"></script>
     <script type="text/javascript" src="js/drop.js"></script>
-	
+
     <script type="text/javascript">
-		var globals = {
-			env: new Environment()
+        var globals = {
+            env: new Environment(),
+            module: null,
+            menu: null,
+            gameData: null,
+            imageData: null,
+            loader: null
         };
 
         globals.module = new Module({langId: "en", langIdSub: "us"}, `file://${__dirname}/lang/langlist.json`);
