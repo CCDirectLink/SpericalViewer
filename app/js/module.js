@@ -17,6 +17,7 @@ function Module(initLang, langFile){
 	var langStore = {};
 	var langList = [];
 
+	this.sharedMemory = {};
 	this.selectedLang = {langId: "en", langIdSub: "us"};
 	
 	//Constructor
