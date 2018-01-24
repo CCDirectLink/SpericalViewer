@@ -82,7 +82,7 @@ function Status(){
 				tableString += "(local)";
 			}
 
-			tableString += "</td><td>" + statusArray[i].version + "</td><td>" + statusArray[i].size + "</td><td><a class=\"close\" id=\"" + statusArray[i].id + "\" onclick=\"globals.status.removeData('" + statusArray[i].id + "');\">" +
+			tableString += "</td><td>" + statusArray[i].version + "</td><td>" + statusArray[i].size + "</td><td><a class=\"close\" id=\"" + statusArray[i].id + "\" onclick=\"globals.module.sharedMemory['status'].controller.removeData('" + statusArray[i].id + "');\">" +
 			langEntries.content['status.close'] + "</a></td></tr>";
 		
 		}
@@ -101,7 +101,7 @@ function Status(){
 			return langEntries.content['status.noGames'];
 
 		for (var version in versions) {
-			tableString += "<tr><td>" + version + "</td><td>" + versions[version] + "</td><td><a class=\"close\" id=\"" + version + "\" onclick=\"globals.status.removeVersion('" + version + "');\">" +
+			tableString += "<tr><td>" + version + "</td><td>" + versions[version] + "</td><td><a class=\"close\" id=\"" + version + "\" onclick=\"globals.module.sharedMemory['status'].controller.removeVersion('" + version + "');\">" +
 			langEntries.content['status.clear'] + "</a></td></tr>";
 		}
 
