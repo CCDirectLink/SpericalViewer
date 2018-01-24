@@ -1,40 +1,29 @@
 "use strict";
 
 function CallbackEntry(cb) {
-	var fkt = cb;
+	var fkt = function() {};
 
 	this.call = function(...arg) {
-		fkt(...arg);
-	}
-}
-
-function HandlerId(id) {
-	this.id = id;
-}
-
-function HandlerIdList() {
-	var instance = this;
-	this.list = [];
-
-	this.add = function(id) {
-		if (id.constructor === HandlerId) {
-			instance.list.push(id);
-		}
-		else if (typeof id === 'integer') {
-			instance.list.push(new HandlerId(id));
-		}
-		else if (typeof id === 'object') {
-			for (entry in id) {
-				if (typeof id[entry] === 'integer') {
-					instance.list.push(new HandlerId(id[entry]));
-				}
-			}
-		}
+		return fkt(...arg);
 	}
 
-	this.clear = function() {
-		instance.list = [];
+	this.update = function(cb) {
+		if (typeof cb !== 'function') {
+			throw new TypeError('Param cb not a function');
+		}
+
+		fkt = cb;
 	}
+
+	this.clone = function() {
+		return new CallbackEntry(fkt);
+	}
+
+	this.toString = function() {
+		return "{}";
+	}
+
+	this.update(cb);
 }
 
 function CallbackList() {
@@ -65,34 +54,41 @@ function CallbackList() {
 	}
 
 	this.call = function(...arg) {
+		var result = [];
 		for (id in list) {
-			list[id].call(...arg);
+			result[id] = list[id].call(...arg);
 		}
+		return result;
 	}
 
 	this.add = function(cb) {
 		var index = 0;
-		if (typeof cb == "function") {
-			index = getIndexAndIncrese();
-			list[index] = new CallbackEntry(cb);
-			++_length;
-			return new HandlerId(index);
-		}
-		else if (cb.constructor === CallbackEntry) {
+		if (cb.constructor === CallbackEntry) {
 			index = getIndexAndIncrese();
 			list[index] = cb;
 			++_length;
-			return new HandlerId(index);
+			return index;
 		}
 		else if (Array.isArray(cb)) {
-			var result = new HandlerIdList();
+			var result = [];
 			for (id in cb) {
-				result.list[id] = new HandlerId(instance.add(cb[id]));
+				try {
+					result[id] = new instance.add(cb[id]);
+				}
+				catch (err) {
+					// ignore
+				}
 			}
 			return result;
 		}
 		else {
-			throw "type invalid";
+			// can throw
+			var cbEntry = new CallbackEntry(cb);
+
+			index = getIndexAndIncrese();
+			list[index] = cbEntry;
+			++_length;
+			return new index;
 		}
 	}
 
@@ -113,8 +109,15 @@ function CallbackList() {
 		}
 	}
 
+	this.clone = function() {
+	}
+
 	this.clear = function() {
 		list = [];
+	}
+
+	this.toString = function() {
+		return "{\"length\":" + _length + ",\"last\":" + lastIndex + "}";
 	}
 
 }
@@ -150,9 +153,9 @@ function CallbackHandler() {
 		else if (typeof typeList === "object") {
 			var callIds = {};
 			for (type in typeList) {
-				if ((typeof typeList[type] === "string") &&
+				if ((typeof type[typeList] === "string") &&
 					(typeof callbacks[key] !== "undefined")) {
-					var key = typeList[type]];
+					var key = type[typeList];
 
 					if (typeof callIds[key] === "undefined") {
 						callIds[key] = [];
@@ -171,7 +174,9 @@ function CallbackHandler() {
 		//}
 	}
 
-	this.remove = function()
+	this.remove = function() {
+		
+	}
 
 	this.call = function(typeList, ...arg) {
 
@@ -181,8 +186,8 @@ function CallbackHandler() {
 		else if (typeof typeList === "object") {
 			for (type in typeList) {
 				var key = "";
-				if (typeof typeList[type] === "string") {
-					key = typeList[type]];
+				if (typeof type[typeList] === "string") {
+					key = type[typeList];
 				}
 				else {
 					key = type;
@@ -198,5 +203,7 @@ function CallbackHandler() {
 }
 
 module.exports = {
+	CallbackEntry: CallbackEntry,
+	CallbackList: CallbackList,
 	CallbackHandler: CallbackHandler
 }
