@@ -1,6 +1,6 @@
 # SpericalViewer #
 
-[![dependencies Status](https://david-dm.org/CCDirectLink/SpericalViewer/status.svg)](https://david-dm.org/CCDirectLink/SpericalViewer) [![devDependencies Status](https://david-dm.org/CCDirectLink/SpericalViewer/dev-status.svg)](https://david-dm.org/CCDirectLink/SpericalViewer?type=dev)
+[![dependencies Status](https://david-dm.org/CCDirectLink/SpericalViewer/status.svg)](https://david-dm.org/CCDirectLink/SpericalViewer) [![devDependencies Status](https://david-dm.org/CCDirectLink/SpericalViewer/dev-status.svg)](https://david-dm.org/CCDirectLink/SpericalViewer?type=dev) [![modDiscord Online](https://img.shields.io/discord/382339402338402315.svg?label=mod+discord)](https://discord.gg/6eFQCxK) [![ccDiscord Online](https://img.shields.io/discord/143364538958348288.svg?label=cc+discord)](https://discord.gg/crosscode)
 
 This is an Electron application for [CrossCode](http://cross-code.com).
 
