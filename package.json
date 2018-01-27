@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "electron": "1.6.16",
-    "electron-builder": "^19.32.2",
+    "electron-builder": "^19.55.2",
     "electron-packager": "^10.1.1",
     "electron-rebuild": "^1.7.3",
     "chai": "^4.1.2",
@@ -42,8 +42,6 @@
   },
   "dependencies": {
     "@mcph/lwip": "git+https://github.com/mixer/lwip.git",
-    "electron-is-dev": "^0.3.0",
-    "open": "^0.0.5",
     "unzip2": "^0.2.5"
   }
 }

@@ -7,8 +7,6 @@ const stream = require('stream');
 const util = require('util');
 const unzip = require('unzip2');
 const lwip = require('@mcph/lwip');
-const open = require("open");
-const isDevEnv = require('electron-is-dev');
 
 // setup userData
 function _checkAbsolute (path) {
@@ -62,6 +60,9 @@ global.toolname = "SpericalViewer";
 
 global.ccSave = "cc.save";
 global.ccSaveBackup = "cc.save.backup";
+
+global.isDevEnv = ((process.defaultApp) ||
+  (/node_modules[\\/]electron[\\/]/.test(process.execPath)));
 
 function userPreSetup () {
 
@@ -157,7 +158,7 @@ userPreSetup();
 
 let win;
 
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, shell} = require('electron');
 app.setPath('userData', global.cacheDir);
 
 // path ---
@@ -181,14 +182,14 @@ function createWindow () {
 
   win.webContents.on('new-window', function(event, url){
     event.preventDefault();
-    open(url);
+    shell.openExternal(url);
   });
 
   // and load the index.html of the app.
   win.loadURL(`file://${__dirname}/index.html`);
 
   // Open the DevTools (if not packed).
-  if (isDevEnv) {
+  if (global.isDevEnv) {
     win.openDevTools();
   }
 
