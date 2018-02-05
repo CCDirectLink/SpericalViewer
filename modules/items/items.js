@@ -13,7 +13,6 @@ function Items(){
 				}, "version")
 			};
 
-	var searchValue = document.getElementById('searchValue');
 	var langEntries = globals.module.getLangData();
 
 	globals.module.on("langChanged", function(id, subId, data) {
@@ -26,10 +25,6 @@ function Items(){
 	}
 	
 	this.display = function(){
-		if(!searchValue) {
-			searchValue = document.getElementById('searchValue');
-		}
-
 		$("h1").html(langEntries.content['items.items']);
 		$("#versionSelect").html(langEntries.content['status.version']);
 		$("#searchLabel").html(langEntries.content['items.search']);
@@ -45,7 +40,7 @@ function Items(){
 	
 	this.updateTable = function(){
 		// init table
-		$("#itemData").html("<table>" + _getTable(itemData.selectedVersion, searchValue.value) + "</table>");
+		$("#itemData").html("<table>" + _getTable(itemData.selectedVersion, document.getElementById('searchValue').value) + "</table>");
 	}
 	
 	this.updateVersion = function(){
