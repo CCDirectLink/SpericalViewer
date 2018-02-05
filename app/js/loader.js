@@ -41,6 +41,8 @@ function Loader(){
 			globals.gameData.addData(data.shortId, "shortId", data.shortId);
 			globals.gameData.addData(data.shortId, "version", data.version);
 			globals.gameData.addData(data.shortId, "path", data.path);
+
+			globals.env.saveVersionPath(data.shortId, data.path.main);
 			
 			$.getJSON(data.path.data + "database.json").done(function(json){
 				globals.gameData.addData(data.shortId, "database", json);
