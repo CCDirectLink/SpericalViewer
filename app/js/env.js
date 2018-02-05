@@ -18,7 +18,7 @@ function Environment(){
 	const MODULES_APP_DIR = require('electron').remote.getGlobal('modulesAppDir');
 
 	// check if dev
-	this.isDevEnv = require('electron').remote.require('electron-is-dev');
+	this.isDevEnv = require('electron').remote.getGlobal('isDevEnv');
 	
 	var version = {
 		major: 0, 
