@@ -29,20 +29,26 @@ function CCLoader(){
 		
 		var filename = "ccloader.zip" //Might have to be changed to be platform-independant
 		var file = fs.createWriteStream(filename); 
+		file.on('error', err => { throw err; });
 		var request = https.get(DOWNLOAD_LINK, function(response) {
 			response.on('end', function(data){
-				file.close();
-				$('h2').html(langEntries.content['ccloader.installing']);
-				_extract(filename, globals.gameData.versions[id].path.main + "..", function(){
-					$('h2').html("");
-					globals.module.sharedMemory['ccloader']['controller'].display();
+				file.on('finish', () => {
+					$('h2').html(langEntries.content['ccloader.installing']);
+					_extract(filename, globals.gameData.versions[id].path.main + "..", function(){
+						$('h2').html("");
+						globals.module.sharedMemory['ccloader']['controller'].display();
+					});
 				});
+				file.end();
 			});
 			response.on('data', function(data){
 				file.write(data, function(err){
 					if(err)
 						throw err;
 				});
+			});
+			response.on('error', function(err){
+				throw err;
 			});
 		});
 	}
@@ -81,10 +87,10 @@ function CCLoader(){
 			if(_isInstalled(game)){
 				tableString += langEntries.content['ccloader.installed'];
 			}else{
-				tableString += "<button onclick=\"globals.ccloader.install('" + id + "')\">" + langEntries.content['ccloader.install'] + "</button>";
+				tableString += "<button onclick=\"globals.module.sharedMemory['ccloader']['controller'].install('" + id + "')\">" + langEntries.content['ccloader.install'] + "</button>";
 			}
 			
-			tableString += "</td><td><button onclick=\"globals.ccloader.start('" + id + "')\">" + langEntries.content['ccloader.start'] + "</button></td></tr>";
+			tableString += "</td><td><button onclick=\"globals.module.sharedMemory['ccloader']['controller'].start('" + id + "')\">" + langEntries.content['ccloader.start'] + "</button></td></tr>";
 		}
 		
 		tableString += "</table>";

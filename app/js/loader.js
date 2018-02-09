@@ -41,6 +41,8 @@ function Loader(){
 			globals.gameData.addData(data.shortId, "shortId", data.shortId);
 			globals.gameData.addData(data.shortId, "version", data.version);
 			globals.gameData.addData(data.shortId, "path", data.path);
+
+			globals.env.saveVersionPath(data.shortId, data.path.main);
 			
 			$.getJSON(data.path.data + "database.json").done(function(json){
 				globals.gameData.addData(data.shortId, "database", json);
@@ -68,7 +70,7 @@ function Loader(){
 			
 			//"/media/gui/menu.png"
 			var iconSpecify = ["hp", "attack", "defense", "focus", "elemHeat", "elemCold", "elemShock", "elemWave"];
-			var iconSet = { dimension: {width: 11, height: 11, xpad: 1}, column: 8, xstart: 33, ystart: 280 };
+			var iconSet = { dimension: {width: 11, height: 11, xpad: 1}, column: 5, xstart: 620, ystart: 219 };
 
 			for (var columnIndex = 0; columnIndex < iconSet.column; columnIndex++) {
 				var startX = (columnIndex * (iconSet.dimension.width + iconSet.dimension.xpad)) + iconSet.xstart;
