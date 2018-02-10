@@ -1,7 +1,7 @@
 function Loader(){
 	
 	this.loadSaved = function(){
-		var versions = globals.env.getSavedVersions();
+		var versions = globals.env.versionList;
 		for(var version in versions){
 			_findFile(versions[version], _extractData);
 		}

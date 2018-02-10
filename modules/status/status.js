@@ -32,7 +32,7 @@ function Status(){
 		$("h1").html(globals.env.name);
 		$("#version").html(globals.env.version.string);
 
-		$("#rev").html(globals.env.version.rev);
+		$("#rev").html(globals.env.build.rev);
 		$("#year").html(globals.env.build.date.year);
 
 		// init table
@@ -96,7 +96,7 @@ function Status(){
 		"</th><th>" + langEntries.content['status.path'] +
 		"</th><th></th></tr>";
 
-		var versions = globals.env.getSavedVersions();
+		var versions = globals.env.versionList;
 		if (Object.keys(versions).length === 0)
 			return langEntries.content['status.noGames'];
 

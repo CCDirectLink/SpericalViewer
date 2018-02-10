@@ -8,7 +8,7 @@ const util = require('util');
 const unzip = require('unzip2');
 const lwip = require('@mcph/lwip');
 
-const {versionType} = require('./js/base/versionType.js');
+const {VersionType} = require('./js/base/versionType.js');
 
 // setup userData
 function _checkAbsolute (path) {
