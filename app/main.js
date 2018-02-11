@@ -6,7 +6,7 @@ const fs = require("fs");
 const stream = require('stream');
 const util = require('util');
 const unzip = require('unzip2');
-const lwip = require('@mcph/lwip');
+const lwip = require('./lwip.js');
 
 const {VersionType} = require('./js/base/versionType.js');
 
