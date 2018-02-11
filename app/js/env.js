@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * Global environment data
  * @type {Object}

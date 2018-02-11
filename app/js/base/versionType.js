@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * Version Container
  */
@@ -9,88 +11,24 @@ class VersionType {
 	 */
 	constructor(data) {
 
-		if (data.constructor === VersionType) {
+		if ((data) &&
+			(data.constructor === VersionType)) {
 
-			/**
-		     * Major (main) version
-		     * [major].minor.patch(-hotfix)( note)
-		     *
-		     * @type {number}
-		     */
 			this.major = data.major;
-
-			/**
-		     * Minor version
-		     * major.[minor].patch(-hotfix)( note)
-		     *
-		     * @type {number}
-		     */
 			this.minor = data.minor;
-
-			/**
-		     * Patch version
-		     * major.minor.[patch](-hotfix)( note)
-		     *
-		     * @type {number}
-		     */
 			this.patch = data.patch;
-
-			/**
-		     * Hotfix version
-		     * major.minor.patch(-[hotfix])( note)
-		     *
-		     * @type {number}
-		     */
 			this.hotfix = data.hotfix;
 
-			/**
-		     * Version notes
-		     * major.minor.patch(-hotfix)( [note])
-		     *
-		     * @type {string}
-		     */
 			this.note = data.note;
 		}
-		else if (typeof data === 'object') {
+		else if ((data) &&
+				 (typeof data === 'object')) {
 
-			/**
-		     * Major (main) version
-		     * [major].minor.patch(-hotfix)( note)
-		     *
-		     * @type {number}
-		     */
 			this.major = data.major || 0;
-
-			/**
-		     * Minor version
-		     * major.[minor].patch(-hotfix)( note)
-		     *
-		     * @type {number}
-		     */
 			this.minor = data.minor || 0;
-
-			/**
-		     * Patch version
-		     * major.minor.[patch](-hotfix)( note)
-		     *
-		     * @type {number}
-		     */
 			this.patch = data.patch || 0;
-
-			/**
-		     * Hotfix version
-		     * major.minor.patch(-[hotfix])( note)
-		     *
-		     * @type {number}
-		     */
 			this.hotfix = data.hotfix || 0;
 
-			/**
-		     * Version notes
-		     * major.minor.patch(-hotfix)( [note])
-		     *
-		     * @type {string}
-		     */
 			this.note = data.note || "";
 		}
 		else if (typeof data === 'string') {
@@ -98,45 +36,15 @@ class VersionType {
 			// Version regex
 			const versionArray = (/^(v)?(([0-9]+)\.([0-9]+)\.([0-9]+)(\-([0-9]+))?(( )(.+))?)/).exec(data);
 
-			/**
-		     * Major (main) version
-		     * [major].minor.patch(-hotfix)( note)
-		     *
-		     * @type {number}
-		     */
 			this.major = Number(versionArray[3]) || 0;
-
-			/**
-		     * Minor version
-		     * major.[minor].patch(-hotfix)( note)
-		     *
-		     * @type {number}
-		     */
 			this.minor = Number(versionArray[4]) || 0;
-
-			/**
-		     * Patch version
-		     * major.minor.[patch](-hotfix)( note)
-		     *
-		     * @type {number}
-		     */
 			this.patch = Number(versionArray[5]) || 0;
-
-			/**
-		     * Hotfix version
-		     * major.minor.patch(-[hotfix])( note)
-		     *
-		     * @type {number}
-		     */
 			this.hotfix = Number(versionArray[7]) || 0;
 
-			/**
-		     * Version notes
-		     * major.minor.patch(-hotfix)( [note])
-		     *
-		     * @type {string}
-		     */
 			this.note = (versionArray[10]) || "";
+		}
+		else {
+			throw new TypeError('Not valid version type');
 		}
 	}
 
