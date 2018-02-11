@@ -12,7 +12,7 @@ const globalData = (() => {
 
 	// remove electron access & module access
 	if (typeof require !== 'undefined') {
-		delete require;
+		require = undefined;
 	}
 
 	var versionData = null;
@@ -78,13 +78,13 @@ class Environment {
 	saveVersionPath(id, path) {
 		this.versionList[id] = path;
 		// update versionList
-		localStorage.setItem("versionList", JSON.stringify(versionList));
+		localStorage.setItem("versionList", JSON.stringify(this.versionList));
 	}
 	
 	removeVersionPath(id) {
 		delete this.versionList[id];
 		// update versionList
-		localStorage.setItem("versionList", JSON.stringify(versionList));
+		localStorage.setItem("versionList", JSON.stringify(this.versionList));
 	}
 
 }
