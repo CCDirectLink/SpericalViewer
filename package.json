@@ -42,7 +42,8 @@
     "mocha": "^5.0.0"
   },
   "dependencies": {
-    "@mcph/lwip": "git+https://github.com/mixer/lwip.git",
+    "async": "^2.6.0",
+    "imagejs": "0.0.9",
     "unzip2": "^0.2.5"
   }
 }
