@@ -273,6 +273,7 @@ function Module(initLang, langFile){
 		var files = [];
 
 		if (typeof directories === 'string' || directories instanceof String) {
+			directories = directories.replace(/^file:/, '');
 			try {
 				files = fs.readdirSync(directories);
 				for(var i in files){
@@ -283,6 +284,7 @@ function Module(initLang, langFile){
 			}
 		} else {
 			for(var i in directories){
+				directories[i] = directories[i].replace(/^file:/, '');
 				try {
 					var _tempFiles = fs.readdirSync(directories[i]);
 					for(var j in _tempFiles){
