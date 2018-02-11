@@ -7,8 +7,8 @@
   "author": "CCDirectLink",
   "license": "MIT",
   "scripts": {
+    "test": "mocha --recursive unitTest",
     "postinstall": "node postinstall.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
     "pack": "build --dir",
     "pack:all": "build --dir --mac --win --linux",
