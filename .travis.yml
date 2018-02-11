@@ -1,14 +1,7 @@
 language: node_js
 node_js:
 - "stable"
-before_install:
-- sudo apt-get -qq update
-- sudo apt-get install -y libjpeg-dev libgif-dev
-- wget https://downloads.sourceforge.net/project/libpng/libpng16/1.6.34/libpng-1.6.34.tar.gz -O libpng.tar.gz
-- tar -xvf libpng.tar.gz
-- cd libpng-1.6.34
-- sudo bash configure --prefix=/usr/local/libpng
-- sudo make install
-- cd ..
-- npm install
+install:
+  npm install chai mocha
 script: npm run travis
+sudo: false
