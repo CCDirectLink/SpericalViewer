@@ -9,4 +9,6 @@ before_install:
 - cd libpng-1.6.34
 - sudo bash configure --prefix=/usr/local/libpng
 - sudo make install
+- cd ..
+- npm install
 script: npm run travis
