@@ -17,7 +17,8 @@
     "pack:linux": "build --dir --linux",
     "genVersion": "node genVersion.js",
     "dist": "build",
-    "dist:all": "build --mac --win --linux"
+    "dist:all": "build --mac --win --linux",
+    "travis": "./node_modules/.bin/mocha --recursive unitTest"
   },
   "build": {
     "appId": "com.electron.ccdirectlink.sperical-viewer",
