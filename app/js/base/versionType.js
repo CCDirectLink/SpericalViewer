@@ -7,7 +7,7 @@ class VersionType {
 
 	/**
 	 * Version definition
-	 * @param {VersionType|Object|string} Version data
+	 * @param {VersionType|Object|string} data Version data
 	 */
 	constructor(data) {
 
