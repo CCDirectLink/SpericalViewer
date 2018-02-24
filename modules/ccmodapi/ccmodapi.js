@@ -70,7 +70,7 @@ function CCModDB(){
 		}
 	}
 	this.installMod = function(link,name) {
-    console.debug("Link", link);
+		console.debug("Link", link);
 		console.debug("Filename", name);
 		console.debug("Version hash", version);
 		var link = _archiveToDirectLink(link);
@@ -79,72 +79,72 @@ function CCModDB(){
 		var version = Object.keys(globals.gameData.versions)[0];
 		console.log("Downloading...");
 		_download(link, name + ".zip", function(path) {
-			    console.log("Installing...");
+			console.log("Installing...");
 	        _install(path, globals.gameData.versions[version].path.main + "mods\\", function() {
-			         console.log("Done!");
+			    console.log("Done!");
 	        });
-     });
+        });
 	}
 	function _archiveToDirectLink(url) {
-   		var baseUrl = "https://codeload.github.com/";
+   	    var baseUrl = "https://codeload.github.com/";
    		var strippedUrl = url.replace("https://github.com/","");
    		baseUrl += strippedUrl.substring(0,strippedUrl.indexOf("/archive/") + 1);
    		var fileName = strippedUrl.substring(strippedUrl.indexOf("/archive/") +
                                          "/archive/".length);
-      var fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
-      var fileName = fileName.substring(0, fileName.lastIndexOf("."));
-      baseUrl += fileType + "/" + fileName;
-      return baseUrl;
+        var fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
+        var fileName = fileName.substring(0, fileName.lastIndexOf("."));
+        baseUrl += fileType + "/" + fileName;
+        return baseUrl;
  	}
 	/*
 	* NOTE: Needs DIRECT link
 	*/
 	function _download(downloadLink, name, cb) {
-			https.get(downloadLink, function(res) {
-				  var fileStream = fs.createWriteStream(name);
-					res.on('data', function(nextBlob) {
-							fileStream.write(nextBlob);
-					});
-					res.on('end', function() {
-							fileStream.end();
-							cb(name);
-					});
-					res.on('error', function(err) {
-						  console.log('Error');
-						  fileStream.end();
-						  cb && cb(null, err);
-					});
+		https.get(downloadLink, function(res) {
+		    var fileStream = fs.createWriteStream(name);
+			res.on('data', function(nextBlob) {
+					fileStream.write(nextBlob);
 			});
+			res.on('end', function() {
+					fileStream.end();
+					cb(name);
+			});
+			res.on('error', function(err) {
+				  console.log('Error');
+				  fileStream.end();
+				  cb && cb(null, err);
+			});
+		});
 	}
 	function _install(filePath, outputPath, cb) {
-		    //possibly an install file included? This does not support mods like Rich Presence
-				fs.createReadStream(filePath)
-				  .pipe(unzip.Parse())
-					.on('entry', function(entry) {
-						  if(!entry || !entry.path || entry.path.indexOf("/") === entry.path.lastIndexOf("/")) {
-								 console.debug("Skipping...", entry);
-								 return;
-							}
-              var name = entry.path;
-							name = name.substr(name.indexOf("/") + 1);
-							var type = entry.type;
-							if(type === "Directory") {
-								  try {
-										fs.mkdirSync(outputPath + name);
-									} catch (e) {
-										 console.log(`Error with making directory "${name}" -> ${e}`);
-									}
-									entry.autodrain();
-							} else if(type === "File") {
+		    //possibly an install path included? This does not support mods like Rich Presence
+            fs.createReadStream(filePath)
+              .pipe(unzip.Parse())
+              .on('entry', function(entry) {
+                if(!entry || !entry.path || entry.path.indexOf("/") === entry.path.lastIndexOf("/")) {
+                    console.debug("Skipping...", entry);
+                    return;
+                }
+                var name = entry.path;
+				name = name.substr(name.indexOf("/") + 1);
+				var type = entry.type;
+				if(type === "Directory") {
+					  try {
+							fs.mkdirSync(outputPath + name);
+						} catch (e) {
+							 console.log(`Error with making directory "${name}" -> ${e}`);
+						}
+						entry.autodrain();
+				} else if(type === "File") {
 
-									entry.pipe(fs.createWriteStream(outputPath + name));
-							} else {
-								 entry.autodrain();
-							}
-					})
-					.on('close', function() {
-							cb && cb();
-					});
+						entry.pipe(fs.createWriteStream(outputPath + name));
+				} else {
+					 entry.autodrain();
+				}
+			   })
+			   .on('close', function() {
+			   		cb && cb();
+			   });
 	}
 	function _getTable() {
 		var tableString = "<tr><th>" + langEntries.content['ccmodapi.name'] + "</th><th>" + langEntries.content['ccmodapi.desc'] + "</th><th>" + langEntries.content['ccmodapi.license'] + "</th><th>" + langEntries.content['ccmodapi.install'] + "</th></tr>";
@@ -160,7 +160,7 @@ function CCModDB(){
 				(!instance.moddata.mods[i].version)) {
 				continue;
 			}
-      var link = instance.moddata.mods[i].archive_link;
+			var link = instance.moddata.mods[i].archive_link;
 			tableString += "<tr><td>" + instance.moddata.mods[i].name + " (" + i + ")</td>";
 			tableString += "<td>" + (instance.moddata.mods[i].description || "") + "</td>";
 			tableString += "<td>" + (instance.moddata.mods[i].license || "") + "</td>";
