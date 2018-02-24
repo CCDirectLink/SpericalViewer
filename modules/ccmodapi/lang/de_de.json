@@ -9,7 +9,7 @@
 		"ccmodapi.desc": "Beschreibung",
 		"ccmodapi.version": "Version",
         "ccmodapi.download": "Download",
-				"ccmodapi.install" : "Install",
+	"ccmodapi.install" : "Install",
         "ccmodapi.license": "Lizenz",
         "ccmodapi.connection": "Keine Verbindung zur Datenbank <a target=\"_blank\" href=\"https://github.com/CCDirectLink/CCModDB\">CCModDB</a>",
         "ccmodapi.provided": "Daten zur Verfügung gestellt von <a target=\"_blank\" href=\"https://github.com/CCDirectLink/CCModDB\">CCModDB</a>"
