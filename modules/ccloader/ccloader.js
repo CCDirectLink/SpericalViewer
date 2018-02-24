@@ -3,7 +3,7 @@ function CCLoader(){
 	var location = {};
 
 	var langEntries = globals.module.getLangData();
-	
+
 	this.initialize = function(){
 		globals.gameData.registerObserver(function(){
 			globals.module.sharedMemory['ccloader']['controller'].display();
@@ -13,22 +13,22 @@ function CCLoader(){
 	globals.module.on("langChanged", function(id, subId, data) {
 		langEntries = data;
 	});
-	
+
 	this.display = function(){
 		if(globals.gameData.getVersions().length === 0){
 			$("h2").html(langEntries.content['status.noGames']);
 			return;
 		}
-		
+
 		$("#ccloaderData").html(_getTable());
 	}
-	
+
 	this.install = function(id){
 		$('#install' + id).html("");
 		$('h2').html(langEntries.content['ccloader.downloading']);
-		
+
 		var filename = "ccloader.zip" //Might have to be changed to be platform-independant
-		var file = fs.createWriteStream(filename); 
+		var file = fs.createWriteStream(filename);
 		file.on('error', err => { throw err; });
 		var request = https.get(DOWNLOAD_LINK, function(response) {
 			response.on('end', function(data){
@@ -52,11 +52,11 @@ function CCLoader(){
 			});
 		});
 	}
-	
+
 	this.start = function(id){
 		globals.gameData.start(id);
 	}
-	
+
 	function _extract(file, unzipPath, cb){
 		fs.createReadStream(file)
 			.pipe(unzip.Parse())
@@ -79,28 +79,28 @@ function CCLoader(){
 	}
 	function _getTable(){
 		var tableString = "<table><tr><th>" + langEntries.content['ccloader.id'] + "</th><th>" + langEntries.content['ccloader.version'] + "</th><th>" + langEntries.content['ccloader.installed'] + "</th><th>" + langEntries.content['ccloader.start'] + "</th></tr>";
-		
+
 		for(var id in globals.gameData.versions){
 			var game = globals.gameData.versions[id];
 			tableString += "<tr><td>" + id + "</td><td>" + game.version.string + "</td><td id=\"install" + id + "\">";
-			
+
 			if(_isInstalled(game)){
 				tableString += langEntries.content['ccloader.installed'];
 			}else{
 				tableString += "<button onclick=\"globals.module.sharedMemory['ccloader']['controller'].install('" + id + "')\">" + langEntries.content['ccloader.install'] + "</button>";
 			}
-			
+
 			tableString += "</td><td><button onclick=\"globals.module.sharedMemory['ccloader']['controller'].start('" + id + "')\">" + langEntries.content['ccloader.start'] + "</button></td></tr>";
 		}
-		
+
 		tableString += "</table>";
-		
+
 		return tableString;
 	}
 	function _isInstalled(game){
 		return fs.existsSync(game.path.main + "../ccloader/");
 	}
-	
+
 	this.initialize();
 }
 

@@ -1,40 +1,40 @@
 function Loader(){
-	
+
 	this.loadSaved = function(){
 		var versions = globals.env.versionList;
 		for(var version in versions){
 			_findFile(versions[version], _extractData);
 		}
 	}
-	
+
 	this.load = function(file){
 		if(!file)
 			return;
-		
+
 		if(file.constructor === FileList){
 			for(var i = 0; i < file.length; i++){
 				this.load(file[i]);
 			}
 			return;
 		}
-		
+
 		if(file.constructor !== File)
 			return;
-		
+
 		_findFile(file.path, _extractData);
 	}
-	
+
 	function _extractData(file, dropped, id){
 
 		var folder = file;
 
 		_extractChangelog(folder, dropped, id, function(data){
-			
+
 			if (data.containerId)
 			{
 				globals.env.saveVersionPath(data.containerId, folder);
 			}
-			
+
 			globals.gameData.addData(data.shortId, "changelog", data.changelog);
 			globals.gameData.addData(data.shortId, "containerId", data.containerId);
 			globals.gameData.addData(data.shortId, "gameId", data.gameId);
@@ -43,7 +43,7 @@ function Loader(){
 			globals.gameData.addData(data.shortId, "path", data.path);
 
 			globals.env.saveVersionPath(data.shortId, data.path.main);
-			
+
 			$.getJSON(data.path.data + "database.json").done(function(json){
 				globals.gameData.addData(data.shortId, "database", json);
 			});
@@ -53,7 +53,7 @@ function Loader(){
 			$.getJSON(data.path.data + "item-database.json").done(function(json){
 				globals.gameData.addData(data.shortId, "items", json.items);
 			}); // fail if old version
-			
+
 			//"/media/font/icons-items.png"
 			var iconSpecify = ["undef", "item-helm", "item-sword", "item-belt", "item-shoe", "item-items", "item-key", "item-trade"];
 			var iconSet = { dimension: {width: 14, height: 16, xpad: 1, ypad: 1}, column: 8, row: 5 };
@@ -67,7 +67,7 @@ function Loader(){
 						path.join(data.path.media, "font", "icons-items.png"), startX, startY, iconSet.dimension.width, iconSet.dimension.height);
 				}
 			}
-			
+
 			//"/media/gui/menu.png"
 			var iconSpecify = ["hp", "attack", "defense", "focus", "elemHeat", "elemCold", "elemShock", "elemWave"];
 			var iconSet = { dimension: {width: 11, height: 11, xpad: 1}, column: 5, xstart: 620, ystart: 219 };
@@ -76,14 +76,14 @@ function Loader(){
 				var startX = (columnIndex * (iconSet.dimension.width + iconSet.dimension.xpad)) + iconSet.xstart;
 				var startY = iconSet.ystart;
 
-				globals.imageData.addImage(data.shortId, "items", iconSpecify[columnIndex], 
+				globals.imageData.addImage(data.shortId, "items", iconSpecify[columnIndex],
 					path.join(data.path.media, "gui", "menu.png"), startX, startY, iconSet.dimension.width, iconSet.dimension.height);
 			}
-			
+
 			globals.menu.updateAll();
 		});
 	}
-	
+
 	function _nwjsExec(folder, exec) {
 
 		if (globals.env.os == "darwin")
@@ -117,7 +117,7 @@ function Loader(){
 		} else if(_isDirectory(folder)) {
 
 			var files = fs.readdirSync(folder);
-			
+
 			for(var i in files){
 				var file = fs.realpathSync(path.join(folder, files[i]));
 				_searchExec(file, exec); // Recursive search
@@ -166,7 +166,7 @@ function Loader(){
 					versionString += "-" + patternResult[1];
 				}
 			}
-			
+
 			var callbackData = {changelog: data.changelog,
 					containerId: id,
 					gameId: gameIdHex,
@@ -186,27 +186,27 @@ function Loader(){
 			(callbackData.version.minor * 1000000) +
 			(callbackData.version.patch * 100) +
 			callbackData.version.hotfix;
-					
+
 			cb(callbackData);
 		}).fail(function(){
 			// legacy version (no changelog found)
 		});
 	}
-	
+
 	function _findFile(file, cb){
 		if(_isDirectory(file) || _isApp(file)){
 			return _searchDirectory(file, file, cb);
 		}
-		
+
 		var start = _getZip(file);
 		if(start < 0)
 			return _searchDirectory(path.dirname(file), file, cb);
-		
+
 		_unZip(file, start, function(unzipPath, id){
 			cb(path.join(unzipPath, MAIN_PATH) + path.sep, file, id);
 		});
 	}
-	
+
 	function _isApp(file){
 		return ((file.endsWith(".app")) &&
 			(fs.existsSync(path.join(file, "Contents", "Info.plist"))) &&
@@ -222,7 +222,7 @@ function Loader(){
 	function _isLinuxExec(file){
 		return false;
 	}
-	
+
 	function _getId(file){
 		var id = crypto.createHash('sha256');
 		id.update(file);
@@ -231,10 +231,10 @@ function Loader(){
 		id = id.substr(0, 8);
 		return id;
 	}
-	
+
 	function _searchDirectory(folder, dropped, cb){
 		var files = fs.readdirSync(folder);
-		
+
 		for(var i in files){
 			var file = fs.realpathSync(path.join(folder, files[i]));
 			if(_isCCMain(file)){ // Check if data folder
@@ -249,18 +249,18 @@ function Loader(){
 	function _isCCMain(files){
 		return files.endsWith(path.sep + "node-webkit.html");
 	}
-	
+
 	function _isDirectory(file){
 		return fs.lstatSync(file).isDirectory();
 	}
-	
+
 	function _getZip(file){
 		if(file.toLowerCase().endsWith(".zip"))
 			return 0;
-		
+
 		return _checkSignature(file);
 	}
-	
+
 	function _checkSignature(file){
 		var data = fs.readFileSync(file);
 		for(var i = 0; i < data.length - 34; ++i) {
@@ -275,14 +275,14 @@ function Loader(){
 				(data[i + 32] == 0x74) &&	// t
 				(data[i + 33] == 0x61) &&	// a
 				(data[i + 34] == 0x2f)) {	// slash
-			
+
 				return i;
 			}
 		}
-		
+
 		return -1;
 	}
-	
+
 	function _unZip(file, start, callback){
 		var id = _getId(file);
 		var unzipPath = path.join(globals.env.path.storage, id) + path.sep;

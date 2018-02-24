@@ -7,7 +7,7 @@
 
     <!-- basic css structure -->
     <link rel="stylesheet" href="assets/basic.css">
-    
+
     <!-- colorset -->
     <link rel="stylesheet" href="assets/theme/dark/style.css">
 
@@ -57,13 +57,13 @@
             globals.gameData = new GameData();
             globals.imageData = new ImageDatabase();
             globals.loader = new Loader();
-		
+
     		$(function() {
     			$("title").html(globals.env.name);
-                $("<div/>").attr('id','title').html(globals.env.name).appendTo('.titlebar'); 
+                $("<div/>").attr('id','title').html(globals.env.name).appendTo('.titlebar');
 
                 if (process.platform == "win32") {
-                    $("<div/>").attr('id','titleButtons').html("").appendTo('.titlebar'); 
+                    $("<div/>").attr('id','titleButtons').html("").appendTo('.titlebar');
                 }
 
                 // external modules
@@ -89,7 +89,7 @@
 			});
 
         });
-		
+
 
     </script>
 
