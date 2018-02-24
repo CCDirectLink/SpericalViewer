@@ -1,31 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
 
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" name="viewport">
 
     <!-- basic css structure -->
     <link rel="stylesheet" href="assets/basic.css">
-    
+
     <!-- colorset -->
     <link rel="stylesheet" href="assets/theme/dark/style.css">
 
     <!-- js libs -->
-    <script type="text/javascript">window.$ = window.jQuery = require('./lib/jquery-3.2.1.min.js');</script>
+    <script type="text/javascript">
+        window.$ = window.jQuery = require('./lib/jquery-3.2.1.min.js');
+    </script>
 
     <!-- node libs -->
-    <script type="text/javascript">const crypto = require('crypto');</script>
-    <script type="text/javascript">const fs = require("fs");</script>
-    <script type="text/javascript">const async = require('async');</script>
-    <script type="text/javascript">const path = require('path');</script>
-    <script type="text/javascript">const stream = require('stream');</script>
-    <script type="text/javascript">const util = require('util');</script>
-    <script type="text/javascript">const unzip = require('unzip2');</script>
-    <script type="text/javascript">const lwip = require('./lib/lwip.js');</script>
-    <script type="text/javascript">const https = require('https');</script>
-    <script type="text/javascript">const { exec } = require('child_process');</script>
-    <script type="text/javascript">const {VersionType} = require('./js/base/versionType.js');</script>
+    <script type="text/javascript">
+        const crypto = require('crypto');
+    </script>
+    <script type="text/javascript">
+        const fs = require("fs");
+    </script>
+    <script type="text/javascript">
+        const async = require('async');
+    </script>
+    <script type="text/javascript">
+        const path = require('path');
+    </script>
+    <script type="text/javascript">
+        const stream = require('stream');
+    </script>
+    <script type="text/javascript">
+        const util = require('util');
+    </script>
+    <script type="text/javascript">
+        const unzip = require('unzip');
+    </script>
+    <script type="text/javascript">
+        const lwip = require('./lib/lwip.js');
+    </script>
+    <script type="text/javascript">
+        const https = require('https');
+    </script>
+    <script type="text/javascript">
+        const {
+            exec
+        } = require('child_process');
+    </script>
+    <script type="text/javascript">
+        const {
+            VersionType
+        } = require('./js/base/versionType.js');
+    </script>
 
     <!-- added modules -->
     <script type="text/javascript" src="js/env.js"></script>
@@ -49,28 +78,31 @@
 
         var sv = globals;
 
-        globals.module = new Module({langId: "en", langIdSub: "us"}, `file://${__dirname}/lang/langlist.json`);
+        globals.module = new Module({
+            langId: "en",
+            langIdSub: "us"
+        }, `file://${__dirname}/lang/langlist.json`);
 
-        globals.module.on("langInitDone", function(){
+        globals.module.on("langInitDone", function() {
 
             globals.menu = new Menu("#menulist", ".entrycontainer");
             globals.gameData = new GameData();
             globals.imageData = new ImageDatabase();
             globals.loader = new Loader();
-		
-    		$(function() {
-    			$("title").html(globals.env.name);
-                $("<div/>").attr('id','title').html(globals.env.name).appendTo('.titlebar'); 
+
+            $(function() {
+                $("title").html(globals.env.name);
+                $("<div/>").attr('id', 'title').html(globals.env.name).appendTo('.titlebar');
 
                 if (process.platform == "win32") {
-                    $("<div/>").attr('id','titleButtons').html("").appendTo('.titlebar'); 
+                    $("<div/>").attr('id', 'titleButtons').html("").appendTo('.titlebar');
                 }
 
                 // external modules
-				var modules = globals.module.findModules([
+                var modules = globals.module.findModules([
                     globals.env.path.module.user,
                     globals.env.path.module.app
-                    ]);
+                ]);
                 if (!globals.env.isDevEnv) {
                     // dist / pack build only
                     // internal modules (static, hard links)
@@ -80,37 +112,37 @@
                         `file://${__dirname}/../modules/items/package.json`,
                         `file://${__dirname}/../modules/settings/package.json`,
                         `file://${__dirname}/../modules/status/package.json`
-                        ]);
+                    ]);
                 }
-				globals.module.loadModules(modules, function(){
-					globals.module.trigger("modulesLoaded");
-					globals.loader.loadSaved();
-				});
-			});
+                globals.module.loadModules(modules, function() {
+                    globals.module.trigger("modulesLoaded");
+                    globals.loader.loadSaved();
+                });
+            });
 
         });
-		
-
     </script>
 
     <!-- basic html structure -->
     <link rel="icon" href="assets/ccdirectlink.png">
     <title></title>
 
-  </head>
-  <body class="universe" ondrop="drop(event)" ondragover="allowDrop(event)">
+</head>
+
+<body class="universe" ondrop="drop(event)" ondragover="allowDrop(event)">
 
     <div class="space">
-      <div class="titlebar" id="headbar"></div>
-      <div class="content" id="servercontainer">
-        <div class="menu" id="sidemenu">
-          <ul id="menulist">
-          </ul>
+        <div class="titlebar" id="headbar"></div>
+        <div class="content" id="servercontainer">
+            <div class="menu" id="sidemenu">
+                <ul id="menulist">
+                </ul>
+            </div>
+            <div class="entrycontainer" id="blank">
+            </div>
         </div>
-        <div class="entrycontainer" id="blank">
-        </div>
-      </div>
     </div>
 
-  </body>
+</body>
+
 </html>

@@ -44,6 +44,6 @@
   "dependencies": {
     "async": "^2.6.0",
     "imagejs": "0.0.9",
-    "unzip2": "^0.2.5"
+    "unzip": "^0.1.11"
   }
 }
