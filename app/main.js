@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const fs = require("fs");
 const stream = require('stream');
 const util = require('util');
-const unzip = require('unzip2');
+const unzip = require('unzip');
 const lwip = require('./lib/lwip.js');
 
 const {menuSetup} = require('./js/menu/systemMenu.js');
