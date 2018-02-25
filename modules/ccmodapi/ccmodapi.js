@@ -261,6 +261,10 @@ globals.module.sharedMemory["ccmoddb"] = {
   controller: new CCModDB()
 };
 
+globals.gameData.registerObserver(function() {
+	this.versiondata.selectedVersion = globals.gameData.getVersions()[0];
+}.bind(globals.module.sharedMemory.ccmoddb.controller), "version");
+
 globals.module.on('modulesLoaded', function(){
 	globals.menu.add('CCMods', function(){},
 		'../modules/ccmodapi/ccmodapi.html',
