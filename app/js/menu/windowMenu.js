@@ -1,5 +1,3 @@
-'use strict';
-
 /* eslint-env node */
 /* global $ */
 
@@ -8,12 +6,12 @@ function Menu(element, entryContainer, callback) {
 	var entrys = [];
 	var position = [];
 
-	function initialize(){
-		if (!element){
+	function initialize() {
+		if (!element) {
 			element = null;
 		}
 
-		if (!entryContainer){
+		if (!entryContainer) {
 			entryContainer = null;
 		}
 
@@ -24,13 +22,18 @@ function Menu(element, entryContainer, callback) {
 	// pos: <0 or >length = last
 	this.add = function(name, func, siteUrl, enableState, pos = null) {
 		var id = entrys.length;
-		entrys.push({function: func, name: name, site: siteUrl, enabled: enableState, id: id});
-		if ((pos === null) || (typeof (pos) !== 'number')){
+		entrys.push({
+			function: func,
+			name: name,
+			site: siteUrl,
+			enabled: enableState,
+			id: id,
+		});
+		if (pos === null || typeof pos !== 'number') {
 			position.push(entrys[id]);
 			entrys[id]['pos'] = id;
 		} else {
-			if ((pos >= entrys.length) ||
-				(pos < 0)) {
+			if (pos >= entrys.length || pos < 0) {
 				pos = entrys.length - 1;
 			}
 			position.splice(pos, 0, entrys[id]);
@@ -40,8 +43,15 @@ function Menu(element, entryContainer, callback) {
 	};
 
 	this.edit = function(id, name, func, siteUrl, enableState) {
-		if (typeof (id) === 'number') {
-			entrys[id] = {function: func, name: name, site: siteUrl, enabled: enableState, pos: entrys[id]['pos'], id: id};
+		if (typeof id === 'number') {
+			entrys[id] = {
+				function: func,
+				name: name,
+				site: siteUrl,
+				enabled: enableState,
+				pos: entrys[id]['pos'],
+				id: id,
+			};
 			return true;
 		} else {
 			this.update(id);
@@ -51,10 +61,8 @@ function Menu(element, entryContainer, callback) {
 
 	// pos: <0 or >length = last
 	this.moveTo = function(id, pos) {
-		if ((typeof (id) === 'number') &&
-			(typeof (pos) === 'number')) {
-			if ((pos >= entrys.length) ||
-				(pos < 0)) {
+		if (typeof id === 'number' && typeof pos === 'number') {
+			if (pos >= entrys.length || pos < 0) {
 				pos = entrys.length - 1;
 			}
 			position.splice(pos, 0, position.splice(entrys[id].pos, 1)[0]);
@@ -66,7 +74,7 @@ function Menu(element, entryContainer, callback) {
 	};
 
 	this.remove = function(id) {
-		if (typeof (id) === 'number') {
+		if (typeof id === 'number') {
 			position.splice(entrys[id].pos, 1);
 			entrys.splice(id, 1);
 			this.updateAll();
@@ -86,7 +94,11 @@ function Menu(element, entryContainer, callback) {
 	};
 
 	this.select = function(id) {
-		if ((currentId !== id) && (typeof (id) === 'number') && (typeof (entrys[id]) === 'object')) {
+		if (
+			currentId !== id &&
+      typeof id === 'number' &&
+      typeof entrys[id] === 'object'
+		) {
 			if (!isEnabled(entrys[id])) {
 				return false;
 			}
@@ -104,7 +116,8 @@ function Menu(element, entryContainer, callback) {
 			}
 
 			if ($('.menuentry a#' + currentId).length) {
-				$('.menuentry a#' + currentId)[0].parentNode.className = 'menuentrySelected';
+				$('.menuentry a#' + currentId)[0].parentNode.className =
+          'menuentrySelected';
 			}
 
 			if (entrys[id].function != null) {
@@ -126,18 +139,33 @@ function Menu(element, entryContainer, callback) {
 			if (!isEnabled(position[entry])) {
 				className = 'menuentryDisabled';
 			}
-			$(this.menuElement).append('<li class="' + className + '"><a class="menuelement" id="' + position[entry].id + '" onclick="globals.menu.select(' + position[entry].id + ')">' + position[entry].name + '</a></li>');
+			$(this.menuElement).append(
+				'<li class="' +
+          className +
+          '"><a class="menuelement" id="' +
+          position[entry].id +
+          '" onclick="globals.menu.select(' +
+          position[entry].id +
+          ')">' +
+          position[entry].name +
+          '</a></li>'
+			);
 		}
 	};
 
 	this.update = function(id) {
-		if ((typeof (id) === 'number') && ($('.menuentry a#' + currentId).length) && (entrys.length > id)) {
+		if (
+			typeof id === 'number' &&
+      $('.menuentry a#' + currentId).length &&
+      entrys.length > id
+		) {
 			var entryName = entrys[id].name;
 			if (entrys[id].name == null) {
 				entryName = 'Entry(' + id + ')';
 			}
 			if (!isEnabled(entrys[id])) {
-				$('.menuentry a#' + currentId)[0].parentNode.className = 'menuentryDisabled';
+				$('.menuentry a#' + currentId)[0].parentNode.className =
+          'menuentryDisabled';
 			} else {
 				$('.menuentry a#' + currentId)[0].parentNode.className = 'menuentry';
 			}
@@ -147,8 +175,8 @@ function Menu(element, entryContainer, callback) {
 		return false;
 	};
 
-	function isEnabled(entry){
-		if (entry.enabled.constructor === Boolean){
+	function isEnabled(entry) {
+		if (entry.enabled.constructor === Boolean) {
 			return entry;
 		}
 

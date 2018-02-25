@@ -1,5 +1,3 @@
-'use strict';
-
 /* eslint-env node */
 /* global path, VersionType, alert, localStorage */
 
@@ -8,7 +6,6 @@
  * @type {Object}
  */
 const globalData = (() => {
-
 	// require
 	const { getGlobal } = require('electron').remote; // remote access
 	const fs = require('fs');
@@ -23,7 +20,9 @@ const globalData = (() => {
 
 	try {
 		// syncron data call
-		const jsonData = JSON.parse(fs.readFileSync(path.join(__dirname, 'version', 'versions.json')));
+		const jsonData = JSON.parse(
+			fs.readFileSync(path.join(__dirname, 'version', 'versions.json'))
+		);
 
 		versionData = new VersionType(jsonData.ver);
 		buildData.rev = jsonData.rev;
@@ -63,10 +62,9 @@ const globalData = (() => {
  * Environment Container
  */
 class Environment {
-
 	/**
-	 * Environment constructor
-	 */
+   * Environment constructor
+   */
 	constructor() {
 		this.name = globalData.name;
 		this.version = globalData.version;
@@ -88,5 +86,4 @@ class Environment {
 		// update versionList
 		localStorage.setItem('versionList', JSON.stringify(this.versionList));
 	}
-
 }

@@ -1,5 +1,3 @@
-'use strict';
-
 /* eslint-env node */
 /* global alert */
 
@@ -18,63 +16,52 @@ const { menuSetup } = require('./js/menu/systemMenu.js');
 
 // setup userData
 function _checkAbsolute(path) {
-
 	return (
-		((process.platform === 'win32') &&
-			((path.substr(1, 2) === ':/') ||
-				(path.substr(1, 2) === ':\\') ||
-			(path.substr(0, 1) === '%') ||
-				(path.substr(0, 1) === '\\') ||
-				(path.substr(0, 1) === '/'))
-		) || (((process.platform === 'darwin') ||
-			(process.platform === 'linux')) &&
-	((path.substr(0, 1) === '/') ||
-		(path.substr(0, 1) === '\\') ||
-		(path.substr(0, 1) === '~'))));
-
+		(process.platform === 'win32' &&
+      (path.substr(1, 2) === ':/' ||
+        path.substr(1, 2) === ':\\' ||
+        path.substr(0, 1) === '%' ||
+        path.substr(0, 1) === '\\' ||
+        path.substr(0, 1) === '/')) ||
+    ((process.platform === 'darwin' || process.platform === 'linux') &&
+      (path.substr(0, 1) === '/' ||
+        path.substr(0, 1) === '\\' ||
+        path.substr(0, 1) === '~'))
+	);
 }
 
 function _setSettingsDir(entry, local, defaultPath) {
-
 	try {
 		var jsonData = JSON.parse(
-			fs.readFileSync(
-				path.join(local, 'settings.json')
-			));
+			fs.readFileSync(path.join(local, 'settings.json'))
+		);
 	} catch (err) {
 		return defaultPath;
 	}
 
-	if ((jsonData[process.platform]) &&
-		(jsonData[process.platform][entry]) &&
-		(typeof jsonData[process.platform][entry] === 'string')) {
-
+	if (
+		jsonData[process.platform] &&
+    jsonData[process.platform][entry] &&
+    typeof jsonData[process.platform][entry] === 'string'
+	) {
 		if (_checkAbsolute(jsonData[process.platform][entry])) {
-
-			if (((process.platform === 'darwin') ||
-					(process.platform === 'linux')) &&
-					(jsonData[process.platform][entry]
-						.substr(0, 1) === '~')) {
-
-				return path.join(process.env.HOME,
-					jsonData[process.platform][entry]
-						.substr(1));
-
+			if (
+				(process.platform === 'darwin' || process.platform === 'linux') &&
+        jsonData[process.platform][entry].substr(0, 1) === '~'
+			) {
+				return path.join(
+					process.env.HOME,
+					jsonData[process.platform][entry].substr(1)
+				);
 			} else {
 				return jsonData[process.platform][entry];
 			}
-
 		} else {
-			return path.join(
-				local,
-				jsonData[process.platform][entry]
-			);
+			return path.join(local, jsonData[process.platform][entry]);
 		}
-
 	} else {
 		return defaultPath;
 	}
-
 }
 
 // globals - pre set
@@ -83,11 +70,10 @@ global.toolname = 'SpericalViewer';
 global.ccSave = 'cc.save';
 global.ccSaveBackup = 'cc.save.backup';
 
-global.isDevEnv = ((process.defaultApp) ||
-  (/node_modules[\\/]electron[\\/]/.test(process.execPath)));
+global.isDevEnv =
+  process.defaultApp || /node_modules[\\/]electron[\\/]/.test(process.execPath);
 
 function userPreSetup() {
-
 	// folder consts
 	const STORAGE_FOLDER = 'SpericalStorage';
 	const DATA_FOLDER = 'SpericalData';
@@ -104,26 +90,22 @@ function userPreSetup() {
 
 	// platform dependend path
 	if (process.platform === 'win32') {
-
-		console.log(global.appDir.substr(
-			global.appDir.length - 18,
-			global.appDir.length));
+		console.log(
+			global.appDir.substr(global.appDir.length - 18, global.appDir.length)
+		);
 		console.log(path.join('resources', 'app.asar'));
 
 		// packed app
-		if ((global.appDir.length > 18) &&
-			(global.appDir.substr(global.appDir.length - 18,
-				global.appDir.length) === (
-					path.join('resources', 'app.asar'))
-			)) {
-			global.appDir = fs.realpathSync(
-				path.join(global.appDir, '..', '..')
-			);
+		if (
+			global.appDir.length > 18 &&
+      global.appDir.substr(global.appDir.length - 18, global.appDir.length) ===
+        path.join('resources', 'app.asar')
+		) {
+			global.appDir = fs.realpathSync(path.join(global.appDir, '..', '..'));
 		}
 
 		// default main path
 		global.mainDir = global.appDir;
-
 
 		// overrideable path
 		global.storageDir = _setSettingsDir(
@@ -138,6 +120,52 @@ function userPreSetup() {
 			path.join(global.mainDir, DATA_FOLDER)
 		);
 
+		global.cacheDir = _setSettingsDir(
+			'cache',
+			global.dataDir,
+			path.join(global.dataDir, CACHE_FOLDER)
+		);
+
+		global.modulesUserDir = _setSettingsDir(
+			'modules',
+			global.dataDir,
+			path.join(global.dataDir, MODULES_FOLDER)
+		);
+
+		// save path
+		global.saveFolder = path.join(process.env.LOCALAPPDATA, 'CrossCode');
+	} else if (process.platform === 'darwin') {
+		// packed app
+		if (
+			global.appDir.length > 32 &&
+      global.appDir.substr(global.appDir.length - 32, global.appDir.length) ===
+        path.join('.app', 'Contents', 'Resources', 'app.asar')
+		) {
+			global.appDir = fs.realpathSync(
+				path.join(global.appDir, '..', '..', '..', '..')
+			);
+		}
+
+		// default main path
+		global.mainDir = path.join(
+			process.env.HOME,
+			'Library',
+			'Application Support',
+			global.toolname
+		);
+
+		// overrideable path
+		global.storageDir = _setSettingsDir(
+			'userStorage',
+			global.mainDir,
+			path.join(global.mainDir, STORAGE_FOLDER)
+		);
+
+		global.dataDir = _setSettingsDir(
+			'userData',
+			global.mainDir,
+			path.join(global.mainDir, DATA_FOLDER)
+		);
 
 		global.cacheDir = _setSettingsDir(
 			'cache',
@@ -151,117 +179,57 @@ function userPreSetup() {
 			path.join(global.dataDir, MODULES_FOLDER)
 		);
 
-
 		// save path
 		global.saveFolder = path.join(
-			process.env.LOCALAPPDATA,
-			'CrossCode'
-		);
-
-	} else if (process.platform === 'darwin') {
-
-		// packed app
-		if ((global.appDir.length > 32) &&
-			(global.appDir.substr(
-				global.appDir.length - 32,
-				global.appDir.length) === (
-					path.join('.app',
-						'Contents',
-						'Resources',
-						'app.asar'))
-			)) {
-			global.appDir = fs.realpathSync(
-				path.join(
-					global.appDir,
-					'..', '..',
-					'..', '..'
-				)
-			);
-		}
-
-		// default main path
-		global.mainDir = path.join(
-			process.env.HOME, 'Library',
-			'Application Support', global.toolname
-		);
-
-
-		// overrideable path
-		global.storageDir = _setSettingsDir(
-			'userStorage', global.mainDir,
-			path.join(global.mainDir, STORAGE_FOLDER)
-		);
-
-		global.dataDir = _setSettingsDir(
-			'userData', global.mainDir,
-			path.join(global.mainDir, DATA_FOLDER)
-		);
-
-
-		global.cacheDir = _setSettingsDir(
-			'cache', global.dataDir,
-			path.join(global.dataDir, CACHE_FOLDER)
-		);
-
-		global.modulesUserDir = _setSettingsDir(
-			'modules', global.dataDir,
-			path.join(global.dataDir, MODULES_FOLDER)
-		);
-
-		// save path
-		global.saveFolder = path.join(
-			process.env.HOME, 'Library',
-			'Application Support', 'CrossCode',
+			process.env.HOME,
+			'Library',
+			'Application Support',
+			'CrossCode',
 			'Default'
 		);
-
 	} else if (process.platform === 'linux') {
-
 		// default main path
-		global.mainDir = path.join(
-			process.env.HOME, '.config',
-			global.toolname
-		);
-
+		global.mainDir = path.join(process.env.HOME, '.config', global.toolname);
 
 		// overrideable path
 		global.storageDir = _setSettingsDir(
-			'userStorage', global.mainDir,
+			'userStorage',
+			global.mainDir,
 			path.join(global.mainDir, STORAGE_FOLDER)
 		);
 
 		global.dataDir = _setSettingsDir(
-			'userData', global.mainDir,
+			'userData',
+			global.mainDir,
 			path.join(global.mainDir, DATA_FOLDER)
 		);
 
-
 		global.cacheDir = _setSettingsDir(
-			'cache', global.dataDir,
+			'cache',
+			global.dataDir,
 			path.join(global.dataDir, CACHE_FOLDER)
 		);
 
 		global.modulesUserDir = _setSettingsDir(
-			'modules', global.dataDir,
+			'modules',
+			global.dataDir,
 			path.join(global.dataDir, MODULES_FOLDER)
 		);
 
 		// save path
 		global.saveFolder = path.join(
-			process.env.HOME, '.config',
-			'CrossCode', 'Default'
+			process.env.HOME,
+			'.config',
+			'CrossCode',
+			'Default'
 		);
-
 	} else {
 		alert('Unsupported System Environment');
 		return;
 	}
 
 	// module dir
-	global.modulesAppDir = path.join(
-		global.appDir, MODULES_FOLDER
-	);
-
+	global.modulesAppDir = path.join(global.appDir, MODULES_FOLDER);
 }
 
 // START -------
@@ -286,7 +254,6 @@ console.log('modulesUserDir: ' + global.modulesUserDir);
 const setMenu = menuSetup();
 
 function createWindow() {
-
 	setMenu();
 
 	// Create the browser window
@@ -297,7 +264,7 @@ function createWindow() {
 		icon: __dirname + '/assets/ccdirectlink.png',
 	});
 
-	win.webContents.on('new-window', function(event, url){
+	win.webContents.on('new-window', function(event, url) {
 		event.preventDefault();
 		shell.openExternal(url);
 	});
