@@ -34,7 +34,7 @@ function GameData() {
  	 * @returns {Boolean} True if specific version is in GameData
  	 */
 	this.hasGame = function(version) {
-		if (length == 0)
+		if (length === 0)
 			return false;
 
 		if (!version)
@@ -43,7 +43,7 @@ function GameData() {
 		if (!this.versions[version])
 			return false;
 		return true;
-	}
+	};
 
 	/**
  	 * GameData version list
@@ -107,7 +107,7 @@ function GameData() {
 
 		_callObservers(this.versions[version], property, null);
 		return true;
-    }
+  };
 
 	/**
  	 * Get a property
@@ -117,7 +117,7 @@ function GameData() {
  	 */
 	this.getData = function(version, property) {
 		return this.versions[version][property];
-	}
+	};
 
 	/**
  	 * Start the game
@@ -126,7 +126,7 @@ function GameData() {
 	this.start = function(version){
 
 		exec('"'+ globals.gameData.versions[version].path.main + '../crosscode-beta.exe"'); //TODO: Make platform-independant
-	}
+	};
 
 	/**
  	 * Observers call
@@ -139,6 +139,7 @@ function GameData() {
 			var filter = observers[observer].property;
 			if(!filter || !property || filter === property)
 				observers[observer].call(game, property, value);
+
 			if(filter.constructor === Array){
 				for(var i in filter){
 					if(filter[i] === property){

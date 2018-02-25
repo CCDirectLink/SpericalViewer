@@ -52,22 +52,34 @@ function CCModDB(){
 			console.error(e);
 		});
 
-	}
+	};
 
 	this.display = function(){
-		$("h1").html(langEntries.content['ccmodapi.mods']);
-		$("#provideinfo").html(langEntries.content['ccmodapi.provided']);
-    $("#versionList").html(this.versiondata.version.getList());
+		$("h1").html(
+			langEntries.content['ccmodapi.mods']
+		);
+
+		$("#provideinfo").html(
+			langEntries.content['ccmodapi.provided']
+		);
+    $("#versionList").html(
+			this.versiondata.version.getList()
+		);
+
 		this.updateTable();
-	}
+	};
 
 	this.updateTable = function(){
-		$("#modData").html("<table>" + _getTable() + "</table>");
+		$("#modData").html(
+			"<table>" +
+			_getTable() +
+			"</table>"
+		);
 
-	}
+	};
   this.updateVersion = function(newVersion) {
 		  this.versiondata.selectedVersion = newVersion.value;
-	}
+	};
 
 	this.on = function(type, cb){
 		if (type === "dataInit") {
@@ -76,7 +88,7 @@ function CCModDB(){
 		else if (type === "dataUpdated") {
 			callbacks.dataUpdated.push(cb);
 		}
-	}
+	};
 	this.installMod = function(link,name, dirType) {
 		console.debug("Link", link);
 		console.debug("Filename", name);
@@ -97,7 +109,7 @@ function CCModDB(){
 	 };
 	 _download(link, name + ".zip", installCode);
 
-	}
+ };
 
 	function _archiveToDirectLink(url) {
 		var baseUrl = "https://codeload.github.com/";
