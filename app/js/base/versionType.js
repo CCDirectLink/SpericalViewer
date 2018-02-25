@@ -9,25 +9,19 @@ const VER_REGEX = /^(v)?(([0-9]+)\.([0-9]+)\.([0-9]+)(\-([0-9]+))?(( )(.+))?)/;
  * Version Container
  */
 class VersionType {
-
 	/**
-	 * Version definition
-	 * @param {VersionType|Object|string} data Version data
-	 */
+   * Version definition
+   * @param {VersionType|Object|string} data Version data
+   */
 	constructor(data) {
-
-		if ((data) &&
-			(data.constructor === VersionType)) {
-
+		if (data && data.constructor === VersionType) {
 			this.major = data.major;
 			this.minor = data.minor;
 			this.patch = data.patch;
 			this.hotfix = data.hotfix;
 
 			this.note = data.note;
-		} else if ((data) &&
-				(typeof data === 'object')) {
-
+		} else if (data && typeof data === 'object') {
 			this.major = data.major || 0;
 			this.minor = data.minor || 0;
 			this.patch = data.patch || 0;
@@ -35,56 +29,61 @@ class VersionType {
 
 			this.note = data.note || '';
 		} else if (typeof data === 'string') {
-
 			// Version regex
-			const versionArray = (VER_REGEX).exec(data);
+			const versionArray = VER_REGEX.exec(data);
 
 			this.major = Number(versionArray[3]) || 0;
 			this.minor = Number(versionArray[4]) || 0;
 			this.patch = Number(versionArray[5]) || 0;
 			this.hotfix = Number(versionArray[7]) || 0;
 
-			this.note = (versionArray[10]) || '';
+			this.note = versionArray[10] || '';
 		} else {
 			throw new TypeError('Not valid version type');
 		}
 	}
 
 	/**
-     * Version string
-     * @type {string}
-     */
+   * Version string
+   * @type {string}
+   */
 	get string() {
-		return (this.major + '.' +
-				this.minor + '.' +
-				this.patch +
-				((this.hotfix) ? ('-' + this.hotfix) : '') +
-				((this.note) ? (' ' + this.note) : ''));
+		return (
+			this.major +
+      '.' +
+      this.minor +
+      '.' +
+      this.patch +
+      (this.hotfix ? '-' + this.hotfix : '') +
+      (this.note ? ' ' + this.note : '')
+		);
 	}
 
 	/**
-     * Get version string
-     * @return {string} Version string
-     */
+   * Get version string
+   * @return {string} Version string
+   */
 	toString() {
 		return this.string;
 	}
 
 	/**
-     * Numeric version
-     * Can be used to compare versions
-     *
-     * major [infinite digits]
-     * minor [4 digits]
-     * patch [4 digits]
-     * hotfix [2 digits]
-     * @type {number}
-     */
+   * Numeric version
+   * Can be used to compare versions
+   *
+   * major [infinite digits]
+   * minor [4 digits]
+   * patch [4 digits]
+   * hotfix [2 digits]
+   * @type {number}
+   */
 	get numeric() {
-		return ((this.major * 10000000000) +
-				(this.minor * 1000000) +
-				(this.patch * 100) +
-				(this.hotfix));
+		return (
+			this.major * 10000000000 +
+      this.minor * 1000000 +
+      this.patch * 100 +
+      this.hotfix
+		);
 	}
 }
 

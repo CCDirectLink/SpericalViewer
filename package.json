@@ -43,6 +43,7 @@
     "electron-rebuild": "^1.7.3",
     "eslint": "^4.18.1",
     "eslint-config-strongloop": "^2.1.0",
+    "eslint-plugin-es-beautifier": "^1.0.1",
     "mocha": "^5.0.0"
   },
   "dependencies": {

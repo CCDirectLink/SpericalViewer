@@ -1,5 +1,3 @@
-'use strict';
-
 /* eslint-env node */
 
 const https = require('https');
@@ -8,8 +6,11 @@ const fs = require('fs');
 var branch;
 
 try {
-	branch = fs.readFileSync('./.git/HEAD', 'UTF-8')
-		.substr(16).replace('\r', '').replace('\n', '');
+	branch = fs
+		.readFileSync('./.git/HEAD', 'UTF-8')
+		.substr(16)
+		.replace('\r', '')
+		.replace('\n', '');
 } catch (e) {
 	console.warn('Not a git repo! Assuming default branch');
 	branch = '';
@@ -35,7 +36,7 @@ function onFinish() {
 	}
 }
 
-function saveVersion(){
+function saveVersion() {
 	var dir = 'app/version/';
 	var file = 'versions.json';
 
@@ -54,15 +55,16 @@ function saveVersion(){
 	console.log(version);
 
 	try {
-		if (!fs.statSync(dir).isDirectory())
+		if (!fs.statSync(dir).isDirectory()) {
 			fs.mkdirSync(dir);
-	} catch (e){
+		}
+	} catch (e) {
 		fs.mkdirSync(dir);
 	}
 	fs.writeFileSync(dir + file, JSON.stringify(version));
 }
 
-function getTag(){
+function getTag() {
 	const optionsTags = {
 		hostname: 'api.github.com',
 		port: 443,
@@ -73,62 +75,66 @@ function getTag(){
 		},
 	};
 
-	https.get(optionsTags, (res) => {
-		var data = '';
+	https
+		.get(optionsTags, res => {
+			var data = '';
 
-		res.on('data', function(part){
-			data += part;
-		});
+			res.on('data', function(part) {
+				data += part;
+			});
 
-		res.on('end', function(){
-			tag = JSON.parse(data)[0];
-			onFinish();
+			res.on('end', function() {
+				tag = JSON.parse(data)[0];
+				onFinish();
+			});
+		})
+		.on('error', e => {
+			console.error(e);
 		});
-	}).on('error', (e) => {
-		console.error(e);
-	});
 }
 
-function getCommit(page){
+function getCommit(page) {
 	page = page || 1;
 
 	var optionsCommits = {
 		hostname: 'api.github.com',
 		port: 443,
-		path: '/repos/CCDirectLink/SpericalViewer/commits?sha=' +
-			branch + '&page=' + page,
+		path:
+      '/repos/CCDirectLink/SpericalViewer/commits?sha=' +
+      branch +
+      '&page=' +
+      page,
 		method: 'GET',
 		headers: {
 			'User-Agent': 'SpericalViewer-genVersion',
 		},
 	};
 
-	https.get(optionsCommits, (res) => {
-		var data = '';
+	https
+		.get(optionsCommits, res => {
+			var data = '';
 
-		res.on('data', function(part){
-			data += part;
-		});
+			res.on('data', function(part) {
+				data += part;
+			});
 
-		res.on('end', function(){
-			var json = JSON.parse(data);
+			res.on('end', function() {
+				var json = JSON.parse(data);
 
-			if (json.length === 0)
-				onFinish();
-			else {
-				commitCount += json.length;
-				if (!commit) {
-					commit = new Date(
-						json[0].commit.committer.date
-					);
-					commitHash = json[0].sha;
+				if (json.length === 0) {
+					onFinish();
+				} else {
+					commitCount += json.length;
+					if (!commit) {
+						commit = new Date(json[0].commit.committer.date);
+						commitHash = json[0].sha;
+					}
+
+					getCommit(page + 1);
 				}
-
-				getCommit(page + 1);
-			}
-
+			});
+		})
+		.on('error', e => {
+			console.error(e);
 		});
-	}).on('error', (e) => {
-		console.error(e);
-	});
 }

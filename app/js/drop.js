@@ -1,7 +1,6 @@
-'use strict';
-
 /* eslint-env node */
-/* global globals */
+/* global globals  */
+'use strict';
 
 function allowDrop(ev) {
 	ev.preventDefault();

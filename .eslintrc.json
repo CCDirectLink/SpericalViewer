@@ -1,9 +1,12 @@
 {
-	"extends": "strongloop",
+	"extends": [
+        "strongloop"
+    ],
 	"env": {
 		"es6": true
 	},
 	"rules": {
-		"indent": [2, "tab"]
+		"indent": [2, "tab"],
+		"max-len": ["error", {"tabWidth": 2}]
 	}
 }
