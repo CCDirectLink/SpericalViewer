@@ -67,7 +67,7 @@ function CCModDB(){
 		$("#provideinfo").html(
 			langEntries.content['ccmodapi.provided']
 		);
-    
+
     $("#versionList").html(
 			this.versiondata.version.getList()
 		);
@@ -266,7 +266,8 @@ globals.gameData.registerObserver(function(game, property, value) {
 globals.module.on('modulesLoaded', function(){
 	globals.menu.add('CCMods', function(){},
 		'../modules/ccmodapi/ccmodapi.html',
-		true
-	);
+		function(){
+			return globals.gameData.containGames();
+		});;
 	globals.menu.updateAll();
 });
