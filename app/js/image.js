@@ -30,6 +30,9 @@ function ImageDatabase() {
 						heigth * scaleValue,
 						methodValue,
 						function(err, finishedImage) {
+							if (err) {
+								throw err;
+							}
 							finishedImage.toBuffer(
 								type,
 								{
@@ -38,6 +41,9 @@ function ImageDatabase() {
 									transparency: true,
 								},
 								function(err, buffer) {
+									if (err) {
+										throw err;
+									}
 									globals.imageData.saveImage(
 										version,
 										name,
@@ -57,6 +63,9 @@ function ImageDatabase() {
 						image.heigth() * scaleValue,
 						methodValue,
 						function(err, finishedImage) {
+							if (err) {
+								throw err;
+							}
 							finishedImage.toBuffer(
 								type,
 								{
@@ -65,6 +74,9 @@ function ImageDatabase() {
 									transparency: true,
 								},
 								function(err, buffer) {
+									if (err) {
+										throw err;
+									}
 									globals.imageData.saveImage(
 										version,
 										name,
@@ -84,11 +96,17 @@ function ImageDatabase() {
 					err,
 					cropedImage
 				) {
+					if (err) {
+						throw err;
+					}
 					cropedImage.resize(
 						width * scaleValue,
 						heigth * scaleValue,
 						methodValue,
 						function(err, finishedImage) {
+							if (err) {
+								throw err;
+							}
 							finishedImage.toBuffer(
 								type,
 								{
@@ -97,6 +115,9 @@ function ImageDatabase() {
 									transparency: true,
 								},
 								function(err, buffer) {
+									if (err) {
+										throw err;
+									}
 									globals.imageData.saveImage(
 										version,
 										name,

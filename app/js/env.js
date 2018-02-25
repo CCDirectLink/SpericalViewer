@@ -1,6 +1,6 @@
 /* eslint-env node */
 /* global path, VersionType, alert, localStorage */
-
+'use strict';
 /**
  * Global environment data
  * @type {Object}
