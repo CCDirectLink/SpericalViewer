@@ -1,10 +1,12 @@
-"use strict";
+'use strict';
+
+/* eslint-env node, mocha */
 
 // call with mocha
 // require chai
 
-const {expect} = require('chai');
-const {VersionType} = require('./../app/js/base/versionType.js');
+const { expect } = require('chai');
+const { VersionType } = require('./../app/js/base/versionType.js');
 
 describe('VersionType', () => {
 
@@ -19,13 +21,19 @@ describe('VersionType', () => {
 	const v8 = new VersionType('1.2.3 note');
 
 	const v9 = new VersionType(v7);
-	const v10 = new VersionType({major: 1, minor: 2, patch: 3, hotfix: 4, note: 'note'});
+	const v10 = new VersionType({
+		major: 1,
+		minor: 2,
+		patch: 3,
+		hotfix: 4,
+		note: 'note',
+	});
 	const v11 = new VersionType({});
 
 	describe('.constructor(data)', () => {
 
 		it('data {string}: v1.2.3', () => {
-			
+
 			expect(v1.major).to.equal(1);
 			expect(v1.minor).to.equal(2);
 			expect(v1.patch).to.equal(3);
@@ -135,8 +143,10 @@ describe('VersionType', () => {
 		});
 
 		it('data (invalid)', () => {
-			
-			expect(() => { new VersionType(null) }).to.throw(TypeError, 'Not valid version type');
+
+			expect(() => {
+				return new VersionType(null);
+			}).to.throw(TypeError, 'Not valid version type');
 
 		});
 

@@ -1,3 +1,8 @@
+'use strict';
+
+/* eslint-env browser */
+/* global globals, https, fs, unzip, $ */
+
 function CCModDB(){
 
 	this.moddata = {};
@@ -6,12 +11,12 @@ function CCModDB(){
 
 	var callbacks = {
 		dataInit: [],
-		dataUpdated: []
+		dataUpdated: [],
 	};
 
 	var langEntries = globals.module.getLangData();
 
-	globals.module.on("langChanged", function(id, subId, data) {
+	globals.module.on('langChanged', function(id, subId, data) {
 		langEntries = data;
 	});
 
@@ -22,8 +27,8 @@ function CCModDB(){
 			path: '/CCDirectLink/CCModDB/master/mods.json',
 			method: 'GET',
 			headers: {
-				'User-Agent': 'SpericalViewer-modAPI'
-			}
+				'User-Agent': 'SpericalViewer-modAPI',
+			},
 		};
 
 		https.get(modReq, (res) => {
@@ -37,10 +42,10 @@ function CCModDB(){
 				instance.moddata = JSON.parse(data);
 				if (typeof cb === 'function') {
 					cb.apply(this, arguments);
-				}
-				else {
-					for (id in callbacks.dataUpdated) {
-						callbacks.dataUpdated[id].apply(this, arguments);
+				} else {
+					for (let id in callbacks.dataUpdated) {
+						callbacks.dataUpdated[id]
+							.apply(this, arguments);
 					}
 				}
 			});
@@ -48,106 +53,152 @@ function CCModDB(){
 			console.error(e);
 		});
 
-	}
+	};
 
 	this.display = function(){
-		$("h1").html(langEntries.content['ccmodapi.mods']);
-		$("#provideinfo").html(langEntries.content['ccmodapi.provided']);
+		$('h1').html(
+			langEntries.content['ccmodapi.mods']
+		);
+
+		$('#provideinfo').html(
+			langEntries.content['ccmodapi.provided']
+		);
 
 		this.updateTable();
-	}
+	};
 
 	this.updateTable = function(){
-		$("#modData").html("<table>" + _getTable() + "</table>");
-	}
+		$('#modData').html(
+			'<table>' +
+			_getTable() +
+			'</table>'
+		);
+	};
 
 	this.on = function(type, cb){
-		if (type === "dataInit") {
+		if (type === 'dataInit') {
 			callbacks.dataInit.push(cb);
-		}
-		else if (type === "dataUpdated") {
+		} else if (type === 'dataUpdated') {
 			callbacks.dataUpdated.push(cb);
 		}
-	}
-	this.installMod = function(link,name) {
-		console.debug("Link", link);
-		console.debug("Filename", name);
-		console.debug("Version hash", version);
-		var link = _archiveToDirectLink(link);
-		console.debug("Reconstructed link", link);
-		//will pick the first version I see
+	};
+	this.installMod = function(link, name) {
+		console.debug('Link', link);
+		console.debug('Filename', name);
+		console.debug('Version hash', version);
+		link = _archiveToDirectLink(link);
+		console.debug('Reconstructed link', link);
+		// will pick the first version I see
 		var version = Object.keys(globals.gameData.versions)[0];
-		console.log("Downloading...");
-		_download(link, name + ".zip", function(path) {
-			console.log("Installing...");
-	        _install(path, globals.gameData.versions[version].path.main + "mods\\", function() {
-			    console.log("Done!");
-	        });
-        });
-	}
+		console.log('Downloading...');
+		_download(link, name + '.zip', function(path) {
+			console.log('Installing...');
+			_install(path,
+				globals.gameData.versions[version].path.main +
+				'mods\\', function() {
+					console.log('Done!');
+				});
+		});
+	};
 	function _archiveToDirectLink(url) {
-   	    var baseUrl = "https://codeload.github.com/";
-   		var strippedUrl = url.replace("https://github.com/","");
-   		baseUrl += strippedUrl.substring(0,strippedUrl.indexOf("/archive/") + 1);
-   		var fileName = strippedUrl.substring(strippedUrl.indexOf("/archive/") +
-                                         "/archive/".length);
-        var fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
-        var fileName = fileName.substring(0, fileName.lastIndexOf("."));
-        baseUrl += fileType + "/" + fileName;
-        return baseUrl;
- 	}
+		var baseUrl = 'https://codeload.github.com/';
+		var strippedUrl = url.replace('https://github.com/', '');
+
+		baseUrl += strippedUrl.substring(
+			0,
+			strippedUrl.indexOf('/archive/') + 1
+		);
+
+		var fileName = strippedUrl.substring(
+			strippedUrl.indexOf('/archive/') +
+			'/archive/'.length
+		);
+
+		var fileType = fileName.substring(
+			fileName.lastIndexOf('.') + 1
+		);
+
+		fileName = fileName.substring(
+			0,
+			fileName.lastIndexOf('.')
+		);
+
+		baseUrl += fileType + '/' + fileName;
+		return baseUrl;
+	}
 	/*
 	* NOTE: Needs DIRECT link
 	*/
 	function _download(downloadLink, name, cb) {
 		https.get(downloadLink, function(res) {
-		    var fileStream = fs.createWriteStream(name);
+			var fileStream = fs.createWriteStream(name);
 			res.on('data', function(nextBlob) {
-					fileStream.write(nextBlob);
+				fileStream.write(nextBlob);
 			});
 			res.on('end', function() {
-					fileStream.end();
-					cb(name);
+				fileStream.end();
+				cb(name);
 			});
 			res.on('error', function(err) {
-				  console.log('Error');
-				  fileStream.end();
-				  cb && cb(null, err);
+				console.log('Error');
+				fileStream.end();
+				cb && cb(null, err);
 			});
 		});
 	}
 	function _install(filePath, outputPath, cb) {
-		    //possibly an install path included? This does not support mods like Rich Presence
-            fs.createReadStream(filePath)
-              .pipe(unzip.Parse())
-              .on('entry', function(entry) {
-                if(!entry || !entry.path || entry.path.indexOf("/") === entry.path.lastIndexOf("/")) {
-                    console.debug("Skipping...", entry);
-                    return;
-                }
-                var name = entry.path;
-				name = name.substr(name.indexOf("/") + 1);
-				var type = entry.type;
-				if(type === "Directory") {
-					  try {
-							fs.mkdirSync(outputPath + name);
-						} catch (e) {
-							 console.log(`Error with making directory "${name}" -> ${e}`);
-						}
-						entry.autodrain();
-				} else if(type === "File") {
+		// possibly an install path included?
+		// This does not support mods like Rich Presence
+		fs.createReadStream(filePath)
+			.pipe(unzip.Parse())
+			.on('entry', function(entry) {
 
-						entry.pipe(fs.createWriteStream(outputPath + name));
-				} else {
-					 entry.autodrain();
+				if (!entry || !entry.path ||
+					entry.path.indexOf('/') === entry
+						.path.lastIndexOf('/')) {
+
+					console.debug('Skipping...', entry);
+					return;
 				}
-			   })
-			   .on('close', function() {
-			   		cb && cb();
-			   });
+
+				var name = entry.path;
+				name = name.substr(name.indexOf('/') + 1);
+				var type = entry.type;
+				if (type === 'Directory') {
+					try {
+						fs.mkdirSync(outputPath + name);
+					} catch (e) {
+						console.log(
+							'Error with ' +
+							'making directory ' +
+							`"${name}" -> ${e}`
+						);
+					}
+					entry.autodrain();
+				} else if (type === 'File') {
+					entry.pipe(
+						fs.createWriteStream(
+							outputPath + name
+						)
+					);
+				} else {
+					entry.autodrain();
+				}
+			})
+			.on('close', function() {
+				cb && cb();
+			});
 	}
 	function _getTable() {
-		var tableString = "<tr><th>" + langEntries.content['ccmodapi.name'] + "</th><th>" + langEntries.content['ccmodapi.desc'] + "</th><th>" + langEntries.content['ccmodapi.license'] + "</th><th>" + langEntries.content['ccmodapi.install'] + "</th></tr>";
+		var tableString = '<tr><th>' +
+			langEntries.content['ccmodapi.name'] +
+			'</th><th>' +
+			langEntries.content['ccmodapi.desc'] +
+			'</th><th>' +
+			langEntries.content['ccmodapi.license'] +
+			'</th><th>' +
+			langEntries.content['ccmodapi.install'] +
+			'</th></tr>';
 
 		if (!instance.moddata) {
 			return langEntries.content['ccmodapi.connection'];
@@ -161,30 +212,48 @@ function CCModDB(){
 				continue;
 			}
 			var link = instance.moddata.mods[i].archive_link;
-			tableString += "<tr><td>" + instance.moddata.mods[i].name + " (" + i + ")</td>";
-			tableString += "<td>" + (instance.moddata.mods[i].description || "") + "</td>";
-			tableString += "<td>" + (instance.moddata.mods[i].license || "") + "</td>";
-			tableString += `<td><button onclick='installMod("${link.trim()}","${i.trim()}")'>` + "Install</button></td></tr>";
+			tableString += '<tr><td>' +
+				instance.moddata.mods[i].name +
+				' (' + i + ')</td>';
+			tableString += '<td>' +
+				(instance.moddata.mods[i].description || '') +
+				'</td>';
+			tableString += '<td>' +
+				(instance.moddata.mods[i].license || '') +
+				'</td>';
+			tableString += '<td><button onclick=\'installMod(' +
+				`"${link.trim()}","${i.trim()}")'>` +
+				'Install</button></td></tr>';
 		}
 
 		return tableString;
 	}
 
 	instance.updateData(function(){
-		for (id in callbacks.dataInit) {
+		for (let id in callbacks.dataInit) {
 			callbacks.dataInit[id].apply(this, arguments);
 		}
 	});
 
 }
+
+/* eslint-disable */
+// ESLint: 1 Error
+// TODO: installMod export
+
 function installMod(link, name) {
-	globals.module.sharedMemory["ccmoddb"].controller.installMod(link,name);
+	globals.module.sharedMemory['ccmoddb']
+		.controller.installMod(link, name);
 }
+
 globals.module.sharedMemory['ccmoddb'] = {
-	controller: new CCModDB()
+	controller: new CCModDB(),
 };
 
-globals.module.on("modulesLoaded", function(){
-	globals.menu.add("CCMods", function(){}, "../modules/ccmodapi/ccmodapi.html", true);
+globals.module.on('modulesLoaded', function(){
+	globals.menu.add('CCMods', function(){},
+		'../modules/ccmodapi/ccmodapi.html',
+		true
+	);
 	globals.menu.updateAll();
 });
