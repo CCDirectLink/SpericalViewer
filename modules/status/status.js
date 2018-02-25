@@ -1,5 +1,6 @@
 /* eslint-env node */
 /* global globals, $ */
+'use strict';
 
 function Status() {
 	var statusArray = [];
@@ -31,13 +32,21 @@ function Status() {
 	});
 
 	this.display = function() {
-		$('#license').html(langEntries.content['status.license']);
+		$('#license').html(
+			langEntries.content['status.license']
+		);
 
-		$('#loadGame').html(langEntries.content['status.loadGame']);
+		$('#loadGame').html(
+			langEntries.content['status.loadGame']
+		);
 
-		$('#loadedGameTitle').html(langEntries.content['status.loadedGames']);
+		$('#loadedGameTitle').html(
+			langEntries.content['status.loadedGames']
+		);
 
-		$('#storedGameTitle').html(langEntries.content['status.storedGameData']);
+		$('#storedGameTitle').html(
+			langEntries.content['status.storedGameData']
+		);
 
 		// init programm data
 		$('h1').html(globals.env.name);
@@ -72,16 +81,15 @@ function Status() {
 	};
 
 	function _getTable() {
-		var tableString =
-      '<tr><th>' +
-      langEntries.content['status.id'] +
-      '</th><th>' +
-      langEntries.content['status.containerId'] +
-      '</th><th>' +
-      langEntries.content['status.version'] +
-      '</th><th>' +
-      langEntries.content['status.cacheSize'] +
-      '</th><th></th></tr>';
+		var tableString = '<tr><th>' +
+			langEntries.content['status.id'] +
+			'</th><th>' +
+			langEntries.content['status.containerId'] +
+			'</th><th>' +
+			langEntries.content['status.version'] +
+			'</th><th>' +
+			langEntries.content['status.cacheSize'] +
+			'</th><th></th></tr>';
 
 		if (statusArray.length === 0) {
 			return langEntries.content['status.noGames'];
@@ -96,32 +104,29 @@ function Status() {
 				tableString += '(local)';
 			}
 
-			tableString +=
-        '</td><td>' +
-        statusArray[i].version +
-        '</td><td>' +
-        statusArray[i].size +
-        '</td><td><a class="close" id="' +
-        statusArray[i].id +
-        "\" onclick='globals.module." +
-        'sharedMemory["status"].' +
-        'controller.removeData("' +
-        statusArray[i].id +
-        "\");'>" +
-        langEntries.content['status.close'] +
-        '</a></td></tr>';
+			tableString += '</td><td>' +
+				statusArray[i].version +
+				'</td><td>' +
+				statusArray[i].size +
+				'</td><td><a class="close" id="' +
+				statusArray[i].id +
+				"\" onclick='globals.module." +
+				'sharedMemory["status"].' +
+				'controller.removeData("' +
+				statusArray[i].id +
+				"\");'>" + langEntries.content['status.close'] +
+				'</a></td></tr>';
 		}
 
 		return tableString;
 	}
 
 	function _getPathsTable() {
-		var tableString =
-      '<tr><th>' +
-      langEntries.content['status.containerId'] +
-      '</th><th>' +
-      langEntries.content['status.path'] +
-      '</th><th></th></tr>';
+		var tableString = '<tr><th>' +
+			langEntries.content['status.containerId'] +
+			'</th><th>' +
+			langEntries.content['status.path'] +
+			'</th><th></th></tr>';
 
 		var versions = globals.env.versionList;
 		if (Object.keys(versions).length === 0) {
@@ -129,20 +134,18 @@ function Status() {
 		}
 
 		for (var version in versions) {
-			tableString +=
-        '<tr><td>' +
-        version +
-        '</td><td>' +
-        versions[version] +
-        '</td><td><a class="close" id="' +
-        version +
-        "\" onclick='globals.module." +
-        'sharedMemory["status"].' +
-        'controller.removeVersion("' +
-        version +
-        "\");'>" +
-        langEntries.content['status.clear'] +
-        '</a></td></tr>';
+			tableString += '<tr><td>' +
+				version +
+				'</td><td>' +
+				versions[version] +
+				'</td><td><a class="close" id="' +
+				version +
+				"\" onclick='globals.module." +
+				'sharedMemory["status"].' +
+				'controller.removeVersion("' +
+				version + "\");'>" +
+				langEntries.content['status.clear'] +
+				'</a></td></tr>';
 		}
 
 		return tableString;

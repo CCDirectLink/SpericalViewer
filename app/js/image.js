@@ -1,5 +1,6 @@
 /* eslint-env node */
 /* global path, globals, lwip */
+'use strict';
 
 function ImageDatabase() {
 	var imageDatabase = {};
@@ -8,133 +9,135 @@ function ImageDatabase() {
 	this.scale = 2;
 	this.method = 'nearest-neighbor';
 
-	this.addImage = function(version, name, tileName, url, x, y, width, heigth) {
-		var scaleValue = this.scale;
-		var methodValue = this.method;
+	this.addImage =
+		function(version, name, tileName, url, x, y, width, heigth) {
 
-		const type = path.extname(url).substring(1);
+			var scaleValue = this.scale;
+			var methodValue = this.method;
 
-		lwip.open(url, type, function(err, image) {
-			if (err) {
-				throw err;
-			}
+			const type = path.extname(url).substring(1);
 
-			if (!imageDatabase[version]) {
-				imageDatabase[version] = {};
-			}
-
-			if (x === undefined) {
-				if (width) {
-					image.resize(
-						width * scaleValue,
-						heigth * scaleValue,
-						methodValue,
-						function(err, finishedImage) {
-							if (err) {
-								throw err;
-							}
-							finishedImage.toBuffer(
-								type,
-								{
-									compression: 'none',
-									interlaced: false,
-									transparency: true,
-								},
-								function(err, buffer) {
-									if (err) {
-										throw err;
-									}
-									globals.imageData.saveImage(
-										version,
-										name,
-										tileName,
-										'data:image/' +
-                      type +
-                      ';base64,' +
-                      buffer.toString('base64')
-									);
-								}
-							);
-						}
-					);
-				} else {
-					image.resize(
-						image.width() * scaleValue,
-						image.heigth() * scaleValue,
-						methodValue,
-						function(err, finishedImage) {
-							if (err) {
-								throw err;
-							}
-							finishedImage.toBuffer(
-								type,
-								{
-									compression: 'none',
-									interlaced: false,
-									transparency: true,
-								},
-								function(err, buffer) {
-									if (err) {
-										throw err;
-									}
-									globals.imageData.saveImage(
-										version,
-										name,
-										tileName,
-										'data:image/' +
-                      type +
-                      ';base64,' +
-                      buffer.toString('base64')
-									);
-								}
-							);
-						}
-					);
+			lwip.open(url, type, function(err, image) {
+				if (err) {
+					throw err;
 				}
-			} else {
-				image.crop(x, y, x + width - 1, y + heigth - 1, function(
-					err,
-					cropedImage
-				) {
-					if (err) {
-						throw err;
-					}
-					cropedImage.resize(
-						width * scaleValue,
-						heigth * scaleValue,
-						methodValue,
-						function(err, finishedImage) {
-							if (err) {
-								throw err;
-							}
-							finishedImage.toBuffer(
-								type,
-								{
-									compression: 'none',
-									interlaced: false,
-									transparency: true,
-								},
-								function(err, buffer) {
-									if (err) {
-										throw err;
-									}
-									globals.imageData.saveImage(
-										version,
-										name,
-										tileName,
-										'data:image/' +
-                      type +
-                      ';base64,' +
-                      buffer.toString('base64')
-									);
+
+				if (!imageDatabase[version]) {
+					imageDatabase[version] = {};
+				}
+
+				if (x === undefined) {
+					if (width) {
+						image.resize(
+							width * scaleValue,
+							heigth * scaleValue,
+							methodValue,
+							function(err, finishedImage) {
+								if (err) {
+									throw err;
 								}
-							);
+								finishedImage.toBuffer(
+									type,
+									{
+										compression: 'none',
+										interlaced: false,
+										transparency: true,
+									},
+									function(err, buffer) {
+										if (err) {
+											throw err;
+										}
+										globals.imageData.saveImage(
+											version,
+											name,
+											tileName,
+											'data:image/' +
+										type +
+										';base64,' +
+										buffer.toString('base64')
+										);
+									}
+								);
+							}
+						);
+					} else {
+						image.resize(
+							image.width() * scaleValue,
+							image.heigth() * scaleValue,
+							methodValue,
+							function(err, finishedImage) {
+								if (err) {
+									throw err;
+								}
+								finishedImage.toBuffer(
+									type,
+									{
+										compression: 'none',
+										interlaced: false,
+										transparency: true,
+									},
+									function(err, buffer) {
+										if (err) {
+											throw err;
+										}
+										globals.imageData.saveImage(
+											version,
+											name,
+											tileName,
+											'data:image/' +
+										type +
+										';base64,' +
+										buffer.toString('base64')
+										);
+									}
+								);
+							}
+						);
+					}
+				} else {
+					image.crop(x, y, x + width - 1, y + heigth - 1, function(
+						err,
+						cropedImage
+					) {
+						if (err) {
+							throw err;
 						}
-					);
-				});
-			}
-		});
-	};
+						cropedImage.resize(
+							width * scaleValue,
+							heigth * scaleValue,
+							methodValue,
+							function(err, finishedImage) {
+								if (err) {
+									throw err;
+								}
+								finishedImage.toBuffer(
+									type,
+									{
+										compression: 'none',
+										interlaced: false,
+										transparency: true,
+									},
+									function(err, buffer) {
+										if (err) {
+											throw err;
+										}
+										globals.imageData.saveImage(
+											version,
+											name,
+											tileName,
+											'data:image/' +
+										type +
+										';base64,' +
+										buffer.toString('base64')
+										);
+									}
+								);
+							}
+						);
+					});
+				}
+			});
+		};
 
 	this.saveImage = function(version, name, tileName, image) {
 		if (!tileName) {
@@ -197,9 +200,9 @@ function ImageDatabase() {
 
 			if (
 				!observer.tileName ||
-        observer.tileName === tileName ||
-        (Array.isArray(observer.tileName) &&
-          observer.tileName.indexOf(tileName) >= 0)
+				observer.tileName === tileName ||
+				(Array.isArray(observer.tileName) &&
+				observer.tileName.indexOf(tileName) >= 0)
 			) {
 				observer.cb(name, tileName, image);
 			}

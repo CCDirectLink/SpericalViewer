@@ -1,4 +1,5 @@
 /* eslint-env node */
+'use strict';
 
 const https = require('https');
 const fs = require('fs');
@@ -100,10 +101,10 @@ function getCommit(page) {
 		hostname: 'api.github.com',
 		port: 443,
 		path:
-      '/repos/CCDirectLink/SpericalViewer/commits?sha=' +
-      branch +
-      '&page=' +
-      page,
+			'/repos/CCDirectLink/SpericalViewer/commits?sha=' +
+			branch +
+			'&page=' +
+			page,
 		method: 'GET',
 		headers: {
 			'User-Agent': 'SpericalViewer-genVersion',

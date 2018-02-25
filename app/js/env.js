@@ -1,11 +1,13 @@
 /* eslint-env node */
 /* global path, VersionType, alert, localStorage */
 'use strict';
+
 /**
  * Global environment data
  * @type {Object}
  */
 const globalData = (() => {
+
 	// require
 	const { getGlobal } = require('electron').remote; // remote access
 	const fs = require('fs');

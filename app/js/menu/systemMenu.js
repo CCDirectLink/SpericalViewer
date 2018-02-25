@@ -1,3 +1,6 @@
+/* eslint-env node */
+'use strict';
+
 const { app, Menu } = require('electron');
 
 function getTemplate() {

@@ -1,5 +1,6 @@
 /* eslint-env node */
 /* global alert */
+'use strict';
 
 // const crypto = require('crypto');
 // const stream = require('stream');
@@ -18,15 +19,15 @@ const { menuSetup } = require('./js/menu/systemMenu.js');
 function _checkAbsolute(path) {
 	return (
 		(process.platform === 'win32' &&
-      (path.substr(1, 2) === ':/' ||
-        path.substr(1, 2) === ':\\' ||
-        path.substr(0, 1) === '%' ||
-        path.substr(0, 1) === '\\' ||
-        path.substr(0, 1) === '/')) ||
-    ((process.platform === 'darwin' || process.platform === 'linux') &&
-      (path.substr(0, 1) === '/' ||
-        path.substr(0, 1) === '\\' ||
-        path.substr(0, 1) === '~'))
+		(path.substr(1, 2) === ':/' ||
+		path.substr(1, 2) === ':\\' ||
+		path.substr(0, 1) === '%' ||
+		path.substr(0, 1) === '\\' ||
+		path.substr(0, 1) === '/')) ||
+		((process.platform === 'darwin' || process.platform === 'linux') &&
+		(path.substr(0, 1) === '/' ||
+		path.substr(0, 1) === '\\' ||
+		path.substr(0, 1) === '~'))
 	);
 }
 
@@ -41,13 +42,14 @@ function _setSettingsDir(entry, local, defaultPath) {
 
 	if (
 		jsonData[process.platform] &&
-    jsonData[process.platform][entry] &&
-    typeof jsonData[process.platform][entry] === 'string'
+		jsonData[process.platform][entry] &&
+		typeof jsonData[process.platform][entry] === 'string'
 	) {
 		if (_checkAbsolute(jsonData[process.platform][entry])) {
 			if (
-				(process.platform === 'darwin' || process.platform === 'linux') &&
-        jsonData[process.platform][entry].substr(0, 1) === '~'
+				(process.platform === 'darwin' ||
+				process.platform === 'linux') &&
+				jsonData[process.platform][entry].substr(0, 1) === '~'
 			) {
 				return path.join(
 					process.env.HOME,
@@ -71,7 +73,8 @@ global.ccSave = 'cc.save';
 global.ccSaveBackup = 'cc.save.backup';
 
 global.isDevEnv =
-  process.defaultApp || /node_modules[\\/]electron[\\/]/.test(process.execPath);
+	process.defaultApp ||
+	/node_modules[\\/]electron[\\/]/.test(process.execPath);
 
 function userPreSetup() {
 	// folder consts
@@ -91,17 +94,23 @@ function userPreSetup() {
 	// platform dependend path
 	if (process.platform === 'win32') {
 		console.log(
-			global.appDir.substr(global.appDir.length - 18, global.appDir.length)
+			global.appDir.substr(
+				global.appDir.length - 18,
+				global.appDir.length)
 		);
 		console.log(path.join('resources', 'app.asar'));
 
 		// packed app
 		if (
 			global.appDir.length > 18 &&
-      global.appDir.substr(global.appDir.length - 18, global.appDir.length) ===
-        path.join('resources', 'app.asar')
+			global.appDir.substr(
+				global.appDir.length - 18,
+				global.appDir.length) ===
+			path.join('resources', 'app.asar')
 		) {
-			global.appDir = fs.realpathSync(path.join(global.appDir, '..', '..'));
+			global.appDir = fs.realpathSync(
+				path.join(global.appDir, '..', '..')
+			);
 		}
 
 		// default main path
@@ -138,8 +147,10 @@ function userPreSetup() {
 		// packed app
 		if (
 			global.appDir.length > 32 &&
-      global.appDir.substr(global.appDir.length - 32, global.appDir.length) ===
-        path.join('.app', 'Contents', 'Resources', 'app.asar')
+			global.appDir.substr(
+				global.appDir.length - 32,
+				global.appDir.length) ===
+			path.join('.app', 'Contents', 'Resources', 'app.asar')
 		) {
 			global.appDir = fs.realpathSync(
 				path.join(global.appDir, '..', '..', '..', '..')
@@ -189,7 +200,11 @@ function userPreSetup() {
 		);
 	} else if (process.platform === 'linux') {
 		// default main path
-		global.mainDir = path.join(process.env.HOME, '.config', global.toolname);
+		global.mainDir = path.join(
+			process.env.HOME,
+			'.config',
+			global.toolname
+		);
 
 		// overrideable path
 		global.storageDir = _setSettingsDir(

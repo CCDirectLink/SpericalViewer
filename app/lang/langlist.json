@@ -1,8 +1,8 @@
 {
-    "en": {
-        "us": { "langName": "English", "langNameSub": "US" }
-    },
-    "de": {
-        "de": { "langName": "Deutsch", "langNameSub": null }
-    }
+	"en": {
+		"us": { "langName": "English", "langNameSub": "US" }
+	},
+	"de": {
+		"de": { "langName": "Deutsch", "langNameSub": null }
+	}
 }

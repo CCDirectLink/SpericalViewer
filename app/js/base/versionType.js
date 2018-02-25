@@ -10,9 +10,9 @@ const VER_REGEX = /^(v)?(([0-9]+)\.([0-9]+)\.([0-9]+)(\-([0-9]+))?(( )(.+))?)/;
  */
 class VersionType {
 	/**
-   * Version definition
-   * @param {VersionType|Object|string} data Version data
-   */
+	 * Version definition
+	 * @param {VersionType|Object|string} data Version data
+	 */
 	constructor(data) {
 		if (data && data.constructor === VersionType) {
 			this.major = data.major;
@@ -44,45 +44,43 @@ class VersionType {
 	}
 
 	/**
-   * Version string
-   * @type {string}
-   */
+	 * Version string
+	 * @type {string}
+	 */
 	get string() {
 		return (
-			this.major +
-      '.' +
-      this.minor +
-      '.' +
-      this.patch +
-      (this.hotfix ? '-' + this.hotfix : '') +
-      (this.note ? ' ' + this.note : '')
+			this.major + '.' +
+			this.minor + '.' +
+			this.patch +
+			(this.hotfix ? '-' + this.hotfix : '') +
+			(this.note ? ' ' + this.note : '')
 		);
 	}
 
 	/**
-   * Get version string
-   * @return {string} Version string
-   */
+	 * Get version string
+	 * @return {string} Version string
+	 */
 	toString() {
 		return this.string;
 	}
 
 	/**
-   * Numeric version
-   * Can be used to compare versions
-   *
-   * major [infinite digits]
-   * minor [4 digits]
-   * patch [4 digits]
-   * hotfix [2 digits]
-   * @type {number}
-   */
+	 * Numeric version
+	 * Can be used to compare versions
+	 *
+	 * major [infinite digits]
+	 * minor [4 digits]
+	 * patch [4 digits]
+	 * hotfix [2 digits]
+	 * @type {number}
+	 */
 	get numeric() {
 		return (
 			this.major * 10000000000 +
-      this.minor * 1000000 +
-      this.patch * 100 +
-      this.hotfix
+			this.minor * 1000000 +
+			this.patch * 100 +
+			this.hotfix
 		);
 	}
 }

@@ -1,5 +1,6 @@
 /* eslint-env node */
 /* global path, fs, FileList, File, globals, $, crypto, MAIN_PATH, unzip */
+'use strict';
 
 function Loader() {
 	this.loadSaved = function() {
@@ -36,24 +37,56 @@ function Loader() {
 				globals.env.saveVersionPath(data.containerId, folder);
 			}
 
-			globals.gameData.addData(data.shortId, 'changelog', data.changelog);
-			globals.gameData.addData(data.shortId, 'containerId', data.containerId);
-			globals.gameData.addData(data.shortId, 'gameId', data.gameId);
-			globals.gameData.addData(data.shortId, 'shortId', data.shortId);
-			globals.gameData.addData(data.shortId, 'version', data.version);
-			globals.gameData.addData(data.shortId, 'path', data.path);
+			globals.gameData.addData(
+				data.shortId, 'changelog', data.changelog
+			);
 
-			globals.env.saveVersionPath(data.shortId, data.path.main);
+			globals.gameData.addData(
+				data.shortId, 'containerId', data.containerId
+			);
 
-			$.getJSON(data.path.data + 'database.json').done(function(json) {
-				globals.gameData.addData(data.shortId, 'database', json);
-			});
-			$.getJSON(data.path.data + 'global-settings.json').done(function(json) {
-				globals.gameData.addData(data.shortId, 'globalSettings', json);
-			});
-			$.getJSON(data.path.data + 'item-database.json').done(function(json) {
-				globals.gameData.addData(data.shortId, 'items', json.items);
-			}); // fail if old version
+			globals.gameData.addData(
+				data.shortId, 'gameId', data.gameId
+			);
+
+			globals.gameData.addData(
+				data.shortId, 'shortId', data.shortId
+			);
+
+			globals.gameData.addData(
+				data.shortId, 'version', data.version
+			);
+
+			globals.gameData.addData(
+				data.shortId, 'path', data.path
+			);
+
+
+			globals.env.saveVersionPath(
+				data.shortId, data.path.main
+			);
+
+
+			$.getJSON(data.path.data + 'database.json')
+				.done(function(json) {
+					globals.gameData.addData(
+						data.shortId, 'database', json
+					);
+				});
+
+			$.getJSON(data.path.data + 'global-settings.json')
+				.done(function(json) {
+					globals.gameData.addData(
+						data.shortId, 'globalSettings', json
+					);
+				});
+
+			$.getJSON(data.path.data + 'item-database.json')
+				.done(function(json) {
+					globals.gameData.addData(
+						data.shortId, 'items', json.items
+					);
+				}); // fail if old version
 
 			// "/media/font/icons-items.png"
 			var iconSpecify = [
@@ -78,11 +111,18 @@ function Loader() {
 			};
 
 			for (var rowIndex = 0; rowIndex < iconSet.row; rowIndex++) {
-				for (var columnIndex = 0; columnIndex < iconSet.column; columnIndex++) {
+
+				for (var columnIndex = 0;
+					columnIndex < iconSet.column;
+					columnIndex++) {
+
 					var startX =
-            columnIndex * (iconSet.dimension.width + iconSet.dimension.xpad);
+						columnIndex *
+						(iconSet.dimension.width + iconSet.dimension.xpad);
+
 					var startY =
-            rowIndex * (iconSet.dimension.height + iconSet.dimension.ypad);
+						rowIndex *
+						(iconSet.dimension.height + iconSet.dimension.ypad);
 
 					globals.imageData.addImage(
 						data.shortId,
@@ -95,6 +135,7 @@ function Loader() {
 						iconSet.dimension.height
 					);
 				}
+
 			}
 
 			// "/media/gui/menu.png"
@@ -108,6 +149,7 @@ function Loader() {
 				'elemShock',
 				'elemWave',
 			];
+
 			iconSet = {
 				dimension: {
 					width: 11,
@@ -119,10 +161,15 @@ function Loader() {
 				ystart: 219,
 			};
 
-			for (columnIndex = 0; columnIndex < iconSet.column; columnIndex++) {
+			for (columnIndex = 0;
+				columnIndex < iconSet.column;
+				columnIndex++) {
+
 				startX =
-          columnIndex * (iconSet.dimension.width + iconSet.dimension.xpad) +
-          iconSet.xstart;
+					columnIndex *
+					(iconSet.dimension.width + iconSet.dimension.xpad) +
+					iconSet.xstart;
+
 				startY = iconSet.ystart;
 
 				globals.imageData.addImage(
@@ -144,7 +191,9 @@ function Loader() {
 	function _nwjsExec(folder, exec) {
 		if (globals.env.os === 'darwin') {
 			// TODO
-			// exec.vanilla.push({ path: folder, os: "raw", isExecutable: rawIsExec });
+			// exec.vanilla.push(
+			// { path: folder, os: "raw", isExecutable: rawIsExec }
+			// );
 		} else if (globals.env.os === 'win32') {
 			// TODO
 		} else if (globals.env.os === 'linux') {
@@ -217,7 +266,8 @@ function Loader() {
 				if (Array.isArray(data.changelog[0].fixes)) {
 					var searchPattern = /HOTFIX\(([0-9]+)\)/i;
 					var patternResult = searchPattern.exec(
-						data.changelog[0].fixes[data.changelog[0].fixes.length - 1]
+						data.changelog[0]
+							.fixes[data.changelog[0].fixes.length - 1]
 					);
 
 					if (patternResult && patternResult[1]) {
@@ -243,10 +293,10 @@ function Loader() {
 				};
 
 				callbackData.version.numeric =
-          callbackData.version.major * 10000000000 +
-          callbackData.version.minor * 1000000 +
-          callbackData.version.patch * 100 +
-          callbackData.version.hotfix;
+				callbackData.version.major * 10000000000 +
+				callbackData.version.minor * 1000000 +
+				callbackData.version.patch * 100 +
+				callbackData.version.hotfix;
 
 				cb(callbackData);
 			})
@@ -273,11 +323,13 @@ function Loader() {
 	function _isApp(file) {
 		return (
 			file.endsWith('.app') &&
-      fs.existsSync(path.join(file, 'Contents', 'Info.plist')) &&
-      fs.existsSync(path.join(file, 'Contents', 'MacOS', 'nwjs')) &&
-      fs.existsSync(
-      	path.join(file, 'Contents', 'Resources', 'app.nw', 'package.json')
-      )
+			fs.existsSync(path.join(file, 'Contents', 'Info.plist')) &&
+			fs.existsSync(path.join(file, 'Contents', 'MacOS', 'nwjs')) &&
+			fs.existsSync(
+				path.join(
+					file, 'Contents', 'Resources', 'app.nw', 'package.json'
+				)
+			)
 		);
 	}
 
@@ -335,14 +387,14 @@ function Loader() {
 			// Signature
 			if (
 				data[i] === 0x50 && // P
-        data[i + 1] === 0x4b && // K
-        data[i + 2] === 0x03 && // 0x3
-        data[i + 3] === 0x04 && // 0x4
-        data[i + 30] === 0x64 && // d
-        data[i + 31] === 0x61 && // a
-        data[i + 32] === 0x74 && // t
-        data[i + 33] === 0x61 && // a
-        data[i + 34] === 0x2f
+				data[i + 1] === 0x4b && // K
+				data[i + 2] === 0x03 && // 0x3
+				data[i + 3] === 0x04 && // 0x4
+				data[i + 30] === 0x64 && // d
+				data[i + 31] === 0x61 && // a
+				data[i + 32] === 0x74 && // t
+				data[i + 33] === 0x61 && // a
+				data[i + 34] === 0x2f
 			) {
 				// slash
 				return i;

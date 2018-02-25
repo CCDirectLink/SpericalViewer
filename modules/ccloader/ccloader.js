@@ -1,5 +1,6 @@
 /* eslint-env browser */
 /* global globals, https, fs, unzip, $ */
+'use strict';
 
 function CCLoader() {
 	const DOWNLOAD_LINK =
@@ -11,7 +12,9 @@ function CCLoader() {
 
 	this.initialize = function() {
 		globals.gameData.registerObserver(function() {
-			globals.module.sharedMemory['ccloader']['controller'].display();
+			globals.module
+				.sharedMemory['ccloader']['controller']
+				.display();
 		}, 'path');
 	};
 
@@ -47,9 +50,9 @@ function CCLoader() {
 						globals.gameData.versions[id].path.main + '..',
 						function() {
 							$('h2').html('');
-							globals.module.sharedMemory['cc' + 'loader'][
-								'con' + 'trol' + 'ler'
-							].display();
+							globals.module
+								.sharedMemory['cc' + 'loader']['controller']
+								.display();
 						}
 					);
 				});
@@ -83,7 +86,9 @@ function CCLoader() {
 					} catch (e) {}
 					entry.autodrain();
 				} else if (entry.type === 'File') {
-					entry.pipe(fs.createWriteStream(unzipPath + entry.path.substr(15)));
+					entry.pipe(
+						fs.createWriteStream(unzipPath + entry.path.substr(15))
+					);
 				} else {
 					entry.autodrain();
 				}
@@ -97,48 +102,43 @@ function CCLoader() {
 
 	function _getTable() {
 		var tableString =
-      '<table><tr><th>' +
-      langEntries.content['ccloader.id'] +
-      '</th><th>' +
-      langEntries.content['ccloader.version'] +
-      '</th><th>' +
-      langEntries.content['ccloader.installed'] +
-      '</th><th>' +
-      langEntries.content['ccloader.start'] +
-      '</th></tr>';
+			'<table><tr><th>' +
+			langEntries.content['ccloader.id'] +
+			'</th><th>' +
+			langEntries.content['ccloader.version'] +
+			'</th><th>' +
+			langEntries.content['ccloader.installed'] +
+			'</th><th>' +
+			langEntries.content['ccloader.start'] +
+			'</th></tr>';
 
 		for (var id in globals.gameData.versions) {
 			var game = globals.gameData.versions[id];
 			tableString +=
-        '<tr><td>' +
-        id +
-        '</td><td>' +
-        game.version.string +
-        '</td><td id="install' +
-        id +
-        '">';
+				'<tr><td>' + id +
+				'</td><td>' + game.version.string +
+				'</td><td id="install' + id +
+				'">';
 
 			if (_isInstalled(game)) {
 				tableString += langEntries.content['ccloader.installed'];
 			} else {
 				tableString +=
-          '<button onclick=' +
-          "\"globals.module.sharedMemory['ccloader']" +
-          "['controller'].install('" +
-          id +
-          "')\">" +
-          langEntries.content['ccloader.install'] +
-          '</button>';
+					'<button onclick=' +
+					"\"globals.module.sharedMemory['ccloader']" +
+					"['controller'].install('" + id +
+					"')\">" + langEntries.content['ccloader.install'] +
+					'</button>';
 			}
 
 			tableString +=
-        '</td><td><button onclick=' +
-        "\"globals.module.sharedMemory['ccloader']" +
-        "['controller'].start('" +
-        id +
-        "')\">" +
-        langEntries.content['ccloader.start'] +
-        '</button></td></tr>';
+				'</td><td><button onclick=' +
+				"\"globals.module.sharedMemory['ccloader']" +
+				"['controller'].start('" +
+				id +
+				"')\">" +
+				langEntries.content['ccloader.start'] +
+				'</button></td></tr>';
 		}
 
 		tableString += '</table>';

@@ -1,7 +1,7 @@
 {
-    "win32":
-    {
-        "userData": "SpericalData",
-        "userStorage": "SpericalStorage"
-    }
+	"win32":
+	{
+		"userData": "SpericalData",
+		"userStorage": "SpericalStorage"
+	}
 }

@@ -1,5 +1,6 @@
 /* eslint-env node */
 /* global $ */
+'use strict';
 
 function Menu(element, entryContainer, callback) {
 	var currentId = -1;
@@ -96,8 +97,8 @@ function Menu(element, entryContainer, callback) {
 	this.select = function(id) {
 		if (
 			currentId !== id &&
-      typeof id === 'number' &&
-      typeof entrys[id] === 'object'
+			typeof id === 'number' &&
+			typeof entrys[id] === 'object'
 		) {
 			if (!isEnabled(entrys[id])) {
 				return false;
@@ -117,7 +118,7 @@ function Menu(element, entryContainer, callback) {
 
 			if ($('.menuentry a#' + currentId).length) {
 				$('.menuentry a#' + currentId)[0].parentNode.className =
-          'menuentrySelected';
+				'menuentrySelected';
 			}
 
 			if (entrys[id].function != null) {
@@ -141,14 +142,14 @@ function Menu(element, entryContainer, callback) {
 			}
 			$(this.menuElement).append(
 				'<li class="' +
-          className +
-          '"><a class="menuelement" id="' +
-          position[entry].id +
-          '" onclick="globals.menu.select(' +
-          position[entry].id +
-          ')">' +
-          position[entry].name +
-          '</a></li>'
+				className +
+				'"><a class="menuelement" id="' +
+				position[entry].id +
+				'" onclick="globals.menu.select(' +
+				position[entry].id +
+				')">' +
+				position[entry].name +
+				'</a></li>'
 			);
 		}
 	};
@@ -156,18 +157,19 @@ function Menu(element, entryContainer, callback) {
 	this.update = function(id) {
 		if (
 			typeof id === 'number' &&
-      $('.menuentry a#' + currentId).length &&
-      entrys.length > id
+			$('.menuentry a#' + currentId).length &&
+			entrys.length > id
 		) {
 			var entryName = entrys[id].name;
 			if (entrys[id].name == null) {
 				entryName = 'Entry(' + id + ')';
 			}
 			if (!isEnabled(entrys[id])) {
-				$('.menuentry a#' + currentId)[0].parentNode.className =
-          'menuentryDisabled';
+				$('.menuentry a#' + currentId)[0]
+					.parentNode.className = 'menuentryDisabled';
 			} else {
-				$('.menuentry a#' + currentId)[0].parentNode.className = 'menuentry';
+				$('.menuentry a#' + currentId)[0]
+					.parentNode.className = 'menuentry';
 			}
 			$('.menuentry a#' + currentId)[0].text = entryName;
 			return true;

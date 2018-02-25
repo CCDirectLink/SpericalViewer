@@ -1,5 +1,6 @@
 /* eslint-env node */
 /* global globals, $ */
+'use strict';
 
 function Savegame() {
 	// var statusArray = [];

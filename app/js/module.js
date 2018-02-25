@@ -1,5 +1,6 @@
 /* eslint-env node */
 /* global fs, path, unzip, $ */
+'use strict';
 
 function Module(initLang, langFile) {
 	var MODULE_EXTENSION = '.ccsvm';
@@ -105,16 +106,13 @@ function Module(initLang, langFile) {
 	};
 
 	this.getLangData = function() {
-		if (
-			!langStore[instance.selectedLang.langId] ||
-      !langStore[instance.selectedLang.langId][instance.selectedLang.langIdSub]
-		) {
+		var langData = langStore[instance.selectedLang.langId];
+
+		if (!langData || !langData[instance.selectedLang.langIdSub]) {
 			return {};
 		}
 
-		return langStore[instance.selectedLang.langId][
-			instance.selectedLang.langIdSub
-		];
+		return langData[instance.selectedLang.langIdSub];
 	};
 
 	this.getLangList = function() {
@@ -128,25 +126,26 @@ function Module(initLang, langFile) {
 
 		if (
 			langIdOrObject &&
-      langIdSub &&
-      typeof langIdOrObject === 'string' &&
-      typeof langIdSub === 'string'
+			langIdSub &&
+			typeof langIdOrObject === 'string' &&
+			typeof langIdSub === 'string'
 		) {
 			instance.selectedLang.langId = langIdOrObject;
 			instance.selectedLang.langIdSub = langIdSub;
 		} else if (
 			langIdOrObject &&
-      langIdOrObject.langId &&
-      langIdOrObject.langIdSub
+			langIdOrObject.langId &&
+			langIdOrObject.langIdSub
 		) {
 			instance.selectedLang.langId = langIdOrObject.langId;
 			instance.selectedLang.langIdSub = langIdOrObject.langIdSub;
 		}
 
+		var langData = langStore[instance.selectedLang.langId];
+
 		for (let id in callbacks.langChanged) {
 			callbacks.langChanged[id].apply(this, [
-				...arguments,
-				langStore[instance.selectedLang.langId][instance.selectedLang.langIdSub],
+				...arguments, langData[instance.selectedLang.langIdSub],
 			]);
 		}
 	};
@@ -225,13 +224,15 @@ function Module(initLang, langFile) {
 						.done(function(json) {
 							if (
 								langStore[json.langId] &&
-                langStore[json.langId][json.langIdSub] &&
-                langStore[json.langId][json.langIdSub].content
+								langStore[json.langId][json.langIdSub] &&
+								langStore[json.langId][json.langIdSub].content
 							) {
-								langStore[json.langId][json.langIdSub].content = Object.assign(
-									langStore[json.langId][json.langIdSub].content,
-									json.content
-								);
+								langStore[json.langId][json.langIdSub]
+									.content = Object.assign(
+										langStore[json.langId][json.langIdSub]
+											.content,
+										json.content
+									);
 							}
 
 							++langLoadedCount;
@@ -242,8 +243,11 @@ function Module(initLang, langFile) {
 										if (typeof cb === 'function') {
 											cb.apply(this, arguments);
 										} else {
-											for (let id in callbacks.moduleLoaded) {
-												callbacks.moduleLoaded[id].apply(this, arguments);
+											for (let id in callbacks
+												.moduleLoaded) {
+
+												callbacks.moduleLoaded[id]
+													.apply(this, arguments);
 											}
 										}
 									}
@@ -259,8 +263,11 @@ function Module(initLang, langFile) {
 										if (typeof cb === 'function') {
 											cb.apply(this, arguments);
 										} else {
-											for (let id in callbacks.moduleLoaded) {
-												callbacks.moduleLoaded[id].apply(this, arguments);
+											for (let id in callbacks
+												.moduleLoaded) {
+
+												callbacks.moduleLoaded[id]
+													.apply(this, arguments);
 											}
 										}
 									}
@@ -276,7 +283,8 @@ function Module(initLang, langFile) {
 							cb.apply(this, arguments);
 						} else {
 							for (let id in callbacks.moduleLoaded) {
-								callbacks.moduleLoaded[id].apply(this, arguments);
+								callbacks.moduleLoaded[id]
+									.apply(this, arguments);
 							}
 						}
 					}
@@ -339,7 +347,7 @@ function Module(initLang, langFile) {
 				result.push(file);
 			} else if (
 				fs.lstatSync(file).isDirectory() &&
-        fs.existsSync(file + '/package.json')
+				fs.existsSync(file + '/package.json')
 			) {
 				result.push(file + '/package.json');
 			}

@@ -1,5 +1,6 @@
 /* eslint-env node */
 /* global globals, path, $ */
+'use strict';
 
 function Settings() {
 	var settings = {
@@ -30,7 +31,8 @@ function Settings() {
 		$('#savegameDirName').html(langEntries.content['settings.savegame']);
 
 		$('#savegameDir').html(
-			globals.env.path.save.folder + path.sep + globals.env.path.save.file
+			globals.env.path.save.folder +
+			path.sep + globals.env.path.save.file
 		);
 
 		$('#cacheDirName').html(langEntries.content['settings.cache']);

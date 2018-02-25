@@ -1,31 +1,27 @@
 /* eslint-env node */
 /* global globals */
-
-/* eslint-disable */
-// ESLint: 1 Error
-// TODO: Version export
+'use strict';
 
 function Version() {
-  this.getList = function(currentVersion) {
-    var option = "";
+	this.getList = function(currentVersion) {
+		var option = '';
 
-    for (var version in globals.gameData.versions) {
-      var full =
-        version + " - " + globals.gameData.versions[version].version.string;
+		for (var version in globals.gameData.versions) {
+			var full =
+				version + ' - ' +
+				globals.gameData.versions[version].version.string;
 
-      var selected = "";
-      if (currentVersion === full) selected = "selected";
+			var selected = '';
 
-      option +=
-        '<option value="' +
-        version +
-        '" ' +
-        selected +
-        ">" +
-        full +
-        "</option>";
-    }
+			if (currentVersion === full) selected = 'selected';
 
-    return option;
-  };
+			option +=
+				'<option value="' +
+				version + '" ' +
+				selected + '>' +
+				full + '</option>';
+		}
+
+		return option;
+	};
 }

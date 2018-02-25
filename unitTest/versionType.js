@@ -1,4 +1,5 @@
 /* eslint-env node, mocha */
+'use strict';
 
 // call with mocha
 // require chai

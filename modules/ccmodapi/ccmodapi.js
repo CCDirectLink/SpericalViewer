@@ -1,11 +1,12 @@
 /* eslint-env browser */
-/* global globals, https, fs, unzip, $ */
+/* global globals, https, fs, unzip, path, $ */
+'use strict';
 
 function CCModDB() {
 	this.moddata = {};
-	this.versiondata =  {
-		selectedVersion : undefined,
-		version : new Version(),
+	this.versiondata = {
+		selectedVersion: undefined,
+		version: new Version(),
 	};
 	var instance = this;
 
@@ -94,7 +95,7 @@ function CCModDB() {
 		var installCode = function(aPath) {
 			console.log('Installing...');
 			var outputPath = _dirToExactPath(dirType || 'mod');
-			console.debug('OutputPath:',outputPath);
+			console.debug('OutputPath:', outputPath);
 			_install(aPath, outputPath, function() {
 				console.log('Done!');
 			});
@@ -106,7 +107,10 @@ function CCModDB() {
 		var baseUrl = 'https://codeload.github.com/';
 		var strippedUrl = url.replace('https://github.com/', '');
 
-		baseUrl += strippedUrl.substring(0, strippedUrl.indexOf('/archive/') + 1);
+		baseUrl += strippedUrl.substring(
+			0,
+			strippedUrl.indexOf('/archive/') + 1
+		);
 
 		var fileName = strippedUrl.substring(
 			strippedUrl.indexOf('/archive/') + '/archive/'.length
@@ -121,23 +125,30 @@ function CCModDB() {
 	}
 
 	function _normalizePath(absPath) {
-		if(!absPath)
+		if (!absPath)
 			throw 'absolute path not specified';
-		if(path.sep === '\\') {
+		if (path.sep === '\\') {
 			return absPath.replace(/[\\]/g, path.sep.repeat(2));
 		}
 		return absPath;
 	}
 
 	function _dirToExactPath(keyword, version, sep) {
-		if(!sep) sep = path.sep;
-		if(!version) version = instance.versiondata.selectedVersion || globals.gameData.getVersions()[0];
-		if(!keyword) throw 'keyword not specified';
+		if (!sep) sep = path.sep;
+		if (!version) version = instance.versiondata.selectedVersion ||
+			globals.gameData.getVersions()[0];
+		if (!keyword) throw 'keyword not specified';
 		var newPath;
-		if(keyword === 'root') //we want the folder where nw.exe is located
-			newPath = path.join(globals.gameData.versions[version].path.main,'..' + sep);
-		else if(keyword === 'mod')
-			newPath = path.join(globals.gameData.versions[version].path.main, "mods" + sep);
+		if (keyword === 'root') // we want the folder where nw.exe is located
+			newPath = path.join(
+				globals.gameData.versions[version].path.main,
+				'..' + sep
+			);
+		else if (keyword === 'mod')
+			newPath = path.join(
+				globals.gameData.versions[version].path.main,
+				'mods' + sep
+			);
 		return _normalizePath(newPath);
 	}
 
@@ -169,10 +180,8 @@ function CCModDB() {
 			.createReadStream(filePath)
 			.pipe(unzip.Parse())
 			.on('entry', function(entry) {
-				if (
-					!entry ||
-          !entry.path ||
-          entry.path.indexOf('/') === entry.path.lastIndexOf('/')
+				if (!entry || !entry.path ||
+					entry.path.indexOf('/') === entry.path.lastIndexOf('/')
 				) {
 					console.debug('Skipping...', entry);
 					return;
@@ -186,7 +195,8 @@ function CCModDB() {
 						fs.mkdirSync(outputPath + name);
 					} catch (e) {
 						console.log(
-							'Error with ' + 'making directory ' + `"${name}" -> ${e}`
+							'Error with ' +
+							'making directory ' + `"${name}" -> ${e}`
 						);
 					}
 					entry.autodrain();
@@ -203,15 +213,15 @@ function CCModDB() {
 
 	function _getTable() {
 		var tableString =
-      '<tr><th>' +
-      langEntries.content['ccmodapi.name'] +
-      '</th><th>' +
-      langEntries.content['ccmodapi.desc'] +
-      '</th><th>' +
-      langEntries.content['ccmodapi.license'] +
-      '</th><th>' +
-      langEntries.content['ccmodapi.install'] +
-      '</th></tr>';
+			'<tr><th>' +
+			langEntries.content['ccmodapi.name'] +
+			'</th><th>' +
+			langEntries.content['ccmodapi.desc'] +
+			'</th><th>' +
+			langEntries.content['ccmodapi.license'] +
+			'</th><th>' +
+			langEntries.content['ccmodapi.install'] +
+			'</th></tr>';
 
 		if (!instance.moddata) {
 			return langEntries.content['ccmodapi.connection'];
@@ -220,23 +230,22 @@ function CCModDB() {
 		for (var i in instance.moddata.mods) {
 			if (
 				!instance.moddata.mods[i].name ||
-        !instance.moddata.mods[i].archive_link ||
-        !instance.moddata.mods[i].version
+				!instance.moddata.mods[i].archive_link ||
+				!instance.moddata.mods[i].version
 			) {
 				continue;
 			}
 			var link = instance.moddata.mods[i].archive_link;
-			var dir = instance.moddata.mods[i].dir || "";
-			tableString +=
-        '<tr><td>' + instance.moddata.mods[i].name + ' (' + i + ')</td>';
-			tableString +=
-        '<td>' + (instance.moddata.mods[i].description || '') + '</td>';
-			tableString +=
-        '<td>' + (instance.moddata.mods[i].license || '') + '</td>';
-			tableString +=
-        "<td><button onclick='installMod(" +
-        `"${link.trim()}","${i.trim()}", "${dir.trim()}")'>` +
-        'Install</button></td></tr>';
+			var dir = instance.moddata.mods[i].dir || '';
+			tableString += '<tr><td>' +
+				instance.moddata.mods[i].name + ' (' + i + ')</td>';
+			tableString += '<td>' +
+				(instance.moddata.mods[i].description || '') + '</td>';
+			tableString += '<td>' +
+				(instance.moddata.mods[i].license || '') + '</td>';
+			tableString += "<td><button onclick='installMod(" +
+				`"${link.trim()}","${i.trim()}", "${dir.trim()}")'>` +
+				'Install</button></td></tr>';
 		}
 
 		return tableString;
@@ -249,21 +258,20 @@ function CCModDB() {
 	});
 }
 
-/* eslint-disable */
-// ESLint: 1 Error
-// TODO: installMod export
-
 function installMod(link, name, dir) {
-  globals.module.sharedMemory["ccmoddb"].controller.installMod(link, name);
+	globals.module.sharedMemory['ccmoddb']
+		.controller.installMod(link, name);
 }
 
-globals.module.sharedMemory["ccmoddb"] = {
-  controller: new CCModDB()
+globals.module.sharedMemory['ccmoddb'] = {
+	controller: new CCModDB(),
 };
 
 globals.gameData.registerObserver(function() {
-	this.versiondata.selectedVersion = globals.gameData.getVersions()[0];
-}.bind(globals.module.sharedMemory.ccmoddb.controller), "version");
+	this.versiondata.selectedVersion = globals
+		.gameData.getVersions()[0];
+}.bind(globals.module.sharedMemory
+	.ccmoddb.controller), 'version');
 
 globals.module.on('modulesLoaded', function(){
 	globals.menu.add('CCMods', function(){},
