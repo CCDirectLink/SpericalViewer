@@ -5,7 +5,7 @@ function CCModDB() {
 	this.moddata = {};
 	this.versiondata =  {
 		selectedVersion : undefined,
-		version : new Version()
+		version : new Version(),
 	};
 	var instance = this;
 
@@ -99,7 +99,7 @@ function CCModDB() {
 				console.log('Done!');
 			});
 		};
-	_	_download(link, name + '.zip', installCode);
+		_download(link, name + '.zip', installCode);
 	};
 
 	function _archiveToDirectLink(url) {

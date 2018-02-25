@@ -135,7 +135,7 @@ function GameData() {
  	 */
 	this.start = function(version){
 		exec(
-			'"'+ globals.gameData.versions[version].path.main + '../crosscode-beta.exe"'
+			'"' + globals.gameData.versions[version].path.main + '../crosscode-beta.exe"'
 		); // TODO: Make platform-independant
 	};
 
