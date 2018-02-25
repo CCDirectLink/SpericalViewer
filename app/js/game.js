@@ -34,7 +34,7 @@ function GameData() {
  	 * @returns {Boolean} True if specific version is in GameData
  	 */
 	this.hasGame = function(version) {
-		if (length == 0) 
+		if (length == 0)
 			return false;
 
 		if (!version)
@@ -44,7 +44,7 @@ function GameData() {
 			return false;
 		return true;
 	}
-	
+
 	/**
  	 * GameData version list
  	 * @returns {array} Version list
@@ -91,9 +91,9 @@ function GameData() {
  	 * @returns {Boolean} True if deleted
  	 */
 	this.removeData = function(version, property) {
-		if (!version) 
+		if (!version)
 			return false;
-		
+
 		if (!property) {
 			length -= 1;
 			delete this.versions[version];
@@ -108,7 +108,7 @@ function GameData() {
 		_callObservers(this.versions[version], property, null);
 		return true;
     }
-	
+
 	/**
  	 * Get a property
  	 * @param {string} version Version hash
@@ -118,15 +118,16 @@ function GameData() {
 	this.getData = function(version, property) {
 		return this.versions[version][property];
 	}
-	
+
 	/**
  	 * Start the game
  	 * @param {string} version Version hash
  	 */
 	this.start = function(version){
-		exec(globals.gameData.versions[version].path.main + "../crosscode-beta.exe"); //TODO: Make platform-independant
+
+		exec('"'+ globals.gameData.versions[version].path.main + '../crosscode-beta.exe"'); //TODO: Make platform-independant
 	}
-	
+
 	/**
  	 * Observers call
  	 * @param {Object} game Game entry
@@ -138,7 +139,6 @@ function GameData() {
 			var filter = observers[observer].property;
 			if(!filter || !property || filter === property)
 				observers[observer].call(game, property, value);
-			
 			if(filter.constructor === Array){
 				for(var i in filter){
 					if(filter[i] === property){
