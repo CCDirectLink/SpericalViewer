@@ -1,4 +1,9 @@
-"use strict";
+'use strict';
+
+/**
+ * Version Regex
+ */
+const VER_REGEX = /^(v)?(([0-9]+)\.([0-9]+)\.([0-9]+)(\-([0-9]+))?(( )(.+))?)/;
 
 /**
  * Version Container
@@ -20,30 +25,27 @@ class VersionType {
 			this.hotfix = data.hotfix;
 
 			this.note = data.note;
-		}
-		else if ((data) &&
-				 (typeof data === 'object')) {
+		} else if ((data) &&
+				(typeof data === 'object')) {
 
 			this.major = data.major || 0;
 			this.minor = data.minor || 0;
 			this.patch = data.patch || 0;
 			this.hotfix = data.hotfix || 0;
 
-			this.note = data.note || "";
-		}
-		else if (typeof data === 'string') {
+			this.note = data.note || '';
+		} else if (typeof data === 'string') {
 
 			// Version regex
-			const versionArray = (/^(v)?(([0-9]+)\.([0-9]+)\.([0-9]+)(\-([0-9]+))?(( )(.+))?)/).exec(data);
+			const versionArray = (VER_REGEX).exec(data);
 
 			this.major = Number(versionArray[3]) || 0;
 			this.minor = Number(versionArray[4]) || 0;
 			this.patch = Number(versionArray[5]) || 0;
 			this.hotfix = Number(versionArray[7]) || 0;
 
-			this.note = (versionArray[10]) || "";
-		}
-		else {
+			this.note = (versionArray[10]) || '';
+		} else {
 			throw new TypeError('Not valid version type');
 		}
 	}
@@ -72,7 +74,10 @@ class VersionType {
      * Numeric version
      * Can be used to compare versions
      *
-     * major [infinite digits] minor [4 digits] patch [4 digits] hotfix [2 digits]
+     * major [infinite digits]
+     * minor [4 digits]
+     * patch [4 digits]
+     * hotfix [2 digits]
      * @type {number}
      */
 	get numeric() {
@@ -86,6 +91,6 @@ class VersionType {
 // Node Export
 if (module) {
 	module.exports = {
-		VersionType: VersionType
-	}
+		VersionType: VersionType,
+	};
 }

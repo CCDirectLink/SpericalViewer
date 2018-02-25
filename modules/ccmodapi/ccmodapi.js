@@ -1,3 +1,8 @@
+'use strict';
+
+/* eslint-env browser */
+/* global globals, https, fs, unzip, $ */
+
 function CCModDB(){
 
 	this.moddata = {};
@@ -9,12 +14,12 @@ function CCModDB(){
 
 	var callbacks = {
 		dataInit: [],
-		dataUpdated: []
+		dataUpdated: [],
 	};
 
 	var langEntries = globals.module.getLangData();
 
-	globals.module.on("langChanged", function(id, subId, data) {
+	globals.module.on('langChanged', function(id, subId, data) {
 		langEntries = data;
 	});
 
@@ -26,8 +31,8 @@ function CCModDB(){
 			path: '/CCDirectLink/CCModDB/master/mods.json',
 			method: 'GET',
 			headers: {
-				'User-Agent': 'SpericalViewer-modAPI'
-			}
+				'User-Agent': 'SpericalViewer-modAPI',
+			},
 		};
 
 		https.get(modReq, (res) => {
@@ -41,10 +46,10 @@ function CCModDB(){
 				instance.moddata = JSON.parse(data);
 				if (typeof cb === 'function') {
 					cb.apply(this, arguments);
-				}
-				else {
-					for (id in callbacks.dataUpdated) {
-						callbacks.dataUpdated[id].apply(this, arguments);
+				} else {
+					for (let id in callbacks.dataUpdated) {
+						callbacks.dataUpdated[id]
+							.apply(this, arguments);
 					}
 				}
 			});
@@ -62,6 +67,7 @@ function CCModDB(){
 		$("#provideinfo").html(
 			langEntries.content['ccmodapi.provided']
 		);
+    
     $("#versionList").html(
 			this.versiondata.version.getList()
 		);
@@ -82,10 +88,9 @@ function CCModDB(){
 	};
 
 	this.on = function(type, cb){
-		if (type === "dataInit") {
+		if (type === 'dataInit') {
 			callbacks.dataInit.push(cb);
-		}
-		else if (type === "dataUpdated") {
+		} else if (type === 'dataUpdated') {
 			callbacks.dataUpdated.push(cb);
 		}
 	};
@@ -193,7 +198,15 @@ function CCModDB(){
 		});
 	}
 	function _getTable() {
-		var tableString = "<tr><th>" + langEntries.content['ccmodapi.name'] + "</th><th>" + langEntries.content['ccmodapi.desc'] + "</th><th>" + langEntries.content['ccmodapi.license'] + "</th><th>" + langEntries.content['ccmodapi.install'] + "</th></tr>";
+		var tableString = '<tr><th>' +
+			langEntries.content['ccmodapi.name'] +
+			'</th><th>' +
+			langEntries.content['ccmodapi.desc'] +
+			'</th><th>' +
+			langEntries.content['ccmodapi.license'] +
+			'</th><th>' +
+			langEntries.content['ccmodapi.install'] +
+			'</th></tr>';
 
 		if (!instance.moddata) {
 			return langEntries.content['ccmodapi.connection'];
@@ -208,27 +221,38 @@ function CCModDB(){
 			}
 			var link = instance.moddata.mods[i].archive_link;
 			var dir = instance.moddata.mods[i].dir || "";
-			tableString += "<tr><td>" + instance.moddata.mods[i].name + " (" + i + ")</td>";
-			tableString += "<td>" + (instance.moddata.mods[i].description || "") + "</td>";
-			tableString += "<td>" + (instance.moddata.mods[i].license || "") + "</td>";
-			tableString += `<td><button onclick='installMod("${link.trim()}","${i.trim()}","${dir}")'>` + "Install</button></td></tr>";
+			tableString += '<tr><td>' +
+				instance.moddata.mods[i].name +
+				' (' + i + ')</td>';
+			tableString += '<td>' +
+				(instance.moddata.mods[i].description || '') +
+				'</td>';
+			tableString += '<td>' +
+				(instance.moddata.mods[i].license || '') +
+				'</td>';
+			tableString += '<td><button onclick=\'installMod(' +
+				`"${link.trim()}","${i.trim()}", "${dir.trim()}")'>` +
+				'Install</button></td></tr>';
+
 		}
 
 		return tableString;
 	}
 
 	instance.updateData(function(){
-		for (id in callbacks.dataInit) {
+		for (let id in callbacks.dataInit) {
 			callbacks.dataInit[id].apply(this, arguments);
 		}
 	});
 
 }
+
 function installMod(link, name, dir) {
 	globals.module.sharedMemory["ccmoddb"].controller.installMod(link,name, dir);
 }
+
 globals.module.sharedMemory['ccmoddb'] = {
-	controller: new CCModDB()
+	controller: new CCModDB(),
 };
 
 globals.gameData.registerObserver(function(game, property, value) {
@@ -238,9 +262,11 @@ globals.gameData.registerObserver(function(game, property, value) {
 	_this.versiondata.selectedVersion = globals.gameData.getVersions()[0];
 }, "version");
 
-globals.module.on("modulesLoaded", function(){
-	globals.menu.add("CCMods", function(){}, "../modules/ccmodapi/ccmodapi.html", function() {
-		 return globals.gameData.containGames();
-	});
+
+globals.module.on('modulesLoaded', function(){
+	globals.menu.add('CCMods', function(){},
+		'../modules/ccmodapi/ccmodapi.html',
+		true
+	);
 	globals.menu.updateAll();
 });

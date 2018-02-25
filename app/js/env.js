@@ -1,4 +1,7 @@
-"use strict";
+'use strict';
+
+/* eslint-env node */
+/* global path, VersionType, alert, localStorage */
 
 /**
  * Global environment data
@@ -7,7 +10,7 @@
 const globalData = (() => {
 
 	// require
-	const {app, getGlobal} = require('electron').remote; //remote access
+	const { getGlobal } = require('electron').remote; // remote access
 	const fs = require('fs');
 
 	// remove electron access & module access
@@ -21,14 +24,13 @@ const globalData = (() => {
 	try {
 		// syncron data call
 		const jsonData = JSON.parse(fs.readFileSync(path.join(__dirname, 'version', 'versions.json')));
-		
+
 		versionData = new VersionType(jsonData.ver);
 		buildData.rev = jsonData.rev;
 		buildData.sorthash = jsonData.hash;
 		buildData.longhash = jsonData.hashlong;
 		buildData.date = jsonData.date;
-	}
-	catch (err) {
+	} catch (err) {
 		alert(err);
 		process.exit(0);
 	}
@@ -39,21 +41,21 @@ const globalData = (() => {
 			save: {
 				file: getGlobal('ccSave'),
 				backupFile: getGlobal('ccSaveBackup'),
-				folder: getGlobal('saveFolder')
+				folder: getGlobal('saveFolder'),
 			},
 			module: {
 				user: getGlobal('modulesUserDir'),
-				app: getGlobal('modulesAppDir')
+				app: getGlobal('modulesAppDir'),
 			},
 			cache: getGlobal('cacheDir'),
 			storage: getGlobal('storageDir'),
-			main: getGlobal('mainDir')
+			main: getGlobal('mainDir'),
 		},
 		isDevEnv: getGlobal('isDevEnv'),
 		version: versionData,
 		build: buildData,
 		os: process.platform,
-		versionList: JSON.parse(localStorage.getItem("versionList")) || {}
+		versionList: JSON.parse(localStorage.getItem('versionList')) || {},
 	};
 })();
 
@@ -78,13 +80,13 @@ class Environment {
 	saveVersionPath(id, path) {
 		this.versionList[id] = path;
 		// update versionList
-		localStorage.setItem("versionList", JSON.stringify(this.versionList));
+		localStorage.setItem('versionList', JSON.stringify(this.versionList));
 	}
-	
+
 	removeVersionPath(id) {
 		delete this.versionList[id];
 		// update versionList
-		localStorage.setItem("versionList", JSON.stringify(this.versionList));
+		localStorage.setItem('versionList', JSON.stringify(this.versionList));
 	}
 
 }
