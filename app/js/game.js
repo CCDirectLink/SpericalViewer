@@ -129,7 +129,7 @@ function GameData() {
  	 * @param {string} version Version hash
  	 */
 	this.start = function(version){
-		exec(globals.gameData.versions[version].path.main + '../crosscode-beta.exe'); // TODO: Make platform-independant
+		exec('"'+ globals.gameData.versions[version].path.main + '../crosscode-beta.exe"'); //TODO: Make platform-independant
 	};
 
 	/**
@@ -144,7 +144,8 @@ function GameData() {
 			if (!filter || !property || filter === property)
 				observers[observer].call(game, property, value);
 
-			if (filter.constructor === Array){
+
+      if (filter.constructor === Array){
 				for (var i in filter){
 					if (filter[i] === property){
 						observers[observer].call(game, property, value);
