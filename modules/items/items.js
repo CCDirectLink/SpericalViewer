@@ -1,5 +1,4 @@
-/* eslint-env node, browser */
-/* global globals, $ */
+/* global globals, $, Version */
 'use strict';
 
 function Items() {
@@ -78,7 +77,6 @@ function Items() {
 	};
 
 	function _getTable(version, filter) {
-		var version = globals.gameData.getVersions()[0];
 		var tableString =
 			'<tr><th>' +
 			langEntries.content['items.id'] +
@@ -87,6 +85,10 @@ function Items() {
 			'</th><th>' +
 			langEntries.content['items.stats'] +
 			'</th></tr>';
+
+		if (!version) {
+			version = globals.gameData.getVersions()[0];
+		}
 
 		if (!globals.gameData.hasGame(version)) return tableString;
 

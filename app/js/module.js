@@ -1,4 +1,3 @@
-/* eslint-env node */
 /* global fs, path, unzip, $ */
 'use strict';
 
@@ -381,4 +380,11 @@ function Module(initLang, langFile) {
 	}
 
 	initialize(initLang, langFile);
+}
+
+// Node Export
+if (module) {
+	module.exports = {
+		Module: Module,
+	};
 }

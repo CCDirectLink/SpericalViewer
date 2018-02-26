@@ -1,4 +1,3 @@
-/* eslint-env node */
 /* global path, VersionType, alert, localStorage */
 'use strict';
 
@@ -14,7 +13,9 @@ const globalData = (() => {
 
 	// remove electron access & module access
 	if (typeof require !== 'undefined') {
+		/* eslint-disable */
 		require = undefined;
+		/* eslint-enable */
 	}
 
 	var versionData = null;
@@ -84,8 +85,15 @@ class Environment {
 	}
 
 	removeVersionPath(id) {
-		delete this.versionList[id];
+		this.versionList[id] = undefined;
 		// update versionList
 		localStorage.setItem('versionList', JSON.stringify(this.versionList));
 	}
+}
+
+// Node Export
+if (module) {
+	module.exports = {
+		Environment: Environment,
+	};
 }

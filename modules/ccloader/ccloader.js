@@ -1,4 +1,3 @@
-/* eslint-env browser */
 /* global globals, https, fs, unzip, $ */
 'use strict';
 

@@ -1,4 +1,3 @@
-/* eslint-env node */
 /* global $ */
 'use strict';
 
@@ -186,4 +185,11 @@ function Menu(element, entryContainer, callback) {
 	}
 
 	initialize.call(this);
+}
+
+// Node Export
+if (module) {
+	module.exports = {
+		Menu: Menu,
+	};
 }

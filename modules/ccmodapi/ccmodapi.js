@@ -1,5 +1,5 @@
-/* eslint-env browser */
-/* global globals, https, fs, unzip, path, $ */
+/* global globals, https, fs, unzip, path, $, Version */
+/* exported installMod */
 'use strict';
 
 function CCModDB() {
@@ -126,7 +126,7 @@ function CCModDB() {
 
 	function _normalizePath(absPath) {
 		if (!absPath)
-			throw 'absolute path not specified';
+			throw new Error('absolute path not specified');
 		if (path.sep === '\\') {
 			return absPath.replace(/[\\]/g, path.sep.repeat(2));
 		}
@@ -137,7 +137,7 @@ function CCModDB() {
 		if (!sep) sep = path.sep;
 		if (!version) version = instance.versiondata.selectedVersion ||
 			globals.gameData.getVersions()[0];
-		if (!keyword) throw 'keyword not specified';
+		if (!keyword) throw new Error('keyword not specified');
 		var newPath;
 		if (keyword === 'root') // we want the folder where nw.exe is located
 			newPath = path.join(

@@ -1,4 +1,3 @@
-/* eslint-env node */
 /* global versions, exec, globals */
 'use strict';
 
@@ -108,12 +107,12 @@ function GameData() {
 
 		if (!property) {
 			length -= 1;
-			delete this.versions[version];
+			this.versions[version] = undefined;
 		} else {
-			delete this.versions[version][property];
+			this.versions[version][property] = undefined;
 			if (Object.keys(versions[version]).length === 0) {
 				length -= 1;
-				delete this.versions[version];
+				this.versions[version] = undefined;
 			}
 		}
 
@@ -166,4 +165,11 @@ function GameData() {
 			}
 		}
 	}
+}
+
+// Node Export
+if (module) {
+	module.exports = {
+		GameData: GameData,
+	};
 }

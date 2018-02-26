@@ -1,4 +1,3 @@
-/* eslint-env node */
 /* global path, fs, FileList, File, globals, $, crypto, MAIN_PATH, unzip */
 'use strict';
 
@@ -422,4 +421,11 @@ function Loader() {
 				}
 			});
 	}
+}
+
+// Node Export
+if (module) {
+	module.exports = {
+		Loader: Loader,
+	};
 }

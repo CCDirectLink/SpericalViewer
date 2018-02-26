@@ -1,4 +1,3 @@
-/* eslint-env node */
 /* global globals */
 'use strict';
 
@@ -23,5 +22,12 @@ function Version() {
 		}
 
 		return option;
+	};
+}
+
+// Node Export
+if (module) {
+	module.exports = {
+		Version: Version,
 	};
 }

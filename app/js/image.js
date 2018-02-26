@@ -1,4 +1,3 @@
-/* eslint-env node */
 /* global path, globals, lwip */
 'use strict';
 
@@ -36,6 +35,7 @@ function ImageDatabase() {
 								if (err) {
 									throw err;
 								}
+
 								finishedImage.toBuffer(
 									type,
 									{
@@ -47,6 +47,7 @@ function ImageDatabase() {
 										if (err) {
 											throw err;
 										}
+
 										globals.imageData.saveImage(
 											version,
 											name,
@@ -69,6 +70,7 @@ function ImageDatabase() {
 								if (err) {
 									throw err;
 								}
+
 								finishedImage.toBuffer(
 									type,
 									{
@@ -80,6 +82,7 @@ function ImageDatabase() {
 										if (err) {
 											throw err;
 										}
+
 										globals.imageData.saveImage(
 											version,
 											name,
@@ -102,6 +105,7 @@ function ImageDatabase() {
 						if (err) {
 							throw err;
 						}
+
 						cropedImage.resize(
 							width * scaleValue,
 							heigth * scaleValue,
@@ -110,6 +114,7 @@ function ImageDatabase() {
 								if (err) {
 									throw err;
 								}
+
 								finishedImage.toBuffer(
 									type,
 									{
@@ -121,6 +126,7 @@ function ImageDatabase() {
 										if (err) {
 											throw err;
 										}
+
 										globals.imageData.saveImage(
 											version,
 											name,
@@ -159,9 +165,9 @@ function ImageDatabase() {
 		}
 
 		if (!tileName) {
-			delete imageDatabase[version][name];
+			imageDatabase[version][name] = undefined;
 		} else {
-			delete imageDatabase[version][name][tileName];
+			imageDatabase[version][name][tileName] = undefined;
 		}
 
 		_callObservers(name, tileName);
@@ -208,4 +214,11 @@ function ImageDatabase() {
 			}
 		}
 	}
+}
+
+// Node Export
+if (module) {
+	module.exports = {
+		ImageDatabase: ImageDatabase,
+	};
 }

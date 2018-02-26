@@ -1,4 +1,3 @@
-/* eslint-env node */
 /* global globals  */
 'use strict';
 
@@ -10,4 +9,12 @@ function drop(ev) {
 	ev.preventDefault();
 
 	globals.loader.load(ev.dataTransfer.files);
+}
+
+// Node Export
+if (module) {
+	module.exports = {
+		allowDrop: allowDrop,
+		drop: drop,
+	};
 }

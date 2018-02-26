@@ -1,4 +1,3 @@
-/* eslint-env node */
 /* global globals, path, $ */
 'use strict';
 
