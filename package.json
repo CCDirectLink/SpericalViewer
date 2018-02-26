@@ -19,7 +19,7 @@
     "genVersion": "node genVersion.js",
     "dist": "build",
     "dist:all": "build --mac --win --linux",
-    "travis": "./node_modules/.bin/mocha --recursive unitTest",
+    "unitonly": "mocha --recursive unitTest",
     "lintfix": "eslint --fix ."
   },
   "build": {
