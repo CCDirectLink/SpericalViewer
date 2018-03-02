@@ -236,7 +236,16 @@ function CCModDB() {
 				continue;
 			}
 			var link = instance.moddata.mods[i].archive_link;
-			var dir = instance.moddata.mods[i].dir || '';
+			var dir = instance.moddata.mods[i].dir || {};
+			if (dir[process.platform]) {
+				dir = dir[process.platform];
+			}
+			else if (dir['any']) {
+				dir = dir['any'];
+			}
+			else {
+				dir = '';
+			}
 			tableString += '<tr><td>' +
 				instance.moddata.mods[i].name + ' (' + i + ')</td>';
 			tableString += '<td>' +
