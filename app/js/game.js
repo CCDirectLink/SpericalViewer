@@ -107,12 +107,12 @@ function GameData() {
 
 		if (!property) {
 			length -= 1;
-			this.versions[version] = undefined;
+			delete this.versions[version];
 		} else {
-			this.versions[version][property] = undefined;
+			delete this.versions[version][property];
 			if (Object.keys(versions[version]).length === 0) {
 				length -= 1;
-				this.versions[version] = undefined;
+				delete this.versions[version];
 			}
 		}
 

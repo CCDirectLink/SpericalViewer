@@ -85,7 +85,7 @@ class Environment {
 	}
 
 	removeVersionPath(id) {
-		this.versionList[id] = undefined;
+		delete this.versionList[id];
 		// update versionList
 		localStorage.setItem('versionList', JSON.stringify(this.versionList));
 	}

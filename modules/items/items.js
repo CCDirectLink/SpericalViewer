@@ -71,7 +71,7 @@ function Items() {
 		var imgs = document.getElementsByClassName(
 			itemData.selectedVersion + ' ' + name + ' ' + tileName
 		);
-		for (var i in imgs) {
+		for (var i = 0; i < imgs.length; ++i) {
 			imgs[i].src = image;
 		}
 	};
