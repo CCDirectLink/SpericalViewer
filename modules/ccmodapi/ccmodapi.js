@@ -1,4 +1,4 @@
-/* global globals, https, fs, unzip, path, $, Version */
+/* global globals, https, fs, unzip, path, $, Version, process */
 /* exported installMod */
 'use strict';
 
@@ -239,11 +239,9 @@ function CCModDB() {
 			var dir = instance.moddata.mods[i].dir || {};
 			if (dir[process.platform]) {
 				dir = dir[process.platform];
-			}
-			else if (dir['any']) {
+			} else if (dir['any']) {
 				dir = dir['any'];
-			}
-			else {
+			} else {
 				dir = '';
 			}
 			tableString += '<tr><td>' +
