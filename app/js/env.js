@@ -19,19 +19,14 @@ const globalData = (() => {
 	}
 
 	var versionData = null;
-	var buildData = {};
 
 	try {
 		// syncron data call
-		const jsonData = JSON.parse(
-			fs.readFileSync(path.join(__dirname, 'version', 'versions.json'))
+		const jsonPackageData = JSON.parse(
+			fs.readFileSync(path.join(__dirname, '..', 'package.json'))
 		);
 
-		versionData = new VersionType(jsonData.ver);
-		buildData.rev = jsonData.rev;
-		buildData.sorthash = jsonData.hash;
-		buildData.longhash = jsonData.hashlong;
-		buildData.date = jsonData.date;
+		versionData = new VersionType(jsonPackageData.version);
 	} catch (err) {
 		alert(err);
 		process.exit(0);
@@ -55,7 +50,6 @@ const globalData = (() => {
 		},
 		isDevEnv: getGlobal('isDevEnv'),
 		version: versionData,
-		build: buildData,
 		os: process.platform,
 		versionList: JSON.parse(localStorage.getItem('versionList')) || {},
 	};

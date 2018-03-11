@@ -50,9 +50,7 @@ function Status() {
 		// init programm data
 		$('h1').html(globals.env.name);
 		$('#version').html(globals.env.version.string);
-
-		$('#rev').html(globals.env.build.rev);
-		$('#year').html(globals.env.build.date.year);
+		$('#year').html((new Date()).getFullYear());
 
 		// init table
 		$('#loadedGame').html('<table>' + _getTable() + '</table>');
