@@ -1,11 +1,10 @@
-/* eslint-env node, mocha */
 'use strict';
 
 // call with mocha
 // require chai
 
 const { expect } = require('chai');
-const { VersionType } = require('./../app/js/base/versionType.js');
+const { VersionType } = require('./../../app/js/base/versionType.js');
 
 describe('VersionType', () => {
 	const v1 = new VersionType('v1.2.3');
