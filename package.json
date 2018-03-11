@@ -1,54 +1,57 @@
 {
-  "name": "SpericalViewer",
-  "version": "0.3.4",
-  "description": "Viewer for CrossCode content",
-  "repository": "git@github.com:CCDirectLink/SpericalViewer.git",
-  "main": "app/main.js",
-  "author": "CCDirectLink",
-  "license": "MIT",
-  "scripts": {
-    "pretest": "eslint .",
-    "test": "mocha --recursive unitTest",
-    "postinstall": "node postinstall.js",
-    "start": "electron .",
-    "pack": "build --dir",
-    "pack:all": "build --dir --mac --win --linux",
-    "pack:mac": "build --dir --mac",
-    "pack:win": "build --dir --win",
-    "pack:linux": "build --dir --linux",
-    "genVersion": "node genVersion.js",
-    "dist": "build",
-    "dist:all": "build --mac --win --linux",
-    "unitonly": "mocha --recursive unitTest",
-    "lintfix": "eslint --fix ."
-  },
-  "build": {
-    "appId": "com.electron.ccdirectlink.sperical-viewer",
-    "productName": "SpericalViewer",
-    "mac": {
-      "category": "service"
-    },
-    "dmg": {
-      "title": "SpericalViewer ${version}"
-    },
-    "win": {
-      "target": "portable"
-    }
-  },
-  "devDependencies": {
-    "chai": "^4.1.2",
-    "electron": "1.6.16",
-    "electron-builder": "^20.2.0",
-    "electron-packager": "^11.0.1",
-    "electron-rebuild": "^1.7.3",
-    "eslint": "^4.18.1",
-    "eslint-config-strongloop": "^2.1.0",
-    "eslint-plugin-es-beautifier": "^1.0.1",
-    "mocha": "^5.0.1"
-  },
-  "dependencies": {
-    "async": "^2.6.0",
-    "imagejs": "0.0.9",
-    "unzip": "^0.1.11"
-  }
+	"name": "SpericalViewer",
+	"version": "0.3.6",
+	"description": "Viewer for CrossCode content",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/CCDirectLink/SpericalViewer.git"
+	},
+	"main": "app/main.js",
+	"author": "CCDirectLink",
+	"license": "MIT",
+	"scripts": {
+		"pretest": "eslint .",
+		"unit": "mocha --recursive scripts/tests",
+		"test": "mocha --recursive scripts/tests",
+		"postinstall": "node scripts/setup/postinstall.js init",
+		"start": "electron .",
+		"pack": "build --dir",
+		"pack:all": "build --dir --mac --win --linux",
+		"pack:mac": "build --dir --mac",
+		"pack:win": "build --dir --win",
+		"pack:linux": "build --dir --linux",
+		"dist": "build",
+		"dist:all": "build --mac --win --linux",
+		"lint": "eslint --fix .",
+		"lint:fix": "eslint --fix ."
+	},
+	"build": {
+		"appId": "com.electron.ccdirectlink.sperical-viewer",
+		"productName": "SpericalViewer",
+		"mac": {
+			"category": "service"
+		},
+		"dmg": {
+			"title": "SpericalViewer ${version}"
+		},
+		"win": {
+			"target": "portable"
+		}
+	},
+	"devDependencies": {
+		"chai": "^4.1.2",
+		"electron": "1.6.16",
+		"electron-builder": "^20.2.0",
+		"electron-packager": "^11.0.1",
+		"electron-rebuild": "^1.7.3",
+		"eslint": "^4.18.1",
+		"eslint-config-strongloop": "^2.1.0",
+		"eslint-plugin-es-beautifier": "^1.0.1",
+		"mocha": "^5.0.1"
+	},
+	"dependencies": {
+		"async": "^2.6.0",
+		"imagejs": "0.0.9",
+		"unzip": "^0.1.11"
+	}
 }
