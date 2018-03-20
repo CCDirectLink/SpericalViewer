@@ -26,6 +26,8 @@ describe('VersionType', () => {
 		note: 'note',
 	});
 	const v11 = new VersionType({});
+	const v12 = new VersionType('invalid');
+	const v13 = new VersionType('1');
 
 	describe('.constructor(data)', () => {
 		it('data {string}: v1.2.3', () => {
@@ -114,6 +116,22 @@ describe('VersionType', () => {
 			expect(v11.patch).to.equal(0);
 			expect(v11.hotfix).to.equal(0);
 			expect(v11.note).to.equal('');
+		});
+
+		it('data {object}: invalid format', () => {
+			expect(v12.major).to.equal(0);
+			expect(v12.minor).to.equal(0);
+			expect(v12.patch).to.equal(0);
+			expect(v12.hotfix).to.equal(0);
+			expect(v12.note).to.equal('');
+		});
+
+		it('data {object}: partial', () => {
+			expect(v13.major).to.equal(1);
+			expect(v13.minor).to.equal(0);
+			expect(v13.patch).to.equal(0);
+			expect(v13.hotfix).to.equal(0);
+			expect(v13.note).to.equal('');
 		});
 
 		it('data (invalid)', () => {

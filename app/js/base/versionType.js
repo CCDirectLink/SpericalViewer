@@ -3,7 +3,7 @@
 /**
  * Version Regex
  */
-const VER_REGEX = /^(v)?(([0-9]+)\.([0-9]+)\.([0-9]+)(\-([0-9]+))?(( )(.+))?)/;
+const VER_REG = /^v?(([0-9]+)(\.([0-9]+))?(\.([0-9]+))?(\-([0-9]+))?( (.+))?)/;
 
 /**
  * Version Container
@@ -30,12 +30,22 @@ class VersionType {
 			this.note = data.note || '';
 		} else if (typeof data === 'string') {
 			// Version regex
-			const versionArray = VER_REGEX.exec(data);
+			const versionArray = VER_REG.exec(data);
 
-			this.major = Number(versionArray[3]) || 0;
+			if (!Array.isArray(versionArray)) {
+				this.major = 0;
+				this.minor = 0;
+				this.patch = 0;
+				this.hotfix = 0;
+
+				this.note = '';
+				return;
+			}
+
+			this.major = Number(versionArray[2]);
 			this.minor = Number(versionArray[4]) || 0;
-			this.patch = Number(versionArray[5]) || 0;
-			this.hotfix = Number(versionArray[7]) || 0;
+			this.patch = Number(versionArray[6]) || 0;
+			this.hotfix = Number(versionArray[8]) || 0;
 
 			this.note = versionArray[10] || '';
 		} else {
