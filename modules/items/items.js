@@ -149,8 +149,8 @@ function Items() {
 							"'item-entry-icon " +
 							(version + ' items defense') +
 							"' src='" + globals.imageData.getImage(
-								version, 'items', 'defense'
-							) + "'/> <span class=" +
+							version, 'items', 'defense'
+						) + "'/> <span class=" +
 							"'item-entry-text'>" + params.defense +
 							'</span>';
 					}
@@ -161,8 +161,8 @@ function Items() {
 							"'item-entry-icon " +
 							(version + ' items focus') +
 							"' src='" + globals.imageData.getImage(
-								version, 'items', 'focus'
-							) + "'/> <span class=" +
+							version, 'items', 'focus'
+						) + "'/> <span class=" +
 							"'item-entry-text'>" +
 							params.focus +
 							'</span>';
