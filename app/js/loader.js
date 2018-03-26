@@ -1,4 +1,4 @@
-/* global path, fs, FileList, File, globals, $, crypto, MAIN_PATH, unzip */
+/* global path, fs, FileList, File, globals, $, crypto, MAIN_PATH */
 'use strict';
 
 function Loader() {
@@ -340,6 +340,7 @@ function Loader() {
 		return false;
 	}
 
+	/*
 	function _getId(file) {
 		var id = crypto.createHash('sha256');
 		id.update(file);
@@ -348,6 +349,7 @@ function Loader() {
 		id = id.substr(0, 8);
 		return id;
 	}
+	*/
 
 	function _searchDirectory(folder, dropped, cb) {
 		var files = fs.readdirSync(folder);
@@ -381,6 +383,7 @@ function Loader() {
 	}
 
 	function _checkSignature(file) {
+		/*
 		var data = fs.readFileSync(file);
 		for (var i = 0; i < data.length - 34; ++i) {
 			// Signature
@@ -399,11 +402,13 @@ function Loader() {
 				return i;
 			}
 		}
+		*/
 
 		return -1;
 	}
 
 	function _unZip(file, start, callback) {
+		/*
 		var id = _getId(file);
 		var unzipPath = path.join(globals.env.path.storage, id) + path.sep;
 		fs
@@ -420,6 +425,7 @@ function Loader() {
 					callback(unzipPath, file, id);
 				}
 			});
+		*/
 	}
 }
 
