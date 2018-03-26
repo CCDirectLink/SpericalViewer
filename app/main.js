@@ -1,12 +1,6 @@
 /* global alert */
 'use strict';
 
-// const crypto = require('crypto');
-// const stream = require('stream');
-// const util = require('util');
-// const unzip = require('unzip');
-// const lwip = require('./lib/lwip.js');
-
 const path = require('path');
 const fs = require('fs');
 
