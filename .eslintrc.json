@@ -9,6 +9,8 @@
 	},
 	"rules": {
 		"indent": [2, "tab"],
-		"max-len": ["error", {"tabWidth": 4}]
+		"no-var": 2,
+		"max-len": [2, {"tabWidth": 4}],
+		"getter-return": 2
 	}
 }
