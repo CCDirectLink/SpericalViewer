@@ -26,35 +26,36 @@ function _checkAbsolute(path) {
 
 function _setSettingsDir(entry, local, defaultPath) {
 	try {
-		var jsonData = JSON.parse(
+		const jsonData = JSON.parse(
 			fs.readFileSync(path.join(local, 'settings.json'))
 		);
-	} catch (err) {
-		return defaultPath;
-	}
 
-	if (
-		jsonData[process.platform] &&
+		if (
+			jsonData[process.platform] &&
 		jsonData[process.platform][entry] &&
 		typeof jsonData[process.platform][entry] === 'string'
-	) {
-		if (_checkAbsolute(jsonData[process.platform][entry])) {
-			if (
-				(process.platform === 'darwin' ||
+		) {
+			if (_checkAbsolute(jsonData[process.platform][entry])) {
+				if (
+					(process.platform === 'darwin' ||
 				process.platform === 'linux') &&
 				jsonData[process.platform][entry].substr(0, 1) === '~'
-			) {
-				return path.join(
-					process.env.HOME,
-					jsonData[process.platform][entry].substr(1)
-				);
+				) {
+					return path.join(
+						process.env.HOME,
+						jsonData[process.platform][entry].substr(1)
+					);
+				} else {
+					return jsonData[process.platform][entry];
+				}
 			} else {
-				return jsonData[process.platform][entry];
+				return path.join(local, jsonData[process.platform][entry]);
 			}
 		} else {
-			return path.join(local, jsonData[process.platform][entry]);
+			return defaultPath;
 		}
-	} else {
+
+	} catch (err) {
 		return defaultPath;
 	}
 }

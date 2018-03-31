@@ -5,7 +5,7 @@ function Image() {
   this.bitmap = new ImageJS.Bitmap();
 }
 Image.prototype.resize = function(width, height, _, cb) {
-  var img = new Image();
+  let img = new Image();
   img.bitmap = this.bitmap.resize({
     width: width,
     height: height,
@@ -14,7 +14,7 @@ Image.prototype.resize = function(width, height, _, cb) {
   cb(null, img);
 };
 Image.prototype.crop = function(x, y, x2, y2, cb) {
-  var img = new Image();
+  let img = new Image();
   img.bitmap = this.bitmap.crop({
     top: y,
     left: x,
@@ -26,7 +26,7 @@ Image.prototype.crop = function(x, y, x2, y2, cb) {
 Image.prototype.width = () => this.bitmap.width();
 Image.prototype.height = () => this.bitmap.height();
 Image.prototype.toBuffer = function(_, __, cb) {
-  var converter = new Stream.Writable();
+  let converter = new Stream.Writable();
   converter.data = [];
   converter._write = function(chunk, _, cb) {
     this.data.push(chunk);
@@ -41,7 +41,7 @@ Image.prototype.toBuffer = function(_, __, cb) {
 };
 module.exports = {
   open: function(path, _, callback) {
-    var img = new Image();
+    let img = new Image();
     img.bitmap
       .readFile(path)
       .then(() => callback(null, img), e => callback(e, null));

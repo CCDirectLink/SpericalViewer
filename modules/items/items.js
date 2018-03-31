@@ -2,9 +2,9 @@
 'use strict';
 
 function Items() {
-	var instance = this;
+	let instance = this;
 
-	var itemData = {
+	let itemData = {
 		selectedVersion: globals.gameData.getVersions()[0],
 		version: new Version(),
 		observer: globals.imageData.registerObserver(
@@ -17,7 +17,7 @@ function Items() {
 		}, 'version'),
 	};
 
-	var langEntries = globals.module.getLangData();
+	let langEntries = globals.module.getLangData();
 
 	globals.module.on('langChanged', function(id, subId, data) {
 		langEntries = data;
@@ -68,16 +68,16 @@ function Items() {
 	};
 
 	this.updateIcon = function(name, tileName, image) {
-		var imgs = document.getElementsByClassName(
+		let imgs = document.getElementsByClassName(
 			itemData.selectedVersion + ' ' + name + ' ' + tileName
 		);
-		for (var i = 0; i < imgs.length; ++i) {
+		for (let i = 0; i < imgs.length; ++i) {
 			imgs[i].src = image;
 		}
 	};
 
 	function _getTable(version, filter) {
-		var tableString =
+		let tableString =
 			'<tr><th>' +
 			langEntries.content['items.id'] +
 			'</th><th>' +
@@ -92,10 +92,10 @@ function Items() {
 
 		if (!globals.gameData.hasGame(version)) return tableString;
 
-		var items = globals.gameData.versions[version].items;
+		let items = globals.gameData.versions[version].items;
 
-		for (var i in items) {
-			var item = items[i];
+		for (let i in items) {
+			let item = items[i];
 
 			if (item.name.en_US.toLowerCase()
 				.indexOf(filter.toLowerCase()) !== -1) {
@@ -115,8 +115,8 @@ function Items() {
 					item.name.en_US + '</td><td>';
 
 				if (item.params !== undefined) {
-					var first = true;
-					var params = item.params;
+					let first = true;
+					let params = item.params;
 
 					if (params.hp !== undefined) {
 						tableString += '<img class="' +

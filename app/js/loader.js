@@ -3,8 +3,8 @@
 
 function Loader() {
 	this.loadSaved = function() {
-		var versions = globals.env.versionList;
-		for (var version in versions) {
+		let versions = globals.env.versionList;
+		for (let version in versions) {
 			_findFile(versions[version], _extractData);
 		}
 	};
@@ -15,7 +15,7 @@ function Loader() {
 		}
 
 		if (file.constructor === FileList) {
-			for (var i = 0; i < file.length; i++) {
+			for (let i = 0; i < file.length; i++) {
 				this.load(file[i]);
 			}
 			return;
@@ -29,7 +29,7 @@ function Loader() {
 	};
 
 	function _extractData(file, dropped, id) {
-		var folder = file;
+		let folder = file;
 
 		_extractChangelog(folder, dropped, id, function(data) {
 			if (data.containerId) {
@@ -88,7 +88,7 @@ function Loader() {
 				}); // fail if old version
 
 			// "/media/font/icons-items.png"
-			var iconSpecify = [
+			let iconSpecify = [
 				'undef',
 				'item-helm',
 				'item-sword',
@@ -98,7 +98,7 @@ function Loader() {
 				'item-key',
 				'item-trade',
 			];
-			var iconSet = {
+			let iconSet = {
 				dimension: {
 					width: 14,
 					height: 16,
@@ -109,17 +109,21 @@ function Loader() {
 				row: 5,
 			};
 
-			for (var rowIndex = 0; rowIndex < iconSet.row; rowIndex++) {
+			let columnIndex = 0;
+			let startX = 0;
+			let startY = 0;
 
-				for (var columnIndex = 0;
+			for (let rowIndex = 0; rowIndex < iconSet.row; rowIndex++) {
+
+				for (columnIndex = 0;
 					columnIndex < iconSet.column;
 					columnIndex++) {
 
-					var startX =
+					startX =
 						columnIndex *
 						(iconSet.dimension.width + iconSet.dimension.xpad);
 
-					var startY =
+					startY =
 						rowIndex *
 						(iconSet.dimension.height + iconSet.dimension.ypad);
 
@@ -223,17 +227,17 @@ function Loader() {
 			folder = folder.slice(0, -16);
 			_nwjsExec(folder, exec);
 		} else if (_isDirectory(folder)) {
-			var files = fs.readdirSync(folder);
+			let files = fs.readdirSync(folder);
 
-			for (var i in files) {
-				var file = fs.realpathSync(path.join(folder, files[i]));
+			for (let i in files) {
+				let file = fs.realpathSync(path.join(folder, files[i]));
 				_searchExec(file, exec); // Recursive search
 			}
 		}
 	}
 
 	function _extractChangelog(folder, dropped, id, cb) {
-		var pathList = {
+		let pathList = {
 			main: folder,
 			data: path.join(folder, 'data') + path.sep,
 			page: path.join(folder, 'game', 'page') + path.sep,
@@ -250,21 +254,21 @@ function Loader() {
 
 		_searchExec(dropped, pathList.exec);
 
-		var gameId = crypto.createHash('sha256');
+		let gameId = crypto.createHash('sha256');
 		gameId.update(pathList.main);
 
-		var gameIdHex = gameId.digest('hex');
-		var shortIdHex = gameIdHex.substr(0, 8);
+		let gameIdHex = gameId.digest('hex');
+		let shortIdHex = gameIdHex.substr(0, 8);
 
 		$.getJSON(pathList.data + 'changelog.json')
 			.done(function(data) {
-				var versionArray = data.changelog[0].version.split('.');
-				var versionString = data.changelog[0].version;
-				var hotfixNumber = 0;
+				let versionArray = data.changelog[0].version.split('.');
+				let versionString = data.changelog[0].version;
+				let hotfixNumber = 0;
 
 				if (Array.isArray(data.changelog[0].fixes)) {
-					var searchPattern = /HOTFIX\(([0-9]+)\)/i;
-					var patternResult = searchPattern.exec(
+					let searchPattern = /HOTFIX\(([0-9]+)\)/i;
+					let patternResult = searchPattern.exec(
 						data.changelog[0]
 							.fixes[data.changelog[0].fixes.length - 1]
 					);
@@ -275,7 +279,7 @@ function Loader() {
 					}
 				}
 
-				var callbackData = {
+				let callbackData = {
 					changelog: data.changelog,
 					containerId: id,
 					gameId: gameIdHex,
@@ -309,7 +313,7 @@ function Loader() {
 			return _searchDirectory(file, file, cb);
 		}
 
-		var start = _getZip(file);
+		let start = _getZip(file);
 		if (start < 0) {
 			return _searchDirectory(path.dirname(file), file, cb);
 		}
@@ -352,10 +356,10 @@ function Loader() {
 	*/
 
 	function _searchDirectory(folder, dropped, cb) {
-		var files = fs.readdirSync(folder);
+		let files = fs.readdirSync(folder);
 
-		for (var i in files) {
-			var file = fs.realpathSync(path.join(folder, files[i]));
+		for (let i in files) {
+			let file = fs.realpathSync(path.join(folder, files[i]));
 			if (_isCCMain(file)) {
 				// Check if data folder
 				file = file.slice(0, -16);

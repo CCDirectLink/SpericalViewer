@@ -3,6 +3,7 @@
 // call with mocha
 // require chai
 
+const { describe, it } = require('mocha');
 const { expect } = require('chai');
 const { VersionType } = require('./../../app/js/base/versionType.js');
 

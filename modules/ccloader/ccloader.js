@@ -7,7 +7,7 @@ function CCLoader() {
 
 	// var location = {};
 
-	var langEntries = globals.module.getLangData();
+	let langEntries = globals.module.getLangData();
 
 	this.initialize = function() {
 		globals.gameData.registerObserver(function() {
@@ -35,8 +35,8 @@ function CCLoader() {
 		$('h2').html(langEntries.content['ccloader.downloading']);
 
 		// Might have to be changed to be platform-independant
-		var filename = 'ccloader.zip';
-		var file = fs.createWriteStream(filename);
+		let filename = 'ccloader.zip';
+		let file = fs.createWriteStream(filename);
 		file.on('error', err => {
 			throw err;
 		});
@@ -100,7 +100,7 @@ function CCLoader() {
 	}
 
 	function _getTable() {
-		var tableString =
+		let tableString =
 			'<table><tr><th>' +
 			langEntries.content['ccloader.id'] +
 			'</th><th>' +
@@ -111,8 +111,8 @@ function CCLoader() {
 			langEntries.content['ccloader.start'] +
 			'</th></tr>';
 
-		for (var id in globals.gameData.versions) {
-			var game = globals.gameData.versions[id];
+		for (let id in globals.gameData.versions) {
+			let game = globals.gameData.versions[id];
 			tableString +=
 				'<tr><td>' + id +
 				'</td><td>' + game.version.string +

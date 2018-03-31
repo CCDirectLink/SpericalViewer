@@ -10,7 +10,7 @@
 		<td id="themeTitle">
 		</td>
 		<td>
-			<select id="theme" size="1">
+			<select id="theme" size="1" title="styleTheme">
 				<option value="1" selected>Dark</option>
 			</select>
 		</td>
@@ -19,7 +19,9 @@
 		<td id="langTitle">
 		</td>
 		<td>
-			<select id="lang" id="langList" size="1" onchange="globals.module.sharedMemory['settings']['controller'].langTrigger()"></select>
+			<select id="lang" class="langList" size="1"
+					title="language"
+					onchange="globals.module.sharedMemory['settings']['controller'].langTrigger()"></select>
 		</td>
 	</tr>
 	<tr>

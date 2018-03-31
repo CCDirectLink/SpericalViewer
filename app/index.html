@@ -60,14 +60,14 @@
 
     		$(function() {
     			$("title").html(globals.env.name);
-                $("<div/>").attr('id','title').html(globals.env.name).appendTo('.titlebar');
+                $("<div>").attr('id','title').html(globals.env.name).appendTo('.titlebar');
 
-                if (process.platform == "win32") {
-                    $("<div/>").attr('id','titleButtons').html("").appendTo('.titlebar');
+                if (process.platform === "win32") {
+                    $("<div>").attr('id','titleButtons').html("").appendTo('.titlebar');
                 }
 
                 // external modules
-				var modules = globals.module.findModules([
+				let modules = globals.module.findModules([
                     globals.env.path.module.user,
                     globals.env.path.module.app
                     ]);

@@ -11,8 +11,8 @@ function GameData() {
 	 */
 	this.versions = {};
 
-	var length = 0;
-	var observers = [];
+	let length = 0;
+	let observers = [];
 
 	/**
 	 * GameData length
@@ -44,10 +44,8 @@ function GameData() {
 			return false;
 		}
 
-		if (!this.versions[version]) {
-			return false;
-		}
-		return true;
+		return this.versions[version];
+
 	};
 
 	/**
@@ -60,7 +58,8 @@ function GameData() {
 
 	/**
 	 * Register observer
-	 * @param {function(game, property, value)} callback Function callback
+	 * @param {function} callback Function callback
+	 * @param property Property
 	 */
 	this.registerObserver = function(callback, property) {
 		observers.push({
@@ -86,7 +85,7 @@ function GameData() {
 			this.versions[version] = {};
 		}
 
-		var game = this.versions[version];
+		let game = this.versions[version];
 		game[property] = value;
 
 		_callObservers(game, property, value);
@@ -149,14 +148,14 @@ function GameData() {
 	 * @param value New Value (false / null if deleted)
 	 */
 	function _callObservers(game, property, value) {
-		for (var observer in observers) {
-			var filter = observers[observer].property;
+		for (let observer in observers) {
+			let filter = observers[observer].property;
 			if (!filter || !property || filter === property) {
 				observers[observer].call(game, property, value);
 			}
 
 			if (filter.constructor === Array){
-				for (var i in filter){
+				for (let i in filter){
 					if (filter[i] === property){
 						observers[observer].call(game, property, value);
 						break;

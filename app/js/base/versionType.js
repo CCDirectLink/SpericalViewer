@@ -3,7 +3,7 @@
 /**
  * Version Regex
  */
-const VER_REG = /^v?(([0-9]+)(\.([0-9]+))?(\.([0-9]+))?(\-([0-9]+))?( (.+))?)/;
+const VER_REG = /^v?(([0-9]+)(\.([0-9]+))?(\.([0-9]+))?(-([0-9]+))?( (.+))?)/;
 
 /**
  * Version Container
@@ -79,10 +79,10 @@ class VersionType {
 	 * Numeric version
 	 * Can be used to compare versions
 	 *
-	 * major [infinite digits]
-	 * minor [4 digits]
-	 * patch [4 digits]
-	 * hotfix [2 digits]
+	 * - major [infinite digits]
+	 * - minor [4 digits]
+	 * - patch [4 digits]
+	 * - hotfix [2 digits]
 	 * @type {number}
 	 */
 	get numeric() {

@@ -2,9 +2,9 @@
 'use strict';
 
 function Menu(element, entryContainer, callback) {
-	var currentId = -1;
-	var entrys = [];
-	var position = [];
+	let currentId = -1;
+	let entrys = [];
+	let position = [];
 
 	function initialize() {
 		if (!element) {
@@ -21,7 +21,7 @@ function Menu(element, entryContainer, callback) {
 
 	// pos: <0 or >length = last
 	this.add = function(name, func, siteUrl, enableState, pos = null) {
-		var id = entrys.length;
+		let id = entrys.length;
 		entrys.push({
 			function: func,
 			name: name,
@@ -131,8 +131,8 @@ function Menu(element, entryContainer, callback) {
 
 	this.updateAll = function() {
 		$(this.menuElement).empty();
-		for (var entry in position) {
-			var className = 'menuentry';
+		for (let entry in position) {
+			let className = 'menuentry';
 			if (position[entry].id === currentId) {
 				className = 'menuentrySelected';
 			}
@@ -159,7 +159,7 @@ function Menu(element, entryContainer, callback) {
 			$('.menuentry a#' + currentId).length &&
 			entrys.length > id
 		) {
-			var entryName = entrys[id].name;
+			let entryName = entrys[id].name;
 			if (entrys[id].name == null) {
 				entryName = 'Entry(' + id + ')';
 			}

@@ -1,6 +1,6 @@
 'use strict';
 
-var runInit = false;
+let runInit = false;
 
 process.argv.forEach((val, index) => {
 	if (val === 'init') {

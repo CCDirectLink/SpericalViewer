@@ -8,14 +8,14 @@ function CCModDB() {
 		selectedVersion: undefined,
 		version: new Version(),
 	};
-	var instance = this;
+	let instance = this;
 
-	var callbacks = {
+	let callbacks = {
 		dataInit: [],
 		dataUpdated: [],
 	};
 
-	var langEntries = globals.module.getLangData();
+	let langEntries = globals.module.getLangData();
 
 	globals.module.on('langChanged', function(id, subId, data) {
 		langEntries = data;
@@ -34,7 +34,7 @@ function CCModDB() {
 
 		https
 			.get(modReq, res => {
-				var data = '';
+				let data = '';
 
 				res.on('data', function(part) {
 					data += part;
@@ -92,9 +92,9 @@ function CCModDB() {
 
 		console.log('Downloading...');
 		console.debug('Dir', dirType);
-		var installCode = function(aPath) {
+		let installCode = function(aPath) {
 			console.log('Installing...');
-			var outputPath = _dirToExactPath(dirType || 'mod');
+			let outputPath = _dirToExactPath(dirType || 'mod');
 			console.debug('OutputPath:', outputPath);
 			_install(aPath, outputPath, function() {
 				console.log('Done!');
@@ -104,19 +104,19 @@ function CCModDB() {
 	};
 
 	function _archiveToDirectLink(url) {
-		var baseUrl = 'https://codeload.github.com/';
-		var strippedUrl = url.replace('https://github.com/', '');
+		let baseUrl = 'https://codeload.github.com/';
+		let strippedUrl = url.replace('https://github.com/', '');
 
 		baseUrl += strippedUrl.substring(
 			0,
 			strippedUrl.indexOf('/archive/') + 1
 		);
 
-		var fileName = strippedUrl.substring(
+		let fileName = strippedUrl.substring(
 			strippedUrl.indexOf('/archive/') + '/archive/'.length
 		);
 
-		var fileType = fileName.substring(fileName.lastIndexOf('.') + 1);
+		let fileType = fileName.substring(fileName.lastIndexOf('.') + 1);
 
 		fileName = fileName.substring(0, fileName.lastIndexOf('.'));
 
@@ -138,7 +138,7 @@ function CCModDB() {
 		if (!version) version = instance.versiondata.selectedVersion ||
 			globals.gameData.getVersions()[0];
 		if (!keyword) throw new Error('keyword not specified');
-		var newPath;
+		let newPath;
 		if (keyword === 'root') // we want the folder where nw.exe is located
 			newPath = path.join(
 				globals.gameData.versions[version].path.main,
@@ -157,7 +157,7 @@ function CCModDB() {
      */
 	function _download(downloadLink, name, cb) {
 		https.get(downloadLink, function(res) {
-			var fileStream = fs.createWriteStream(name);
+			let fileStream = fs.createWriteStream(name);
 			res.on('data', function(nextBlob) {
 				fileStream.write(nextBlob);
 			});
@@ -187,9 +187,9 @@ function CCModDB() {
 					return;
 				}
 
-				var name = entry.path;
+				let name = entry.path;
 				name = name.substr(name.indexOf('/') + 1);
-				var type = entry.type;
+				let type = entry.type;
 				if (type === 'Directory') {
 					try {
 						fs.mkdirSync(outputPath + name);
@@ -212,7 +212,7 @@ function CCModDB() {
 	}
 
 	function _getTable() {
-		var tableString =
+		let tableString =
 			'<tr><th>' +
 			langEntries.content['ccmodapi.name'] +
 			'</th><th>' +
@@ -227,7 +227,7 @@ function CCModDB() {
 			return langEntries.content['ccmodapi.connection'];
 		}
 
-		for (var i in instance.moddata.mods) {
+		for (let i in instance.moddata.mods) {
 			if (
 				!instance.moddata.mods[i].name ||
 				!instance.moddata.mods[i].archive_link ||
@@ -235,8 +235,8 @@ function CCModDB() {
 			) {
 				continue;
 			}
-			var link = instance.moddata.mods[i].archive_link;
-			var dir = instance.moddata.mods[i].dir || {};
+			let link = instance.moddata.mods[i].archive_link;
+			let dir = instance.moddata.mods[i].dir || {};
 			if (dir[process.platform]) {
 				dir = dir[process.platform];
 			} else if (dir['any']) {

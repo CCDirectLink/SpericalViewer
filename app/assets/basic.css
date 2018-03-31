@@ -8,8 +8,8 @@ html {
 }
 
 .universe {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   height: 100%;
   font-family: "Helvetica Neue",
   "Helvetica",
@@ -22,8 +22,8 @@ html {
 
 div {
   border: none;
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
 }
 
 .space {
@@ -41,6 +41,12 @@ div {
 .content {
   height: calc(100% - 29px);
   overflow: hidden !important;
+}
+
+.centered {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
 
 .menu {
@@ -82,7 +88,7 @@ div {
 /* Covers all icons used in the item viewer */
 img.item-entry-icon {
     vertical-align: middle;
-    margin: 1.5px 0px;
+    margin: 1.5em 0;
 }
 
 span.item-entry-text {

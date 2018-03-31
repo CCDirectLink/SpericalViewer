@@ -18,7 +18,7 @@ const globalData = (() => {
 		/* eslint-enable */
 	}
 
-	var versionData = null;
+	let versionData = null;
 
 	try {
 		// syncron data call

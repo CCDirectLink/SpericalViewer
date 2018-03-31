@@ -4,7 +4,7 @@
 function Savegame() {
 	// var statusArray = [];
 
-	var langEntries = globals.module.getLangData();
+	let langEntries = globals.module.getLangData();
 
 	function initialize() {
 		globals.gameData.registerObserver(function(game, property, value) {},
@@ -32,7 +32,7 @@ globals.module.sharedMemory['savegame'] = {
 };
 
 globals.module.on('modulesLoaded', function() {
-	var id = globals.menu.add(
+	let id = globals.menu.add(
 		'Savegame',
 		function() {},
 		'../modules/savegame/savegame.html',

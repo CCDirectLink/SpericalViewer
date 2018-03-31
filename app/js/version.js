@@ -3,14 +3,14 @@
 
 function Version() {
 	this.getList = function(currentVersion) {
-		var option = '';
+		let option = '';
 
-		for (var version in globals.gameData.versions) {
-			var full =
+		for (let version in globals.gameData.versions) {
+			let full =
 				version + ' - ' +
 				globals.gameData.versions[version].version.string;
 
-			var selected = '';
+			let selected = '';
 
 			if (currentVersion === full) selected = 'selected';
 

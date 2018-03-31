@@ -4,7 +4,7 @@
 const { app, Menu } = require('electron');
 
 function getTemplate() {
-	var menuTemplate = [
+	let menuTemplate = [
 		{
 			label: 'Edit',
 			submenu: [

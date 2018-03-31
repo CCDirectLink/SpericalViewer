@@ -2,8 +2,8 @@
 'use strict';
 
 function ImageDatabase() {
-	var imageDatabase = {};
-	var observers = [];
+	let imageDatabase = {};
+	let observers = [];
 
 	this.scale = 2;
 	this.method = 'nearest-neighbor';
@@ -11,8 +11,8 @@ function ImageDatabase() {
 	this.addImage =
 		function(version, name, tileName, url, x, y, width, heigth) {
 
-			var scaleValue = this.scale;
-			var methodValue = this.method;
+			let scaleValue = this.scale;
+			let methodValue = this.method;
 
 			const type = path.extname(url).substring(1);
 
@@ -194,8 +194,8 @@ function ImageDatabase() {
 	};
 
 	function _callObservers(name, tileName, image) {
-		for (var i in observers) {
-			var observer = observers[i];
+		for (let i in observers) {
+			const observer = observers[i];
 			if (!observer.name) {
 				observer.cb(name, tileName, image);
 			}

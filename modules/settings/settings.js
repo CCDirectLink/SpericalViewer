@@ -2,18 +2,18 @@
 'use strict';
 
 function Settings() {
-	var settings = {
+	let settings = {
 		selectedLang: 'en_us',
 	};
 
-	var langEntries = globals.module.getLangData();
+	let langEntries = globals.module.getLangData();
 
 	this.langTrigger = function() {
 		settings.selectedLang = $('#lang')[0].options[
 			$('#lang')[0].selectedIndex
 		].value;
 
-		var split = settings.selectedLang.split('_');
+		let split = settings.selectedLang.split('_');
 		globals.module.setLang(split[0], split[1]);
 		langEntries = globals.module.getLangData();
 		globals.menu.updateAll();
@@ -52,19 +52,19 @@ function Settings() {
 	};
 
 	function _getTable(currentId) {
-		var langString = '';
-		var langArray = globals.module.getLangList();
+		let langString = '';
+		let langArray = globals.module.getLangList();
 
-		for (var i in langArray) {
-			var langValue = langArray[i].langId + '_' + langArray[i].langIdSub;
+		for (let i in langArray) {
+			let langValue = langArray[i].langId + '_' + langArray[i].langIdSub;
 
-			var langName = langArray[i].langName;
+			let langName = langArray[i].langName;
 
 			if (langArray[i].langNameSub != null) {
 				langName += ' (' + langArray[i].langNameSub + ')';
 			}
 
-			var selected = '';
+			let selected = '';
 			if (currentId === langValue) selected = 'selected';
 
 			langString +=

@@ -2,11 +2,11 @@
 'use strict';
 
 function Module(initLang, langFile) {
-	var MODULE_EXTENSION = '.ccsvm';
+	const MODULE_EXTENSION = '.ccsvm';
 	// var baseDirectory;
-	var instance = this;
+	let instance = this;
 
-	var callbacks = {
+	let callbacks = {
 		scriptsLoaded: [],
 		scriptLoaded: [],
 
@@ -17,8 +17,8 @@ function Module(initLang, langFile) {
 		langChanged: [],
 	};
 
-	var langStore = {};
-	var langList = [];
+	let langStore = {};
+	let langList = [];
 
 	this.sharedMemory = {};
 	this.selectedLang = {
@@ -105,7 +105,7 @@ function Module(initLang, langFile) {
 	};
 
 	this.getLangData = function() {
-		var langData = langStore[instance.selectedLang.langId];
+		const langData = langStore[instance.selectedLang.langId];
 
 		if (!langData || !langData[instance.selectedLang.langIdSub]) {
 			return {};
@@ -140,7 +140,7 @@ function Module(initLang, langFile) {
 			instance.selectedLang.langIdSub = langIdOrObject.langIdSub;
 		}
 
-		var langData = langStore[instance.selectedLang.langId];
+		let langData = langStore[instance.selectedLang.langId];
 
 		for (let id in callbacks.langChanged) {
 			callbacks.langChanged[id].apply(this, [
@@ -151,9 +151,9 @@ function Module(initLang, langFile) {
 
 	// Loads scripts. Takes an Array of scripts
 	this.loadScripts = function(scripts, cb) {
-		var cnt = scripts.length;
-		var loaded = 0;
-		for (var i in scripts) {
+		let cnt = scripts.length;
+		let loaded = 0;
+		for (let i in scripts) {
 			this.loadScript(scripts[i], function() {
 				loaded++;
 				if (loaded >= cnt) {
@@ -183,9 +183,9 @@ function Module(initLang, langFile) {
 	};
 
 	this.loadModules = function(modules, cb) {
-		var cnt = modules.length;
-		var loaded = 0;
-		for (var i in modules) {
+		let cnt = modules.length;
+		let loaded = 0;
+		for (let i in modules) {
 			this.loadModule(modules[i], function() {
 				++loaded;
 				if (loaded >= cnt) {
@@ -211,7 +211,7 @@ function Module(initLang, langFile) {
 			// has langfolder
 			if (data.langfolder) {
 				// loaded files
-				var langLoadedCount = 0;
+				let langLoadedCount = 0;
 
 				// lang file list
 				const langList = instance.findLangFiles(
@@ -293,7 +293,7 @@ function Module(initLang, langFile) {
 	};
 
 	function _findFiles(directories) {
-		var files = [];
+		let files = [];
 
 		if (typeof directories === 'string' || directories instanceof String) {
 			directories = directories.replace(/^file:/, '');
@@ -309,7 +309,7 @@ function Module(initLang, langFile) {
 			for (let i in directories) {
 				directories[i] = directories[i].replace(/^file:/, '');
 				try {
-					var _tempFiles = fs.readdirSync(directories[i]);
+					let _tempFiles = fs.readdirSync(directories[i]);
 					for (let j in _tempFiles) {
 						_tempFiles[j] = directories[i] + '/' + _tempFiles[j];
 					}
@@ -324,11 +324,11 @@ function Module(initLang, langFile) {
 	}
 
 	this.findLangFiles = function(directories) {
-		var result = [];
-		var files = _findFiles(directories);
+		let result = [];
+		let files = _findFiles(directories);
 
 		for (let i in files) {
-			var file = fs.realpathSync(files[i]);
+			let file = fs.realpathSync(files[i]);
 			if (file.endsWith('.json')) {
 				result.push(file);
 			}
@@ -337,11 +337,11 @@ function Module(initLang, langFile) {
 	};
 
 	this.findModules = function(directories) {
-		var result = [];
-		var files = _findFiles(directories);
+		let result = [];
+		let files = _findFiles(directories);
 
 		for (let i in files) {
-			var file = fs.realpathSync(files[i]);
+			let file = fs.realpathSync(files[i]);
 			if (file.endsWith(MODULE_EXTENSION)) {
 				result.push(file);
 			} else if (
