@@ -51,7 +51,11 @@ function Items() {
 			'<table>' +
 			_getTable(
 				itemData.selectedVersion,
-				document.getElementById('searchValue').value
+				{
+					name: document.getElementById('searchValue').value,
+					type: document.getElementById('typeFilter').value,
+					rarity: document.getElementById('rarityFilter').value,
+				}
 			) +
 			'</table>'
 		);
@@ -81,6 +85,8 @@ function Items() {
 			'<tr><th>' +
 			langEntries.content['items.id'] +
 			'</th><th>' +
+			langEntries.content['items.type'] +
+			'</th><th>' +
 			langEntries.content['items.item'] +
 			'</th><th>' +
 			langEntries.content['items.stats'] +
@@ -97,10 +103,16 @@ function Items() {
 		for (let i in items) {
 			let item = items[i];
 
-			if (item.name.en_US.toLowerCase()
-				.indexOf(filter.toLowerCase()) !== -1) {
+			if ((item.name.en_US.toLowerCase()
+				.indexOf(filter.name.toLowerCase()) !== -1) &&
+			(item.icon.toLowerCase()
+				.indexOf(filter.type.toLowerCase()) !== -1) &&
+				((item.rarity === Number(filter.rarity) ||
+					(filter.rarity === '')))
+			) {
 
-				tableString += '<tr><td>' + i + '</td><td>';
+
+				tableString += '<tr><td>' + i + '</td><td colspan=\'2\'>';
 				tableString += "<img class='item-entry-icon " +
 				(version + ' items ' + item.icon + item.rarity) +
 				"' src='" +

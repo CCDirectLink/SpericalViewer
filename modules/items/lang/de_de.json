@@ -6,6 +6,7 @@
 	{
 		"items.id": "Id",
 		"items.items": "Objekte",
+		"items.type": "Typ",
 		"items.item": "Objekt",
 		"items.stats": "Status",
 		"items.search": "Filter"

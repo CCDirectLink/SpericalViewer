@@ -6,6 +6,7 @@
 	{
 		"items.id": "Id",
 		"items.items": "Items",
+		"items.type": "Type",
 		"items.item": "Item",
 		"items.stats": "Stats",
 		"items.search": "Filter"
