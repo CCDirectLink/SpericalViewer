@@ -227,12 +227,19 @@ function Loader() {
 			folder = folder.slice(0, -16);
 			_nwjsExec(folder, exec);
 		} else if (_isDirectory(folder)) {
-			let files = fs.readdirSync(folder);
+			fs.readdir(folder, function(err, files) {
+				if(err)
+					throw err;
 
-			for (let i in files) {
-				let file = fs.realpathSync(path.join(folder, files[i]));
-				_searchExec(file, exec); // Recursive search
-			}
+				for (let i in files) {
+					fs.realpath(path.join(folder, files[i]), function(err, file) {
+						if(err)
+							throw err;
+						
+						_searchExec(file, exec); // Recursive search
+					});
+				}
+			});
 		}
 	}
 
@@ -356,18 +363,25 @@ function Loader() {
 	*/
 
 	function _searchDirectory(folder, dropped, cb) {
-		let files = fs.readdirSync(folder);
+		fs.readdir(folder, function(err, files) {
+			if(err)
+				throw err;
 
-		for (let i in files) {
-			let file = fs.realpathSync(path.join(folder, files[i]));
-			if (_isCCMain(file)) {
-				// Check if data folder
-				file = file.slice(0, -16);
-				cb(file, dropped, null);
-			} else if (_isDirectory(file)) {
-				_searchDirectory(file, dropped, cb); // Recursive search
+			for (let i in files) {
+				fs.realpath(path.join(folder, files[i]), function(err, file) {
+					if(err)
+						throw err;
+
+					if (_isCCMain(file)) {
+						// Check if data folder
+						file = file.slice(0, -16);
+						cb(file, dropped, null);
+					} else if (_isDirectory(file)) {
+						_searchDirectory(file, dropped, cb); // Recursive search
+					}
+				})
 			}
-		}
+		});
 	}
 
 	function _isCCMain(files) {
