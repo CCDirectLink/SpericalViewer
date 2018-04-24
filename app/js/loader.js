@@ -228,16 +228,17 @@ function Loader() {
 			_nwjsExec(folder, exec);
 		} else if (_isDirectory(folder)) {
 			fs.readdir(folder, function(err, files) {
-				if(err)
+				if (err)
 					throw err;
 
 				for (let i in files) {
-					fs.realpath(path.join(folder, files[i]), function(err, file) {
-						if(err)
-							throw err;
-						
-						_searchExec(file, exec); // Recursive search
-					});
+					fs.realpath(path.join(folder, files[i]),
+						function(err, file) {
+							if (err)
+								throw err;
+
+							_searchExec(file, exec); // Recursive search
+						});
 				}
 			});
 		}
@@ -364,12 +365,12 @@ function Loader() {
 
 	function _searchDirectory(folder, dropped, cb) {
 		fs.readdir(folder, function(err, files) {
-			if(err)
+			if (err)
 				throw err;
 
 			for (let i in files) {
 				fs.realpath(path.join(folder, files[i]), function(err, file) {
-					if(err)
+					if (err)
 						throw err;
 
 					if (_isCCMain(file)) {
@@ -379,7 +380,7 @@ function Loader() {
 					} else if (_isDirectory(file)) {
 						_searchDirectory(file, dropped, cb); // Recursive search
 					}
-				})
+				});
 			}
 		});
 	}

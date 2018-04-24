@@ -1,4 +1,4 @@
-/* global globals, $ */
+/* global globals, path, fs, globalData, $ */
 'use strict';
 
 function Savegame() {
@@ -11,7 +11,7 @@ function Savegame() {
 			if (value) {
 				_lookForSave(game.shortId);
 			}
-		}.bind(this), 'version');
+		}, 'version');
 	}
 
 	globals.module.on('langChanged', function(id, subId, data) {
@@ -29,11 +29,11 @@ function Savegame() {
 
 	function _lookForSave(version) {
 		let file = path.join(globalData.versionList[version], '..', 'cc.save');
-		if(fs.existsSync(file)) {
+		if (fs.existsSync(file)) {
 			fs.readFile(file, 'utf8', function(err, data) {
-				if(err)
+				if (err)
 					throw err;
-					
+
 				savesArray[version] = JSON.parse(data);
 				globals.module.sharedMemory['savegame'].controller.display();
 			});
@@ -50,7 +50,8 @@ function Savegame() {
 		}
 
 		for (let i in savesArray) {
-			tableString += '<tr><td>' + savesArray[i].version + '</td><td><!-- Display edit button here --></td></tr>';
+			tableString += '<tr><td>' + savesArray[i].version +
+			'</td><td><!-- Display edit button here --></td></tr>';
 		}
 
 		return tableString;

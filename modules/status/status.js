@@ -1,4 +1,4 @@
-/* global globals, $ */
+/* global globals, globalData,  $ */
 'use strict';
 
 function Status() {
@@ -9,7 +9,6 @@ function Status() {
 	function initialize() {
 		globals.gameData.registerObserver(function(game, property, value) {
 			if (value) {
-				let sizeData = '0 kiB';
 				statusArray.push({
 					id: game.shortId,
 					containerId: game.containerId,
@@ -65,7 +64,7 @@ function Status() {
 
 	this.removeVersion = function(version) {
 		globals.env.removeVersionPath(version);
-		$('#storedGame').html('<table>' + _getPathsTable() + '</table>');
+		$('#storedGame').html('<table>' + _getTable() + '</table>');
 	};
 
 	this.onchange = function() {
