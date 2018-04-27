@@ -2,19 +2,18 @@
 'use strict';
 
 function Items() {
-	let instance = this;
 
 	let itemData = {
 		selectedVersion: globals.gameData.getVersions()[0],
 		version: new Version(),
 		observer: globals.imageData.registerObserver(
 			function(name, tileName, image) {
-				instance.updateIcon(name, tileName, image);
-			},
+				this.updateIcon(name, tileName, image);
+			}.bind(this),
 			'items'),
 		versionChangeObserver: globals.gameData.registerObserver(function() {
-			instance.updateVersion();
-		}, 'version'),
+			this.updateVersion();
+		}.bind(this), 'version'),
 	};
 
 	let langEntries = globals.module.getLangData();
@@ -27,7 +26,7 @@ function Items() {
 		itemData.selectedVersion = $('#versionList')[0].options[
 			$('#versionList')[0].selectedIndex
 		].value;
-		instance.updateTable();
+		this.updateTable();
 	};
 
 	this.display = function() {
