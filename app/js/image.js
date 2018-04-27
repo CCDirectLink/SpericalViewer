@@ -1,4 +1,4 @@
-/* global globals, fs */
+/* global globals, path, fs */
 'use strict';
 
 function ImageDatabase() {
@@ -6,7 +6,6 @@ function ImageDatabase() {
 	let observers = [];
 
 	this.scale = 2;
-	this.method = 'nearest-neighbor';
 
 	function readFile(url) {
 		return new Promise(function(resolve, reject) {
@@ -20,8 +19,7 @@ function ImageDatabase() {
 		function(version, name, tileName, url, x, y, width, heigth) {
 
 			const scaleValue = this.scale;
-			// const methodValue = this.method;
-			// const type = path.extname(url).substring(1);
+			const type = path.extname(url).substring(1);
 
 			let canvas = document.createElement('canvas');
 			canvas.width = width * scaleValue;
@@ -33,7 +31,8 @@ function ImageDatabase() {
 				}
 
 				let image = document.createElement('img');
-				image.src = 'data:image/png;base64,' + file.toString('base64');
+				image.src = 'data:image/' + type +
+					';base64,' + file.toString('base64');
 				let ctx = canvas.getContext('2d');
 				ctx.imageSmoothingEnabled = false;
 				ctx.drawImage(image, x, y,
