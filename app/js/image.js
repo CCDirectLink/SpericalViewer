@@ -1,4 +1,4 @@
-/* global path, globals, fs */
+/* global globals, fs */
 'use strict';
 
 function ImageDatabase() {
@@ -20,8 +20,8 @@ function ImageDatabase() {
 		function(version, name, tileName, url, x, y, width, heigth) {
 
 			const scaleValue = this.scale;
-			const methodValue = this.method;
-			const type = path.extname(url).substring(1);
+			// const methodValue = this.method;
+			// const type = path.extname(url).substring(1);
 
 			let canvas = document.createElement('canvas');
 			canvas.width = width * scaleValue;
