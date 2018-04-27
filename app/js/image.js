@@ -1,4 +1,4 @@
-/* global path, globals, lwip */
+/* global path, globals, fs */
 'use strict';
 
 function ImageDatabase() {
@@ -8,140 +8,46 @@ function ImageDatabase() {
 	this.scale = 2;
 	this.method = 'nearest-neighbor';
 
+	function readFile(url) {
+		return new Promise(function(resolve, reject) {
+			fs.readFile(url, (err, data) => {
+				err ? reject(err) : resolve(data);
+			});
+		});
+	}
+
 	this.addImage =
 		function(version, name, tileName, url, x, y, width, heigth) {
 
-			let scaleValue = this.scale;
-			let methodValue = this.method;
-
+			const scaleValue = this.scale;
+			const methodValue = this.method;
 			const type = path.extname(url).substring(1);
 
-			lwip.open(url, type, function(err, image) {
-				if (err) {
-					throw err;
-				}
+			let canvas = document.createElement('canvas');
+			canvas.width = width * scaleValue;
+			canvas.height = heigth * scaleValue;
 
+			readFile(url).then(file => {
 				if (!imageDatabase[version]) {
 					imageDatabase[version] = {};
 				}
 
-				if (x === undefined) {
-					if (width) {
-						image.resize(
-							width * scaleValue,
-							heigth * scaleValue,
-							methodValue,
-							function(err, finishedImage) {
-								if (err) {
-									throw err;
-								}
-
-								finishedImage.toBuffer(
-									type,
-									{
-										compression: 'none',
-										interlaced: false,
-										transparency: true,
-									},
-									function(err, buffer) {
-										if (err) {
-											throw err;
-										}
-
-										globals.imageData.saveImage(
-											version,
-											name,
-											tileName,
-											'data:image/' +
-										type +
-										';base64,' +
-										buffer.toString('base64')
-										);
-									}
-								);
-							}
-						);
-					} else {
-						image.resize(
-							image.width() * scaleValue,
-							image.heigth() * scaleValue,
-							methodValue,
-							function(err, finishedImage) {
-								if (err) {
-									throw err;
-								}
-
-								finishedImage.toBuffer(
-									type,
-									{
-										compression: 'none',
-										interlaced: false,
-										transparency: true,
-									},
-									function(err, buffer) {
-										if (err) {
-											throw err;
-										}
-
-										globals.imageData.saveImage(
-											version,
-											name,
-											tileName,
-											'data:image/' +
-										type +
-										';base64,' +
-										buffer.toString('base64')
-										);
-									}
-								);
-							}
-						);
-					}
-				} else {
-					image.crop(x, y, x + width - 1, y + heigth - 1, function(
-						err,
-						cropedImage
-					) {
-						if (err) {
-							throw err;
-						}
-
-						cropedImage.resize(
-							width * scaleValue,
-							heigth * scaleValue,
-							methodValue,
-							function(err, finishedImage) {
-								if (err) {
-									throw err;
-								}
-
-								finishedImage.toBuffer(
-									type,
-									{
-										compression: 'none',
-										interlaced: false,
-										transparency: true,
-									},
-									function(err, buffer) {
-										if (err) {
-											throw err;
-										}
-
-										globals.imageData.saveImage(
-											version,
-											name,
-											tileName,
-											'data:image/' +
-										type +
-										';base64,' +
-										buffer.toString('base64')
-										);
-									}
-								);
-							}
-						);
-					});
-				}
+				let image = document.createElement('img');
+				image.src = 'data:image/png;base64,' + file.toString('base64');
+				let ctx = canvas.getContext('2d');
+				ctx.imageSmoothingEnabled = false;
+				ctx.drawImage(image, x, y,
+					(canvas.width / scaleValue),
+					(canvas.height / scaleValue),
+					0, 0,
+					canvas.width,
+					canvas.height);
+				globals.imageData.saveImage(
+					version,
+					name,
+					tileName,
+					ctx.canvas.toDataURL()
+				);
 			});
 		};
 
