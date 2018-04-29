@@ -1,4 +1,4 @@
-/* global globals, path, fs, globalData, $ */
+/* global globals, path, fs, $ */
 'use strict';
 
 function Savegame() {
@@ -28,7 +28,8 @@ function Savegame() {
 	};
 
 	function _lookForSave(version) {
-		let file = path.join(globalData.versionList[version], '..', 'cc.save');
+		let file = path.join(globals.env.path.save.folder,
+			globals.env.path.save.file);
 		if (fs.existsSync(file)) {
 			fs.readFile(file, 'utf8', function(err, data) {
 				if (err)
