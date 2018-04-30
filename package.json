@@ -23,8 +23,10 @@
 		"dist": "build",
 		"dist:all": "build --mac --win --linux",
 		"lint": "eslint --fix .",
-		"lint:fix": "eslint --fix ."
+		"lint:fix": "eslint --fix .",
+		"precommit-msg": "echo 'Running Pre-commit check...' && exit 0"
 	},
+	"pre-commit": [ "precommit-msg", "test" ],
 	"build": {
 		"appId": "com.electron.ccdirectlink.sperical-viewer",
 		"productName": "SpericalViewer",
@@ -46,6 +48,7 @@
 		"electron": "^1.8.6",
 		"electron-builder": "^20.10.0",
 		"eslint": "^4.19.1",
-		"mocha": "^5.1.1"
+		"mocha": "^5.1.1",
+		"pre-commit": "^1.2.2"
 	}
 }
