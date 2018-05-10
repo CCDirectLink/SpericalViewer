@@ -1,0 +1,17 @@
+image: node:10
+
+before_script:
+  - npm install chai mocha eslint eslint-config-strongloop
+
+stages:
+  - test
+
+unit_test:
+  stage: test
+  script:
+    - npm run unit
+
+lint_test:
+  stage: test
+  script:
+    - npm run lint
