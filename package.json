@@ -1,6 +1,6 @@
 {
 	"name": "SpericalViewer",
-	"version": "0.3.9",
+	"version": "0.3.10",
 	"description": "Viewer for CrossCode content",
 	"repository": {
 		"type": "git",
@@ -26,7 +26,10 @@
 		"lint:fix": "eslint --fix .",
 		"precommit-msg": "echo 'Running Pre-commit check...' && exit 0"
 	},
-	"pre-commit": [ "precommit-msg", "test" ],
+	"pre-commit": [
+		"precommit-msg",
+		"test"
+	],
 	"build": {
 		"appId": "com.electron.ccdirectlink.sperical-viewer",
 		"productName": "SpericalViewer",
