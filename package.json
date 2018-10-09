@@ -1,6 +1,6 @@
 {
 	"name": "SpericalViewer",
-	"version": "0.3.10",
+	"version": "0.3.11",
 	"description": "Viewer for CrossCode content",
 	"repository": {
 		"type": "git",
@@ -48,9 +48,9 @@
 		"@types/mocha": "^5.2.5",
 		"benchmark": "^2.1.4",
 		"chai": "^4.2.0",
-		"electron": "^1.8.8",
+		"electron": "^3.0.3",
 		"electron-builder": "^20.28.4",
-		"eslint": "^4.19.1",
+		"eslint": "^5.6.1",
 		"mocha": "^5.2.0",
 		"pre-commit": "^1.2.2"
 	}
