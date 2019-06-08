@@ -265,11 +265,31 @@ const setMenu = menuSetup();
 function createWindow() {
 	setMenu();
 
+	if (global.isDevEnv) {
+		const {session} = require('electron');
+
+		session.defaultSession.webRequest
+			.onHeadersReceived((details, callback) => {
+				callback({
+					responseHeaders: Object.assign({
+						'Content-Security-Policy':
+						[ 'script-src \'self\' \'unsafe-inline\'' ],
+					}, details.responseHeaders),
+				});
+			});
+	}
+
 	// Create the browser window
 	win = new BrowserWindow({
 		width: 800,
 		height: 600,
 		titleBarStyle: 'hidden',
+		webPreferences: {
+			nodeIntegration: true,
+			nodeIntegrationInWorker: true,
+			webSecurity: true,
+			allowRunningInsecureContent: false,
+		},
 		icon: __dirname + '/assets/ccdirectlink.png',
 	});
 
