@@ -1,4 +1,3 @@
-/* global alert */
 'use strict';
 
 const path = require('path');

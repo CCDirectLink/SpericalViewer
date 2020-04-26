@@ -1,4 +1,4 @@
-/* global path, VersionType, alert, localStorage */
+/* global path, VersionType */
 'use strict';
 
 /**

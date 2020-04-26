@@ -1,4 +1,4 @@
-/* global path, fs, FileList, File, globals, $, crypto, MAIN_PATH */
+/* global path, fs, globals, $, MAIN_PATH */
 'use strict';
 
 function Loader() {
